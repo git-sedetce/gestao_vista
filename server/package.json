@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Sistemas de exibição de atividades da SDE.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/git-sedetce/gestao_vista.git"
+  },
+  "keywords": [
+    "#gestao_vista",
+    "#sde"
+  ],
+  "author": "Daniel Oliveira Araújo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/git-sedetce/gestao_vista/issues"
+  },
+  "homepage": "https://github.com/git-sedetce/gestao_vista#readme"
+}
