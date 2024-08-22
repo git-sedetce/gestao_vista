@@ -11,7 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Coordenadorias.belongsTo(models.Secretaria_Executivas, {
-        foreignKey: 'sexec_id'
+        foreignKey: 'sexec_id', as: 'ass_coord_sexec'
+      });
+      Coordenadorias.hasMany(models.Evento, {
+        foreignKey: 'coord_id', as: 'ass_coord_evento'
       });
       // define association here
     }

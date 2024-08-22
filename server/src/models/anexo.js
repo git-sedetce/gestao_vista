@@ -3,24 +3,24 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Tipo_Evento extends Model {
+  class Anexo extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Tipo_Evento.hasMany(models.Evento, {
-        foreignKey: 'tipo_evento_id', as: 'ass_tipoEvento_evento'
-      });
+      Anexo.belongsTo(models.Evento, { foreignKey: 'evento_id', as: 'ass_anexo_evento' })
       // define association here
     }
   }
-  Tipo_Evento.init({
-    nome_evento: DataTypes.STRING
+  Anexo.init({
+    mimetype: DataTypes.STRING,
+    filename: DataTypes.STRING,
+    path: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Tipo_Evento',
+    modelName: 'Anexo',
   });
-  return Tipo_Evento;
+  return Anexo;
 };

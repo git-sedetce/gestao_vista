@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      Tipo_Local.hasMany(models.Evento, {
+        foreignKey: 'tipo_local_id', as: 'ass_local_evento'
+      });
       // define association here
     }
   }
