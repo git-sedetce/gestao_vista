@@ -1,0 +1,15 @@
+const { Router } = require('express')
+const EventoController = require('../controllers/EventoControllers')
+
+
+const router = Router()
+router.get('/')
+router.post('/cadastroEvento', EventoController.cadastroEvento)
+router.get('/listaEvento', EventoController.listarEventos)
+router.get('/listaEvento/:id', EventoController.listarEventosbyEvento)
+router.get('/listaEventoSec/:id', EventoController.listarEventosbySecretaria)
+router.get('/listaEventoLocal/:id', EventoController.listarEventosbyLocal)
+router.get('/listaEventoRec/:id', EventoController.listarEventosbyRecursos)
+router.get('/listaEventoPart/:id', EventoController.listarEventosbyParticipacao)
+
+module.exports = router
