@@ -100,7 +100,7 @@ export class CadastroEventoComponent implements OnInit{
     this.eventoservice.cadastrar(this.evento).subscribe({
       next: (res: any) => {
         this.toastr.success('Evento cadastrado com sucesso!');
-        this.router.navigate(['/home']);
+        this.router.navigate(['/cadastroacompanhamento']);
         this.formEvento.reset();
       },
       error: (e) => (this.toastr.error(e), this.formEvento.reset())
