@@ -1,0 +1,152 @@
+<section id="formProject">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="card card_form mt-5">
+          <div class="cabecalho">
+            <h3 class="pb-3 pt-3 text-center text-white text-uppercase">Cadastro de Eventos</h3>
+          </div>
+          <form class="ms-4 me-4" #formEvento="ngForm">
+            <fieldset>
+              <legend>
+                Informações do Evento
+              </legend>
+              <div class="row mt-4 mb-4">
+                <div class="form-floating col-sm-2 col-12 mb-2">
+                  <select name="mes" id="mes" class="form-select text-capitalize" #mes="ngModel" [(ngModel)]="evento.mes" required>
+                    <option *ngFor=" let month of lista_mes" [value]=month> {{month}} </option>
+                  </select>
+                  <label class="form-label pergunta ms-3" for="cargo">Mês do Evento</label>
+                  <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
+                </div>
+
+                <div class="form-floating col-sm-2 col-12 mb-2">
+                  <select name="ano" id="ano" class="form-select" #ano="ngModel" [(ngModel)]="evento.ano" required>
+                    <option *ngFor=" let year of lista_ano" [value]=year> {{year}} </option>
+                  </select>
+                  <label class="form-label pergunta ms-3" for="cargo">Ano do Evento</label>
+                  <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
+                </div>
+
+                <div class="form-floating col-sm-2 col-12 mb-2">
+                  <select name="tipo_evento_id" id="tipo_evento_id" class="form-select" #tipo_evento_id="ngModel" [(ngModel)]="evento.tipo_evento_id" required>
+                    <option *ngFor=" let evento of lista_tipo_evento" [value]=evento.id> {{ evento.nome_evento }} </option>
+                  </select>
+                  <label class="form-label pergunta ms-3" for="cargo">Tipo de Evento</label>
+                  <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
+                </div>
+
+                <div class="form-floating col-sm-6 col-12 mb-2">
+                  <select name="sexec_id" id="sexec_id" class="form-select" #sexec_id="ngModel" [(ngModel)]="evento.sexec_id" required>
+                    <option *ngFor=" let sexec of lista_sexec" [value]=sexec.id> {{ sexec.secretaria }} / {{ sexec.sigla }} </option>
+                  </select>
+                  <label class="form-label pergunta ms-3" for="cargo">Responável</label>
+                  <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
+                </div>
+              </div>
+
+              <div class="row mt-4 mb-4">
+                <div class="form-group col-sm-6 col-12 ">
+                  <div class="form-floating">
+                    <input type="text" id="nome_evento" name="nome_evento"
+                      placeholder="Digite o nome do Evento" required #nome_evento="ngModel" [(ngModel)]="evento.nome_evento" class="form-control" />
+                    <label class="form-label pergunta" for="nome_evento">Nome Evento</label>
+                    <div *ngIf="!nome_evento.valid && nome_evento.touched" class="alert alert-danger" role="alert">Informe o nome do Evento</div>
+                  </div>
+                </div>
+
+                <div class="form-floating col-sm-2 col-12 mb-2">
+                  <select name="tipo_local_id" id="tipo_local_id" class="form-select" #tipo_local_id="ngModel" [(ngModel)]="evento.tipo_local_id" required>
+                    <option *ngFor=" let local of lista_local" [value]=local.id> {{ local.local_evento }} </option>
+                  </select>
+                  <label class="form-label pergunta ms-3" for="cargo">Tipo Local</label>
+                  <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
+                </div>
+
+                <div class="form-group col-sm-4 col-12 ">
+                  <div class="form-floating">
+                    <input type="text" id="local" name="local"
+                      placeholder="Digite o nome do Evento" required #local="ngModel" [(ngModel)]="evento.local" class="form-control" />
+                    <label class="form-label pergunta" for="local">Local do Evento</label>
+                    <div *ngIf="!local.valid && local.touched" class="alert alert-danger" role="alert">Informe o local do Evento</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-4 mb-4">
+                <div class="form-group col-sm-12 col-12">
+                  <div class="form-floating">
+                    <textarea class="form-control" id="descricao" [maxLength]="maxChars" rows="5"  name="descricao" placeholder="Informe a descrição do evento" style="height: 100px" required minlength="3" #descricao="ngModel" [(ngModel)]="evento.descricao"
+                      class="form-control"></textarea>
+                    <label class="form-label pergunta" for="descricao">Descrição</label>
+                    <div class="limite_caractere alert alert-warning mt-1">Caracteres digitados: <strong>{{ evento.descricao?.length }} / {{ maxChars }}</strong></div>
+                    <div *ngIf="!descricao.valid &&  descricao.touched" class="alert alert-danger" role="alert">
+                      Descrição é obrigatório
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-4 mb-4">
+                <div class="form-group col-sm-4 col-12 ">
+                  <div class="form-floating">
+                    <input type="text" id="publico_alvo" name="publico_alvo"
+                      placeholder="Digite o nome do Evento" #publico_alvo="ngModel" [(ngModel)]="evento.publico_alvo" class="form-control" />
+                    <label class="form-label pergunta" for="publico_alvo">Público alvo</label>
+                    <div *ngIf="!publico_alvo.valid && publico_alvo.touched" class="alert alert-danger" role="alert">Informe o público alvo</div>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-4 col-12 ">
+                  <div class="form-floating">
+                    <input type="text" id="periodo" name="periodo"
+                      placeholder="Digite o nome do Evento" required #periodo="ngModel" [(ngModel)]="evento.periodo" class="form-control" />
+                    <label class="form-label pergunta" for="periodo">Periodo</label>
+                    <div *ngIf="!periodo.valid && periodo.touched" class="alert alert-danger" role="alert">Informe o periodo</div>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-4 col-12 ">
+                  <div class="form-floating">
+                    <input type="text" id="custo_previo" name="custo_previo"
+                      placeholder="Digite o nome do Evento" required #custo_previo="ngModel" [(ngModel)]="evento.custo_previo" class="form-control" />
+                    <label class="form-label pergunta" for="custo_previo">Custo Prévio</label>
+                    <div *ngIf="!custo_previo.valid && custo_previo.touched" class="alert alert-danger" role="alert">Informe o custo prévio</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-4 mb-4">
+                <div class="form-floating col-sm-4 col-12 mb-2">
+                  <select name="recursos_id" id="recursos_id" class="form-select" #recursos_id="ngModel" [(ngModel)]="evento.recursos_id" required>
+                    <option *ngFor=" let recursos of lista_recursos" [value]=recursos.id> {{ recursos.recursos }} </option>
+                  </select>
+                  <label class="form-label pergunta ms-3" for="cargo">Fonte Recursos</label>
+                  <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
+                </div>
+
+                <div class="form-floating col-sm-4 col-12 mb-2">
+                  <select name="participacao_id" id="participacao_id" class="form-select" #participacao_id="ngModel" [(ngModel)]="evento.participacao_id" required>
+                    <option *ngFor=" let participacao of lista_participacao" [value]=participacao.id> {{ participacao.participacao }} </option>
+                  </select>
+                  <label class="form-label pergunta ms-3" for="cargo">Tipo Participação</label>
+                  <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
+                </div>
+
+                <div class="form-group col-sm-4 col-12 ">
+                  <div class="form-floating">
+                    <input type="text" id="lead_previsto" name="lead_previsto"
+                      placeholder="Digite a previsão de lead" required #lead_previsto="ngModel" [(ngModel)]="evento.lead_previsto" class="form-control" />
+                    <label class="form-label pergunta" for="lead_previsto">Leads Previous</label>
+                    <div *ngIf="!lead_previsto.valid && lead_previsto.touched" class="alert alert-danger" role="alert">Informe o Leads Previous</div>
+                  </div>
+                </div>
+
+              </div>
+              <button class="btn btn-primary btn-block mb-4" type="submit" [disabled]="!formEvento.valid" (click)="save()">Cadastro de Projeto</button>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
