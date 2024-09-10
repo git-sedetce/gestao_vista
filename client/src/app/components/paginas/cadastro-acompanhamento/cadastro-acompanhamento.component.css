@@ -1,0 +1,21 @@
+.pergunta{
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+}
+
+fieldset {
+  margin: 1.2rem 0.8rem;
+  padding: 1.2rem 0.8rem;
+  border-color: #cecece;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 25px;
+}
+legend {
+  padding-top: 0.8rem;
+  padding-bottom: 0.6rem;
+}
+
+.cabecalho {
+  background-color: #f59c00;
+}

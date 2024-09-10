@@ -13,4 +13,8 @@ export class EventoService {
   cadastrar(data: any) : Observable<any> {
     return this.http.post(environment.apiUrl + 'cadastroEvento', data)
   }
+
+  getEvento(rota:any): Observable<any> {
+    return this.http.get(environment.apiUrl + rota)
+  }
 }

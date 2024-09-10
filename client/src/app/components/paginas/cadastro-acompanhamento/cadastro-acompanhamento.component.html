@@ -1,1 +1,72 @@
-<p>cadastro-acompanhamento works!</p>
+<section id="formProject">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="card card_form mt-5">
+          <div class="cabecalho">
+            <h3 class="pb-3 pt-3 text-center text-white text-uppercase">Pós Evento</h3>
+          </div>
+          <form class="ms-4 me-4" #formFollow="ngForm">
+            <fieldset>
+              <legend>
+                Acompanhamento
+              </legend>
+              <div class="row mt-4 mb-4">
+
+                <div class="form-floating col-sm-6 col-12 mb-2">
+                  <select name="evento_id" id="evento_id" class="form-select" #evento_id="ngModel" [(ngModel)]="follow.evento_id" required>
+                    <option *ngFor=" let evento of lista_evento" [value]=evento.id> {{ evento.nome_evento }} </option>
+                  </select>
+                  <label class="form-label pergunta ms-3" for="cargo">Tipo de Evento</label>
+                  <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
+                </div>
+
+                <div class="form-floating col-sm-6 col-12 mb-2">
+                  <select name="situacao_atual" id="situacao_atual" class="form-select" #situacao_atual="ngModel" [(ngModel)]="follow.situacao_atual" required>
+                    <option value="A Iniciar">A Iniciar</option>
+                    <option value="Andamento">Andamento</option>
+                    <option value="Cancelado">Cancelado</option>
+                    <option value="Concluído">Concluído</option>
+                  </select>
+                  <label class="form-label pergunta ms-3" for="cargo">Situação Atual</label>
+                  <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
+                </div>
+              </div>
+
+              <div class="row mt-4 mb-4">
+                <div class="form-group col-sm-4 col-12 ">
+                  <div class="form-floating">
+                    <input type="text" id="resultado" name="resultado"
+                      placeholder="Digite o nome do Evento" required #resultado="ngModel" [(ngModel)]="follow.resultado" class="form-control" />
+                    <label class="form-label pergunta" for="resultado">Resultado Alcançados</label>
+                    <div *ngIf="!resultado.valid && resultado.touched" class="alert alert-danger" role="alert">Informe o resultado</div>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-4 col-12 ">
+                  <div class="form-floating">
+                    <input type="text" id="custo_realizado" name="custo_realizado"
+                      placeholder="Digite o nome do Evento" required #custo_realizado="ngModel" [(ngModel)]="follow.custo_realizado" class="form-control" />
+                    <label class="form-label pergunta" for="custo_realizado">Custos Realizados</label>
+                    <div *ngIf="!custo_realizado.valid && custo_realizado.touched" class="alert alert-danger" role="alert">Informe os custos</div>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-4 col-12 ">
+                  <div class="form-floating">
+                    <input type="text" id="leads_realizados" name="leads_realizados"
+                      placeholder="Digite o nome do Evento" required #leads_realizados="ngModel" [(ngModel)]="follow.leads_realizados" class="form-control" />
+                    <label class="form-label pergunta" for="leads_realizados">Leads Realizados</label>
+                    <div *ngIf="!leads_realizados.valid && leads_realizados.touched" class="alert alert-danger" role="alert">Informe o leads realizados</div>
+                  </div>
+                </div>
+                </div>
+
+              <button class="btn btn-primary btn-block mb-4" type="submit" [disabled]="!formFollow.valid" (click)="save()">Cadastro de Projeto</button>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
