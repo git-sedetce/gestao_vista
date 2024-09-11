@@ -12,6 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CadastroAcompanhamentoComponent } from './components/paginas/cadastro-acompanhamento/cadastro-acompanhamento.component';
+import { ConsultaEventoComponent } from './components/paginas/consulta-evento/consulta-evento.component';
+import { ConsultaAcompanhamentoComponent } from './components/paginas/consulta-acompanhamento/consulta-acompanhamento.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { CadastroAcompanhamentoComponent } from './components/paginas/cadastro-a
     FooterComponent,
     HomeComponent,
     CadastroEventoComponent,
-    CadastroAcompanhamentoComponent
+    CadastroAcompanhamentoComponent,
+    ConsultaEventoComponent,
+    ConsultaAcompanhamentoComponent
   ],
   imports: [
     BrowserModule,

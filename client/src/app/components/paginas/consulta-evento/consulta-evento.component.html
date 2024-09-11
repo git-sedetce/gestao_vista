@@ -1,0 +1,213 @@
+<section>
+  <div class="container-fluid">
+    <div class="bg-warning text-dark mt-3">
+      <h3 class="pb-3 pt-3 text-center text-white">
+        Eventos
+      </h3>
+    </div>
+    <!-- <div class="row">
+      <div class="form-floating col-sm-3 col-12 mt-2">
+        <input (input)="applyFilter($event)" #name type="text" class="form-control" id="name" placeholder="Pesquise aqui...">
+        <label class="form-label ms-3" for="name">Digite aqui a sua pesquisa</label>
+
+      </div>
+      <div class="form-floating col-sm-4 col-12 mt-2">
+        <select class="form-select" #sexec id="sexec" aria-label="Secretarias Executivas" (change)="(filtroColaborador(sexec.value))">
+          <option selected>Selecione a Secretaria Executiva</option>
+          <option value="Secretaria do Desenvolvimento Econômico">Secretaria do Desenvolvimento Econômico</option>
+          <option value="Secretaria Executiva da Indústria">Secretaria Executiva da Indústria</option>
+          <option value="Secretaria Executiva de Comércio, Serviços e Inovação">Secretaria Executiva de Comércio, Serviços e Inovação</option>
+          <option value="Secretaria Executiva de Planejamento e Gestão Interna">Secretaria Executiva de Planejamento e Gestão Interna</option>
+          <option value="Secretaria Executiva do Agronegócio">Secretaria Executiva do Agronegócio</option>
+        </select>
+        <label class="form-label ms-3" for="sexec">Secretaria Executiva</label>
+      </div>
+
+      <div class="col-sm-5 col-12">
+        <div class="filter-nav d-flex flex-center mt-3 mb-3">
+          <button class="mx-2 btn btn-primary" (click)="selectedComissionado()">Cargo Comissionado</button>
+          <button class="mx-2 btn btn-secondary" (click)="selectedServidor()">Cargo Servidor</button>
+          <button class="mx-2 btn btn-info" (click)="selectedTerceirizado()">Cargo Terceirizado</button>
+          <button class="mx-2 btn btn-success" (click)="getColaboradors()">Todos Colaboradores</button>
+        </div>
+      </div>
+    </div> -->
+
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Nome Evento</th>
+          <th scope="col">Responsável</th>
+          <th scope="col">Mês</th>
+          <th scope="col">Ano</th>
+          <th scope="col">Tipo Evento</th>
+          <th scope="col">Local</th>
+          <th scope="col">Custo Prévio</th>
+          <th scope="col">Fonte recursos</th>
+          <th scope="col">Leads Previous</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let evento of lista_evento">
+          <td>{{ evento.nome_evento }}</td>
+          <td>{{ evento.ass_evento_sexec.secretaria }}</td>
+          <td>{{ evento.mes }}</td>
+          <td>{{ evento.ano }}</td>
+          <td>{{ evento.ass_evento_tipo.nome_evento }}</td>
+          <td>{{ evento.local }}</td>
+          <td>{{ evento.custo_previo }}</td>
+          <td>{{ evento.ass_evento_recursos.recursos }}</td>
+          <td>{{ evento.lead_previsto }}</td>
+          <td><button (click)="onEdit(evento)" type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#modalEdit"><i class="bi bi-pencil-square"></i></button></td>
+          <td><button (click)="deletaEvento(evento)" type="button" class="btn btn-danger mx-3"><i class="bi bi-trash-fill"></i></button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+<!-- Modal -->
+ <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable mt-5">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalEditLabel">Editar Evento</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup] = "formEvent">
+          <div class="row">
+
+            <div class="form-floating col-sm-2 col-12 mb-2">
+              <select name="mes" id="mes" class="form-select text-capitalize" formControlName="mes" required>
+                <option *ngFor=" let month of lista_mes" [value]=month> {{month}} </option>
+              </select>
+              <label class="form-label pergunta ms-3" for="mes">Mês do Evento</label>
+            </div>
+
+            <div class="form-floating col-sm-2 col-12 mb-2">
+              <select name="ano" id="ano" class="form-select" formControlName="ano" required>
+                <option *ngFor=" let year of lista_ano" [value]=year> {{year}} </option>
+              </select>
+              <label class="form-label pergunta ms-3" for="ano">Ano do Evento</label>
+            </div>
+
+            <div class="form-floating col-sm-2 col-12 mb-2">
+              <select name="tipo_evento_id" id="tipo_evento_id" class="form-select" formControlName="tipo_evento_id" required>
+                <option *ngFor=" let evento of lista_tipo_evento" [value]=evento.id> {{ evento.nome_evento }} </option>
+              </select>
+              <label class="form-label pergunta ms-3" for="cargo">Tipo de Evento</label>
+            </div>
+
+            <div class="form-floating col-sm-6 col-12 mb-2">
+              <select name="sexec_id" id="sexec_id" class="form-select" formControlName="sexec_id" required>
+                <option *ngFor=" let sexec of lista_sexec" [value]=sexec.id> {{ sexec.secretaria }} / {{ sexec.sigla }} </option>
+              </select>
+              <label class="form-label pergunta ms-3" for="cargo">Responável</label>
+              <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
+            </div>
+          </div>
+
+          <div class="row mt-4 mb-4">
+
+            <div class="form-group col-sm-6 col-12 ">
+              <div class="form-floating">
+                <input type="text" id="nome_evento" name="nome_evento"
+                  placeholder="Digite o nome do Evento" required formControlName="nome_evento" class="form-control" />
+                <label class="form-label pergunta" for="nome_evento">Nome Evento</label>
+              </div>
+            </div>
+
+            <div class="form-floating col-sm-2 col-12 mb-2">
+              <select name="tipo_local_id" id="tipo_local_id" class="form-select" formControlName="tipo_local_id" required>
+                <option *ngFor=" let local of lista_local" [value]=local.id> {{ local.local_evento }} </option>
+              </select>
+              <label class="form-label pergunta ms-3" for="cargo">Tipo Local</label>
+            </div>
+
+            <div class="form-group col-sm-4 col-12 ">
+              <div class="form-floating">
+                <input type="text" id="local" name="local"
+                  placeholder="Digite o nome do Evento" required formControlName="local" class="form-control" />
+                <label class="form-label pergunta" for="local">Local do Evento</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-4 mb-4">
+            <div class="form-group col-sm-12 col-12">
+              <div class="form-floating">
+                <textarea class="form-control" id="descricao" [maxLength]="maxChars" rows="5"  name="descricao" placeholder="Informe a descrição do evento" style="height: 100px" required minlength="3" formControlName="descricao" class="form-control"></textarea>
+                <label class="form-label pergunta" for="descricao">Descrição</label>
+                <!-- <div class="limite_caractere alert alert-warning mt-1">Caracteres digitados: <strong>{{ evento.descricao?.length }} / {{ maxChars }}</strong></div>
+                <div *ngIf="!descricao.valid &&  descricao.touched" class="alert alert-danger" role="alert">
+                  Descrição é obrigatório
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-4 mb-4">
+            <div class="form-group col-sm-4 col-12 ">
+              <div class="form-floating">
+                <input type="text" id="publico_alvo" name="publico_alvo"
+                  placeholder="Digite o nome do Evento" formControlName='publico_alvo' class="form-control" />
+                <label class="form-label pergunta" for="publico_alvo">Público alvo</label>
+                <!-- <div *ngIf="!publico_alvo.valid && publico_alvo.touched" class="alert alert-danger" role="alert">Informe o público alvo</div> -->
+              </div>
+            </div>
+
+            <div class="form-group col-sm-4 col-12 ">
+              <div class="form-floating">
+                <input type="text" id="periodo" name="periodo"
+                  placeholder="Digite o nome do Evento" required formControlName='periodo' class="form-control" />
+                <label class="form-label pergunta" for="periodo">Periodo</label>
+                <!-- <div *ngIf="!periodo.valid && periodo.touched" class="alert alert-danger" role="alert">Informe o periodo</div> -->
+              </div>
+            </div>
+
+            <div class="form-group col-sm-4 col-12 ">
+              <div class="form-floating">
+                <input type="text" id="custo_previo" name="custo_previo"
+                  placeholder="Digite o nome do Evento" required formControlName='custo_previo' class="form-control" />
+                <label class="form-label pergunta" for="custo_previo">Custo Prévio</label>
+                <!-- <div *ngIf="!custo_previo.valid && custo_previo.touched" class="alert alert-danger" role="alert">Informe o custo prévio</div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-4 mb-4">
+            <div class="form-floating col-sm-4 col-12 mb-2">
+              <select name="recursos_id" id="recursos_id" class="form-select" formControlName='recursos_id' required>
+                <option *ngFor=" let recursos of lista_recursos" [value]=recursos.id> {{ recursos.recursos }} </option>
+              </select>
+              <label class="form-label pergunta ms-3" for="cargo">Fonte Recursos</label>
+            </div>
+
+            <div class="form-floating col-sm-4 col-12 mb-2">
+              <select name="participacao_id" id="participacao_id" class="form-select" formControlName='participacao_id' required>
+                <option *ngFor=" let participacao of lista_participacao" [value]=participacao.id> {{ participacao.participacao }} </option>
+              </select>
+              <label class="form-label pergunta ms-3" for="cargo">Tipo Participação</label>
+            </div>
+
+            <div class="form-group col-sm-4 col-12 ">
+              <div class="form-floating">
+                <input type="text" id="lead_previsto" name="lead_previsto"
+                  placeholder="Digite a previsão de lead" required formControlName='lead_previsto' class="form-control" />
+                <label class="form-label pergunta" for="lead_previsto">Leads Previous</label>
+                <!-- <div *ngIf="!lead_previsto.valid && lead_previsto.touched" class="alert alert-danger" role="alert">Informe o Leads Previous</div> -->
+              </div>
+            </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" (click)="updateEvento()" class="btn btn-warning">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
