@@ -21,7 +21,7 @@ export class CadastroEventoComponent implements OnInit{
   lista_participacao!: any[];
   lista_recursos!: any[];
 
-  maxChars = 255
+  maxChars = 500
   lista_ano: number[] = [];
   lista_mes: any[] = [];
   date = new Date();
@@ -50,7 +50,6 @@ export class CadastroEventoComponent implements OnInit{
       const nomeMes = data.toLocaleString('default', { month: 'long' }); // Nome do mês (ex: Janeiro)
       this.lista_mes.push(nomeMes);
     }
-    console.log('lista_meses', this.lista_mes);
 
     this.getSexec();
     this.getEvento();

@@ -58,6 +58,19 @@ class EventoControllers {
     }
   }
 
+  static async listarEvents(req, res) {
+    try {
+      const mostrarEventos = await database.Evento.findAll({
+        order: ["id"],
+        attributes: ["id", "nome_evento"],
+        
+      });
+      return res.status(200).json(mostrarEventos);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
   static async listarEventosbyEvento(req, res) {
     const { id } = req.params;
     try {
@@ -258,6 +271,35 @@ class EventoControllers {
         ],
       });
       return res.status(200).json(showEventos);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async updateEvent(req, res) {
+    const { id } = req.params;
+    const atualiza = req.body;
+    try {
+      await database.Evento.update(atualiza, {
+        where: { id: Number(id) },
+      });
+      const eventoAtualizado = await database.Evento.findOne({
+        where: { id: Number(id) },
+      });
+      return res.status(200).json(eventoAtualizado);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async apagaEvento(req, res) {
+    const { id } = req.params;
+    const apaga = req.body;
+    try {
+      await database.Evento.destroy({ where: { id: Number(id) } });
+      return res.status(200).json({
+        mensagem: `O evento ${apaga.id} foi bloqueado com sucesso!!`,
+      });
     } catch (error) {
       return res.status(500).json(error.message);
     }

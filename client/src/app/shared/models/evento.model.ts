@@ -1,5 +1,6 @@
 export class Evento {
   constructor(
+    public id?: number,
     public mes?: string,
     public ano?: string,
     public nome_evento?: string,

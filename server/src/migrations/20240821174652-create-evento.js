@@ -33,7 +33,7 @@ module.exports = {
         type: Sequelize.STRING
       },          
       descricao: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(500)
       },
       publico_alvo: {
         type: Sequelize.STRING
