@@ -15,4 +15,7 @@ router.get('/listaEventoPart/:id', EventoController.listarEventosbyParticipacao)
 router.put('/atuaizaEvento/:id', EventoController.updateEvent)
 router.delete('/deletaEvento/:id', EventoController.apagaEvento)
 
+router.get('/listaEventoByMes/:mes', EventoController.listarEventosByMes)
+router.get('/listaEventoByAno/:ano', EventoController.listarEventosByAno)
+
 module.exports = router

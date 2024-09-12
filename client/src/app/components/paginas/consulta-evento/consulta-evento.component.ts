@@ -121,6 +121,49 @@ export class ConsultaEventoComponent implements OnInit{
       );
     }
 
+    getEventoByRes(id: any){
+      this.eventoService.getEventoByResp('listaEventoSec/' + id).subscribe((rp:any[]) =>{
+        this.lista_evento = rp;
+      }, (erro: any) => console.log(erro)
+      );
+
+    }
+
+    getEventoByMes(mes: any){
+      this.eventoService.getEventoByMes('listaEventoByMes/' + mes).subscribe((ms:any[]) =>{
+        this.lista_evento = ms;
+      }, (erro: any) => console.log(erro)
+      );
+    }
+
+    getEventoByAno(ano: any){
+      this.eventoService.getEventoByAno('listaEventoByAno/' + ano).subscribe((yr:any[]) =>{
+        this.lista_evento = yr;
+      }, (erro: any) => console.log(erro)
+      );
+    }
+
+    getEventoByTipo(id: any){
+      this.eventoService.getEventoByTipo('listaEvento/' + id).subscribe((tp:any[]) =>{
+        this.lista_evento = tp;
+      }, (erro: any) => console.log(erro)
+      );
+    }
+
+    getEventoByLocal(id: any){
+      this.eventoService.getEventoBylocal('listaEventoLocal/' + id).subscribe((lc:any[]) =>{
+        this.lista_evento = lc;
+      }, (erro: any) => console.log(erro)
+      );
+    }
+
+    getEventoByFonte(id: any){
+      this.eventoService.getEventoByFonte('listaEventoRec/' + id).subscribe((ft:any[]) =>{
+        this.lista_evento = ft;
+      }, (erro: any) => console.log(erro)
+      );
+    }
+
     onEdit(evento: any){
       this.eventoObj.id = evento.id;
       this.formEvent.controls['mes'].setValue(evento.mes)

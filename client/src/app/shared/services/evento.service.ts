@@ -35,4 +35,28 @@ export class EventoService {
       return res;
     }))
   }
+
+  getEventoByResp(id:any): Observable<any> {
+    return this.http.get(environment.apiUrl + id)
+  }
+
+  getEventoByMes(mes: any): Observable<any> {
+    return this.http.get(environment.apiUrl + mes)
+  }
+
+  getEventoByAno(ano: any): Observable<any> {
+    return this.http.get(environment.apiUrl + ano)
+  }
+
+  getEventoByTipo(id: any): Observable<any> {
+    return this.http.get(environment.apiUrl + id)
+  }
+
+  getEventoBylocal(id: any): Observable<any> {
+    return this.http.get(environment.apiUrl + id)
+  }
+
+  getEventoByFonte(id: any): Observable<any> {
+    return this.http.get(environment.apiUrl + id)
+  }
 }

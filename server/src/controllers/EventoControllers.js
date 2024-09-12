@@ -304,6 +304,88 @@ class EventoControllers {
       return res.status(500).json(error.message);
     }
   }
+
+  static async listarEventosByMes(req, res) {
+    const { mes } = req.params;
+    try {
+      const showEventos = await database.Evento.findAll({
+        where: { mes:mes },
+        include: [
+          {
+            association: "ass_evento_tipo",
+            where: (database.Evento.tipo_evento_id = database.Tipo_Evento.id),
+            attributes: ["id", "nome_evento"],
+          },
+          {
+            association: "ass_evento_sexec",
+            where: (database.Evento.sexec_id =
+              database.Secretaria_Executivas.id),
+            attributes: ["id", "secretaria", "sigla"],
+          },
+          {
+            association: "ass_evento_local",
+            where: (database.Evento.tipo_local_id = database.Tipo_Local.id),
+            attributes: ["id", "local_evento"],
+          },
+          {
+            association: "ass_evento_recursos",
+            where: (database.Evento.recursos_id = database.Tipo_Recursos.id),
+            attributes: ["id", "recursos"],
+          },
+          {
+            association: "ass_evento_participacao",
+            where: (database.Evento.participacao_id =
+              database.Tipo_Participacao.id),
+            attributes: ["id", "participacao"],
+          },
+        ],
+      });
+      return res.status(200).json(showEventos);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async listarEventosByAno(req, res) {
+    const { ano } = req.params;
+    try {
+      const showEventos = await database.Evento.findAll({
+        where: { ano: ano },
+        include: [
+          {
+            association: "ass_evento_tipo",
+            where: (database.Evento.tipo_evento_id = database.Tipo_Evento.id),
+            attributes: ["id", "nome_evento"],
+          },
+          {
+            association: "ass_evento_sexec",
+            where: (database.Evento.sexec_id =
+              database.Secretaria_Executivas.id),
+            attributes: ["id", "secretaria", "sigla"],
+          },
+          {
+            association: "ass_evento_local",
+            where: (database.Evento.tipo_local_id = database.Tipo_Local.id),
+            attributes: ["id", "local_evento"],
+          },
+          {
+            association: "ass_evento_recursos",
+            where: (database.Evento.recursos_id = database.Tipo_Recursos.id),
+            attributes: ["id", "recursos"],
+          },
+          {
+            association: "ass_evento_participacao",
+            where: (database.Evento.participacao_id =
+              database.Tipo_Participacao.id),
+            attributes: ["id", "participacao"],
+          },
+        ],
+      });
+      return res.status(200).json(showEventos);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
 }
 
 module.exports = EventoControllers;
