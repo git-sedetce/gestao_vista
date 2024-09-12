@@ -39,7 +39,7 @@ class AcompanhamentoController {
   static async listarFollowsbyId(req, res) {
     const { id } = req.params;
     try {
-      const showFollows = await database.Evento.findOne({
+      const showFollows = await database.Acompanhamento.findOne({
         where: { id: Number(id) },
         include: [
           {
@@ -50,6 +50,73 @@ class AcompanhamentoController {
         ],
       });
       return res.status(200).json(showFollows);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async listarFollowsbyEvento(req, res) {
+    const { id } = req.params;
+    try {
+      const showFollows = await database.Evento.findOne({
+        where: { evento_id: Number(id) },
+        include: [
+          {
+            association: "ass_acompanhamento_evento",
+            where: (database.Acompanhamento.evento_id = database.Acompanhamento.id),
+            attributes: ["id", "nome_evento"],
+          }
+        ],
+      });
+      return res.status(200).json(showFollows);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async listarFollowsbyStats(req, res) {
+    const { stats } = req.params;
+    try {
+      const showFollows = await database.Acompanhamento.findAll({
+        where: { situacao_atual: stats },
+        include: [
+          {
+            association: "ass_acompanhamento_evento",
+            where: (database.Acompanhamento.evento_id = database.Acompanhamento.id),
+            attributes: ["id", "nome_evento"],
+          }
+        ],
+      });
+      return res.status(200).json(showFollows);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async updateFollow(req, res) {
+    const { id } = req.params;
+    const atualiza = req.body;
+    try {
+      await database.Acompanhamento.update(atualiza, {
+        where: { id: Number(id) },
+      });
+      const followAtualizado = await database.Acompanhamento.findOne({
+        where: { id: Number(id) },
+      });
+      return res.status(200).json(followAtualizado);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async apagaFollow(req, res) {
+    const { id } = req.params;
+    const apaga = req.body;
+    try {
+      await database.Evento.destroy({ where: { id: Number(id) } });
+      return res.status(200).json({
+        mensagem: `O evento ${apaga.id} foi bloqueado com sucesso!!`,
+      });
     } catch (error) {
       return res.status(500).json(error.message);
     }
