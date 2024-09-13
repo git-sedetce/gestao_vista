@@ -8,7 +8,7 @@
 
     <div class="row">
 
-      <div class="form-floating col-12 mb-2">
+      <div class="form-floating col-12 mt-3 mb-2">
         <select name="sexec_id" id="sexec_id" class="form-select" #sexec_id (change)="(getEventoByRes(sexec_id.value))">
           <option *ngFor=" let sexec of lista_sexec" [value]=sexec.id> {{ sexec.secretaria }} / {{ sexec.sigla }} </option>
         </select>
@@ -54,7 +54,7 @@
 
       <div class="col-sm-2 col-12 mb-2">
       <div class="filter-nav d-flex flex-center">
-        <button class="mx-3 btn btn-primary" (click)="getEventos()">Lista de <br>Eventos</button>
+        <button class="mx-3 mt-1 pt-1 pb-1 btn btn-primary text-uppercase fw-bold" (click)="getEventos()">Lista de Eventos</button>
       </div>
     </div>
     </div>
