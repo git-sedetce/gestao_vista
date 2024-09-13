@@ -1,1 +1,41 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: 'Kanit-Regular';
+  src: url('assets/fonts/Kanit-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Kanit-Bold';
+  src: url('assets/fonts/Kanit-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Kanit-Italic';
+  src: url('assets/fonts/Kanit-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: 'Kanit-Light';
+  src: url('assets/fonts/Kanit-Light.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Maitree-Bold';
+  src: url('assets/fonts/Maitree-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Maitree-Regular';
+  src: url('assets/fonts/Maitree-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
