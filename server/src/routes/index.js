@@ -2,6 +2,7 @@ const express = require('express')
 const evento = require('./eventoRoutes')
 const acompanhamento = require('./acompanhamentoRoutes')
 const type = require('./typeRoutes')
+const statistics = require('./statisticsRoutes')
 
 
 module.exports = app => {
@@ -9,6 +10,7 @@ module.exports = app => {
             express.urlencoded({ extended: false }),
             evento,
             acompanhamento,
-            type
+            type,
+            statistics
             )
 }
