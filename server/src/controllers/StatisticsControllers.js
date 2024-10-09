@@ -20,10 +20,11 @@ class StatisticsController {
   }  
 
   static async tipoEventoPorAno(req, res) {
+    const { year } = req.params;
     try {
       const eventos = await database.Evento.findAll({
-        order: ["ano"],
-        where: { ano: "2025"},
+        // order: ["ano"],
+        where: { ano: year },
         attributes: [
             "ano",
             "tipo_evento_id",
@@ -45,10 +46,11 @@ class StatisticsController {
   }  
   
   static async respPorAno(req, res) {
+    const { year } = req.params;
     try {
       const eventos = await database.Evento.findAll({
-        order: ["ano"],
-        where: { ano: "2025"},
+        // order: ["ano"],
+        where: { ano: year },
         attributes: [
             "ano",
             "sexec_id",
@@ -71,10 +73,11 @@ class StatisticsController {
   }  
 
   static async tipoPartPorAno(req, res) {
+    const { year } = req.params;
     try {
       const eventos = await database.Evento.findAll({
-        order: ["ano"],
-        where: { ano: "2025"},
+        // order: ["ano"],
+        where: { ano: year },
         attributes: [
             "ano",
             "participacao_id",
@@ -97,10 +100,11 @@ class StatisticsController {
   }  
 
   static async tipoRecPorAno(req, res) {
+    const { year } = req.params;
     try {
       const eventos = await database.Evento.findAll({
-        order: ["ano"],
-        where: { ano: "2025"},
+        // order: ["ano"],
+        where: { ano: year },
         attributes: [
             "ano",
             "recursos_id",
@@ -123,10 +127,11 @@ class StatisticsController {
   }  
 
   static async tipoLocalPorAno(req, res) {  
+    const { year } = req.params;
     try {
       const eventos = await database.Evento.findAll({
-        order: ["ano"],
-        where: { ano: "2025"},
+        // order: ["ano"],
+        where: { ano: year },
         attributes: [
             "ano",
             "tipo_local_id",

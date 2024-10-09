@@ -14,23 +14,23 @@ export class StatisticsService {
     return this.http.get(environment.apiUrl + rota)
   }
 
-  getEventoporTipo(rota: any): Observable<any> {
-    return this.http.get(environment.apiUrl + rota)
+  getEventoporTipo(rota: any, year: any): Observable<any> {
+    return this.http.get(environment.apiUrl + rota + year)
   }
 
-  getEventoporResp(rota: any): Observable<any> {
-    return this.http.get(environment.apiUrl + rota)
+  getEventoporResp(rota: any, year: any): Observable<any> {
+    return this.http.get(environment.apiUrl + rota + year)
   }
 
-  getEventoporPartc(rota: any): Observable<any> {
-    return this.http.get(environment.apiUrl + rota)
+  getEventoporPartc(rota: any, year: any): Observable<any> {
+    return this.http.get(environment.apiUrl + rota + year)
   }
 
-  getEventoporRecursos(rota: any): Observable<any> {
-    return this.http.get(environment.apiUrl + rota)
+  getEventoporRecursos(rota: any, year: any): Observable<any> {
+    return this.http.get(environment.apiUrl + rota + year)
   }
 
-  getEventoporLocal(rota: any): Observable<any> {
-    return this.http.get(environment.apiUrl + rota)
+  getEventoporLocal(rota: any, year: any): Observable<any> {
+    return this.http.get(environment.apiUrl + rota + year)
   }
 }

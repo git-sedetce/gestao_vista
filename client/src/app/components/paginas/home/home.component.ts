@@ -29,15 +29,33 @@ export class HomeComponent implements OnInit {
   eventsByLocal: any[] = [];
   qtd_local_evt: any[] = [];
 
+  lista_ano: number[] = [];
+  date = new Date();
+  ano_atual!: any;
+  mes_atual!: any;
+
+  barchartTipo: any;
+  barchartResp: any;
+  barchartPart: any;
+  barchartRec: any;
+  barchartLocal: any;
+
   constructor(private statisticsService: StatisticsService) {}
 
   ngOnInit(): void {
     this.getEvento();
-    this.getTipoEvento();
-    this.getResp()
-    this.getPart()
-    this.getRecursos()
-    this.getLocal()
+    this.getTipoEvento(2025);
+    this.getResp(2025);
+    this.getPart(2025);
+    this.getRecursos(2025);
+    this.getLocal(2025);
+
+    this.ano_atual = this.date.getFullYear();
+
+    for (let y = 2023; y <= this.ano_atual+1; y++) {
+      this.lista_ano.push(y);
+    }
+    // console.log('lista_ano', this.lista_ano)
   }
 
   getEvento(): void {
@@ -52,16 +70,19 @@ export class HomeComponent implements OnInit {
           });
           this.Renderbarchart(this.year, this.eventsByYear);
         }
-        console.log('lista_evento_por_anos', this.lista_evento_por_anos);
+        // console.log('lista_evento_por_anos', this.lista_evento_por_anos);
       },
       (erro: any) => console.error('erro', erro)
     );
   }
 
-  getTipoEvento(): void {
-    this.statisticsService.getEventoporTipo('countTypeEventByYear').subscribe(
+  getTipoEvento(year: any): void {
+    this.statisticsService.getEventoporTipo('countTypeEventByYear/', year).subscribe(
       (evt: any[]) => {
         this.lista_tipo_evento = evt;
+        this.year = [];
+        this.tipoEventos = [];
+        this.qtd_type_evt = [];
 
         if (this.lista_tipo_evento != null) {
           this.lista_tipo_evento.map(evts => {
@@ -71,16 +92,19 @@ export class HomeComponent implements OnInit {
           });
           this.Renderbarchart_tipo(this.tipoEventos, this.qtd_type_evt);
         }
-        console.log('lista_tipo_evento', this.lista_tipo_evento);
+        // console.log('lista_tipo_evento', this.lista_tipo_evento);
       },
       (erro: any) => console.error('erro', erro)
     );
   }
 
-  getResp(): void {
-    this.statisticsService.getEventoporResp('countRespByYear').subscribe(
+  getResp(year: any): void {
+    this.statisticsService.getEventoporResp('countRespByYear/', year).subscribe(
       (evt: any[]) => {
         this.lista_evento_por_resp = evt;
+        this.year = [];
+        this.eventsByResp = [];
+        this.qtd_resp_evt = [];
 
         if (this.lista_evento_por_resp != null) {
           this.lista_evento_por_resp.map(evts => {
@@ -90,16 +114,19 @@ export class HomeComponent implements OnInit {
           });
           this.Renderbarchart_resp(this.eventsByResp, this.qtd_resp_evt);
         }
-        console.log('lista_evento_por_resp', this.lista_evento_por_resp);
+        // console.log('lista_evento_por_resp', this.lista_evento_por_resp);
       },
       (erro: any) => console.error('erro', erro)
     );
   }
 
-  getPart(): void {
-    this.statisticsService.getEventoporPartc('countTypePartcByYear').subscribe(
+  getPart(year: any): void {
+    this.statisticsService.getEventoporPartc('countTypePartcByYear/', year).subscribe(
       (evt: any[]) => {
         this.lista_evento_por_part = evt;
+        this.year  =[];
+        this.eventsByPart  =[];
+        this.qtd_part_evt  =[];
 
         if (this.lista_evento_por_part != null) {
           this.lista_evento_por_part.map(evts => {
@@ -109,16 +136,19 @@ export class HomeComponent implements OnInit {
           });
           this.Renderbarchart_part(this.eventsByPart, this.qtd_part_evt);
         }
-        console.log('lista_evento_por_part', this.lista_evento_por_part);
+        // console.log('lista_evento_por_part', this.lista_evento_por_part);
       },
       (erro: any) => console.error('erro', erro)
     );
   }
 
-  getRecursos(): void {
-    this.statisticsService.getEventoporRecursos('countTypeRecByYear').subscribe(
+  getRecursos(year: any): void {
+    this.statisticsService.getEventoporRecursos('countTypeRecByYear/', year).subscribe(
       (evt: any[]) => {
         this.lista_evento_por_recursos = evt;
+        this.year = [];
+        this.eventsByRec = [];
+        this.qtd_rec_evt = [];
 
         if (this.lista_evento_por_recursos != null) {
           this.lista_evento_por_recursos.map(evts => {
@@ -128,16 +158,19 @@ export class HomeComponent implements OnInit {
           });
           this.Renderbarchart_rec(this.eventsByRec, this.qtd_rec_evt);
         }
-        console.log('lista_evento_por_recursos', this.lista_evento_por_recursos);
+        // console.log('lista_evento_por_recursos', this.lista_evento_por_recursos);
       },
       (erro: any) => console.error('erro', erro)
     );
   }
 
-  getLocal(): void {
-    this.statisticsService.getEventoporLocal('countTypeLocalByYear').subscribe(
+  getLocal(year: any): void {
+    this.statisticsService.getEventoporLocal('countTypeLocalByYear/', year).subscribe(
       (evt: any[]) => {
         this.lista_evento_por_local = evt;
+        this.year = [];
+        this.eventsByLocal = [];
+        this.qtd_local_evt = [];
 
         if (this.lista_evento_por_local != null) {
           this.lista_evento_por_local.map(evts => {
@@ -147,7 +180,7 @@ export class HomeComponent implements OnInit {
           });
           this.Renderbarchart_local(this.eventsByLocal, this.qtd_local_evt);
         }
-        console.log('lista_evento_por_local', this.lista_evento_por_local);
+        // console.log('lista_evento_por_local', this.lista_evento_por_local);
       },
       (erro: any) => console.error('erro', erro)
     );
@@ -201,31 +234,44 @@ export class HomeComponent implements OnInit {
   }
 
   RenderChartTipo(labeldata: any, valuedata: any, chartid: string, charttype: any) {
-    const mychar = new Chart(chartid, {
-      type: charttype,
-      data: {
-        labels: labeldata,
-        datasets: [
-          {
-            label: 'Tipo de Eventos',
-            data: valuedata,
-            backgroundColor: '#339966',
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
+    if (this.barchartTipo) {
+      this.barchartTipo.destroy();
+    }
+    // Seleciona o canvas pelo id
+  const ctx_tipo = document.getElementById(chartid) as HTMLCanvasElement;
+
+  // Cria o gráfico e armazena a instância em `barchartTipo`
+  this.barchartTipo = new Chart(ctx_tipo, {
+    type: charttype,
+    data: {
+      labels: labeldata,
+      datasets: [
+        {
+          label: 'Tipo de Eventos',
+          data: valuedata,
+          backgroundColor: '#339966',
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
         },
       },
-    });
+    },
+  });
   }
 
   RenderChartResp(labeldata: any, valuedata: any, chartid: string, charttype: any){
 
-    const mychar = new Chart(chartid, {
+    if (this.barchartResp) {
+      this.barchartResp.destroy();
+    }
+
+    const ctx_resp = document.getElementById(chartid) as HTMLCanvasElement;
+
+    this.barchartResp = new Chart(ctx_resp, {
       type: charttype,
       data: {
         labels: labeldata,
@@ -249,7 +295,14 @@ export class HomeComponent implements OnInit {
   }
 
   RenderChartPart(labeldata: any, valuedata: any, chartid: string, charttype: any){
-    const mychar = new Chart(chartid, {
+
+    if (this.barchartPart) {
+      this.barchartPart.destroy();
+    }
+
+    const ctx_part = document.getElementById(chartid) as HTMLCanvasElement;
+
+    this.barchartPart = new Chart(ctx_part, {
       type: charttype,
       data: {
         labels: labeldata,
@@ -272,7 +325,14 @@ export class HomeComponent implements OnInit {
 
   }
   RenderChartRec(labeldata: any, valuedata: any, chartid: string, charttype: any){
-    const mychar = new Chart(chartid, {
+
+    if (this.barchartRec) {
+      this.barchartRec.destroy();
+    }
+
+    const ctx_rec = document.getElementById(chartid) as HTMLCanvasElement;
+
+    this.barchartRec = new Chart(ctx_rec, {
       type: charttype,
       data: {
         labels: labeldata,
@@ -295,7 +355,12 @@ export class HomeComponent implements OnInit {
 
   }
   RenderChartLocal(labeldata: any, valuedata: any, chartid: string, charttype: any){
-    const mychar = new Chart(chartid, {
+
+    if (this.barchartLocal) {
+      this.barchartLocal.destroy();
+    }
+    const ctx_local = document.getElementById(chartid) as HTMLCanvasElement;
+    this.barchartLocal = new Chart(ctx_local, {
       type: charttype,
       data: {
         labels: labeldata,

@@ -8,10 +8,18 @@
         </div>
         <div class="col-sm-4 col-12">
           <h3 class="text-center">Tipos de Eventos</h3>
+          <select class="form-select" aria-label="Disabled select example" #ano_tipo (change)="(getTipoEvento(ano_tipo.value))">
+            <option selected>Selcione o ano</option>
+            <option *ngFor="let year of lista_ano" [value]=year> {{year}} </option>
+          </select>
           <canvas id="barcharttipo"></canvas>
         </div>
         <div class="col-sm-4 col-12">
           <h3 class="text-center">Responsáveis</h3>
+          <select class="form-select" aria-label="Disabled select example" #ano_rep (change)="(getResp(ano_rep.value))">
+            <option selected>Selcione o ano</option>
+            <option *ngFor="let year of lista_ano" [value]=year> {{year}} </option>
+          </select>
           <canvas id="barchartresp"></canvas>
         </div>
       </div>
@@ -19,14 +27,26 @@
       <div class="row mt-5">
         <div class="col-sm-4 col-12">
           <h3 class="text-center">Participação</h3>
+          <select class="form-select" aria-label="Disabled select example" #ano_part (change)="(getPart(ano_part.value))">
+            <option selected>Selcione o ano</option>
+            <option *ngFor=" let year of lista_ano" [value]=year> {{year}} </option>
+          </select>
           <canvas id="barchartpart"></canvas>
         </div>
         <div class="col-sm-4 col-12">
           <h3 class="text-center">Recursos</h3>
+          <select class="form-select" aria-label="Disabled select example" #ano_rec (change)="(getRecursos(ano_rec.value))">
+            <option selected>Selcione o ano</option>
+            <option *ngFor=" let year of lista_ano" [value]=year> {{year}} </option>
+          </select>
           <canvas id="barchartrec"></canvas>
         </div>
         <div class="col-sm-4 col-12">
           <h3 class="text-center">Local</h3>
+          <select class="form-select" aria-label="Disabled select example" #ano_lc (change)="(getLocal(ano_lc.value))">
+            <option selected>Selcione o ano</option>
+            <option *ngFor=" let year of lista_ano" [value]=year> {{year}} </option>
+          </select>
           <canvas id="barchartlocal"></canvas>
         </div>
       </div>
