@@ -3,6 +3,7 @@ const evento = require('./eventoRoutes')
 const acompanhamento = require('./acompanhamentoRoutes')
 const type = require('./typeRoutes')
 const statistics = require('./statisticsRoutes')
+const user = require('./userRoutes')
 
 
 module.exports = app => {
@@ -11,6 +12,7 @@ module.exports = app => {
             evento,
             acompanhamento,
             type,
-            statistics
+            statistics,
+            user
             )
 }
