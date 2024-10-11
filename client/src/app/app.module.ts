@@ -14,6 +14,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CadastroAcompanhamentoComponent } from './components/paginas/cadastro-acompanhamento/cadastro-acompanhamento.component';
 import { ConsultaEventoComponent } from './components/paginas/consulta-evento/consulta-evento.component';
 import { ConsultaAcompanhamentoComponent } from './components/paginas/consulta-acompanhamento/consulta-acompanhamento.component';
+import { CadastroComponent } from './components/user/cadastro/cadastro.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { ResetComponent } from './components/user/reset/reset.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { ConsultaAcompanhamentoComponent } from './components/paginas/consulta-a
     CadastroEventoComponent,
     CadastroAcompanhamentoComponent,
     ConsultaEventoComponent,
-    ConsultaAcompanhamentoComponent
+    ConsultaAcompanhamentoComponent,
+    CadastroComponent,
+    LoginComponent,
+    ResetComponent
   ],
   imports: [
     BrowserModule,
