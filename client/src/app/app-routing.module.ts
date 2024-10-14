@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'consultaacompanhamento', component: ConsultaAcompanhamentoComponent },
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent },
-  { path: 'reset', component: ResetComponent }
+  { path: 'resetSenha', component: ResetComponent }
 ];
 
 @NgModule({
