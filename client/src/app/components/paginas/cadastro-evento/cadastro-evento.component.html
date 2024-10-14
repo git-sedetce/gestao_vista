@@ -109,8 +109,8 @@
                   <div class="form-floating">
                     <input type="text" id="custo_previo" name="custo_previo"
                       placeholder="Digite o nome do Evento" required #custo_previo="ngModel" [(ngModel)]="evento.custo_previo" class="form-control" />
-                    <label class="form-label pergunta" for="custo_previo">Custo Prévio</label>
-                    <div *ngIf="!custo_previo.valid && custo_previo.touched" class="alert alert-danger" role="alert">Informe o custo prévio</div>
+                    <label class="form-label pergunta" for="custo_previo">Custo Planejado</label>
+                    <div *ngIf="!custo_previo.valid && custo_previo.touched" class="alert alert-danger" role="alert">Informe o custo planejado</div>
                   </div>
                 </div>
               </div>
@@ -136,8 +136,8 @@
                   <div class="form-floating">
                     <input type="text" id="lead_previsto" name="lead_previsto"
                       placeholder="Digite a previsão de lead" required #lead_previsto="ngModel" [(ngModel)]="evento.lead_previsto" class="form-control" />
-                    <label class="form-label pergunta" for="lead_previsto">Leads Previous</label>
-                    <div *ngIf="!lead_previsto.valid && lead_previsto.touched" class="alert alert-danger" role="alert">Informe o Leads Previous</div>
+                    <label class="form-label pergunta" for="lead_previsto">Leads Planejados</label>
+                    <div *ngIf="!lead_previsto.valid && lead_previsto.touched" class="alert alert-danger" role="alert">Informe o Leads Planejados</div>
                   </div>
                 </div>
 

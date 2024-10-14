@@ -32,11 +32,15 @@
               <li><a class="dropdown-item" routerLink="/consultaacompanhamento">Consulta Acompanhamento</a></li>
             </ul>
           </li>
-          <li>
+          <li *ngIf="!authenticated">
             <button type="button" routerLink="/login" class="btn btn-light text-dark ms-2 me-2">Login</button>
           </li>
           <li>
             <button type="button" routerLink="/cadastro"class="btn btn-primary">Sign-up</button>
+          </li>
+          <li *ngIf="authenticated">
+            <button type="button" routerLink="/login" class="btn btn-danger text-dark text-white ms-2 me-2" (click)="logout()">Logout</button>
+            <!--<a routerLink="/login" class="nav-link" (click)="logout()">Logout</a>-->
           </li>
         </ul>
       </div>

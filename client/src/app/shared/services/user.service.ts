@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { Md5 } from 'ts-md5';
 import { environment } from '../../../environments/environment';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,7 @@ export class UserService {
         localStorage.removeItem('access_token');
         localStorage.setItem('access_token', res.token);
         this.authenticated = true;
-        window.location.reload();
+        //window.location.reload();
         return this.router.navigate(['home'])
       }),
       catchError((e) =>{
@@ -49,17 +50,16 @@ export class UserService {
   public logout(){
     localStorage.removeItem('access_token');
     window.location.reload();
-    return this.router.navigate(['loginUsers'])
+    return this.router.navigate(['login'])
   }
 
-  // auth_user() : boolean {
-  //   const token = localStorage.getItem('access_token');
-  //   //console.log('token', token)
-  //   if(!token) return false;
-
-  //   const jwtHelper = new JwtHelperService();
-  //   return !jwtHelper.isTokenExpired(token)
-  // }
+  auth_user() : boolean {
+    const token = localStorage.getItem('access_token');
+    //console.log('token', token)
+    if(!token) return false;
+    const jwtHelper = new JwtHelperService();
+    return !jwtHelper.isTokenExpired(token)
+  }
 
   reset_password(data:any) : Observable<any> {
     return this.http.post(environment.apiUrl + 'reset', data)

@@ -1,10 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  authenticated = false;
+  user_name: any;
+
+  constructor(
+    private serviceUser: UserService
+  ) { }
+
+  ngOnInit(): void {
+    this.isLogged();
+  }
+
+  isLogged(){
+    const token = localStorage.getItem('access_token');
+    console.log('token', token)
+    if(token){
+      this.authenticated = true
+      console.log('authenticated', this.authenticated)
+      const loginUsers:any =  JSON.parse(atob(token!.split('.')[1]))
+      this.user_name = loginUsers._user_name;
+      //console.log('loginUsers', loginUsers)
+    }
+  }
+
+  logout() {
+    this.serviceUser.logout()
+  }
 
 }

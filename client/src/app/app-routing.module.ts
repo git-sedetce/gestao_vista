@@ -8,14 +8,15 @@ import { ConsultaAcompanhamentoComponent } from './components/paginas/consulta-a
 import { LoginComponent } from './components/user/login/login.component';
 import { CadastroComponent } from './components/user/cadastro/cadastro.component';
 import { ResetComponent } from './components/user/reset/reset.component';
+import { guardGuard } from './components/user/guard/guard.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'cadastroevento', component: CadastroEventoComponent },
-  { path: 'cadastroacompanhamento', component: CadastroAcompanhamentoComponent },
-  { path: 'consultaeventos', component: ConsultaEventoComponent },
-  { path: 'consultaacompanhamento', component: ConsultaAcompanhamentoComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent, canActivate: [guardGuard] },
+  { path: 'cadastroevento', component: CadastroEventoComponent, canActivate: [guardGuard] },
+  { path: 'cadastroacompanhamento', component: CadastroAcompanhamentoComponent, canActivate: [guardGuard] },
+  { path: 'consultaeventos', component: ConsultaEventoComponent, canActivate: [guardGuard] },
+  { path: 'consultaacompanhamento', component: ConsultaAcompanhamentoComponent, canActivate: [guardGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent },
   { path: 'resetSenha', component: ResetComponent }
