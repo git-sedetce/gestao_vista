@@ -9,6 +9,7 @@ import { UserService } from '../../../shared/services/user.service';
 export class HeaderComponent implements DoCheck {
   authenticated = false;
   user_name: any;
+  profile: any;
 
   constructor(
     private serviceUser: UserService
@@ -26,7 +27,8 @@ export class HeaderComponent implements DoCheck {
       // console.log('authenticated', this.authenticated)
       const loginUsers:any =  JSON.parse(atob(token!.split('.')[1]))
       this.user_name = loginUsers._user_name;
-      //console.log('loginUsers', loginUsers)
+      this.profile = loginUsers._profile_id
+      // console.log('loginUsers', loginUsers)
     }
   }
 
