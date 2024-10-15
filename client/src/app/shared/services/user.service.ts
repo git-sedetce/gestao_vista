@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 import { Md5 } from 'ts-md5';
 import { environment } from '../../../environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -14,6 +14,8 @@ export class UserService {
   CriptografarMD5(value: string | undefined): string | undefined{
     return Md5.hashStr(value!).toString();
   }
+  private token!: string;
+  private userSubject = new BehaviorSubject<any>(null);
 
   constructor(
     private http: HttpClient,
@@ -31,30 +33,37 @@ export class UserService {
   }
 
   login(data:any): Observable<any> {
-    return this.http.post<{ token: string}>(environment.apiUrl + 'login', data).pipe(
-      map((res) => {
-        //console.log('res', res)
-        localStorage.removeItem('access_token');
-        localStorage.setItem('access_token', res.token);
-        this.authenticated = true;
-        //window.location.reload();
-        return this.router.navigate(['home'])
-      }),
-      catchError((e) =>{
-        if(e.error.message) return throwError(() => e.error.message);
-        return throwError(() => "Serviço fora de área!");
-      })
-    )
+    return this.http.post<any>(environment.apiUrl + 'login', data).pipe(
+      tap((response: { token: string; }) => {
+      this.token = response.token;
+      const payload = JSON.parse(atob(this.token.split('.')[1])); // Decodifica o token para pegar o perfil e outros dados
+      this.userSubject.next(payload);
+      localStorage.setItem('token', this.token);
+      this.router.navigate(['/home']); // Redireciona após login
+    }))
+  }
+
+  getToken(): string | null {
+    return this.token || localStorage.getItem('token');
+  }
+
+  getUser(){
+    return this.userSubject.asObservable();
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getToken(); // Verifica se o token existe
   }
 
   public logout(){
-    localStorage.removeItem('access_token');
+    this.token = '';
+    localStorage.removeItem('token');
     window.location.reload();
     return this.router.navigate(['login'])
   }
 
   auth_user() : boolean {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('token');
     //console.log('token', token)
     if(!token) return false;
     const jwtHelper = new JwtHelperService();

@@ -19,11 +19,11 @@ export class HeaderComponent implements OnInit {
   }
 
   isLogged(){
-    const token = localStorage.getItem('access_token');
-    console.log('token', token)
+    const token = localStorage.getItem('token');
+    // console.log('token', token)
     if(token){
       this.authenticated = true
-      console.log('authenticated', this.authenticated)
+      // console.log('authenticated', this.authenticated)
       const loginUsers:any =  JSON.parse(atob(token!.split('.')[1]))
       this.user_name = loginUsers._user_name;
       //console.log('loginUsers', loginUsers)

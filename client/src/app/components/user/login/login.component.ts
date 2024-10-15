@@ -41,12 +41,13 @@ export class LoginComponent implements OnInit {
       this.loginUsers.user_password
     );
     //console.log('loginUser', this.loginUsers)
-    this.serviceUser.login(this.loginUsers).subscribe({
-      next: (res) => res,
-      error: (e) => (
-        this.toastr.error(e),
-        this.formLogin.reset() /*this.loginUsers.user_password = ''*/
-      ),
-    });
+    this.serviceUser.login(this.loginUsers).subscribe(
+      () =>{
+        console.log('Login Realizado com sucesso!')
+      },
+      (error) => {
+        console.error('Erro durante o login', error);
+      }
+    );
   }
 }

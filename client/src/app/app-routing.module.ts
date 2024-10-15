@@ -12,11 +12,11 @@ import { guardGuard } from './components/user/guard/guard.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, canActivate: [guardGuard] },
-  { path: 'cadastroevento', component: CadastroEventoComponent, canActivate: [guardGuard] },
-  { path: 'cadastroacompanhamento', component: CadastroAcompanhamentoComponent, canActivate: [guardGuard] },
-  { path: 'consultaeventos', component: ConsultaEventoComponent, canActivate: [guardGuard] },
-  { path: 'consultaacompanhamento', component: ConsultaAcompanhamentoComponent, canActivate: [guardGuard] },
+  { path: 'home', component: HomeComponent, canActivate: [guardGuard], data: { roles: ['admin', 'coordenador', 'user'] } },
+  { path: 'cadastroevento', component: CadastroEventoComponent, canActivate: [guardGuard], data: { roles: ['admin', 'coordenador'] } },
+  { path: 'cadastroacompanhamento', component: CadastroAcompanhamentoComponent, canActivate: [guardGuard], data: { roles: ['admin', 'coordenador'] } },
+  { path: 'consultaeventos', component: ConsultaEventoComponent, canActivate: [guardGuard], data: { roles: ['admin', 'coordenador'] } },
+  { path: 'consultaacompanhamento', component: ConsultaAcompanhamentoComponent, canActivate: [guardGuard], data: { roles: ['admin', 'coordenador'] } },
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent },
   { path: 'resetSenha', component: ResetComponent }
