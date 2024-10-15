@@ -43,10 +43,10 @@ export class LoginComponent implements OnInit {
     //console.log('loginUser', this.loginUsers)
     this.serviceUser.login(this.loginUsers).subscribe(
       () =>{
-        console.log('Login Realizado com sucesso!')
+        this.toastr.success('Bem vindo ao Promoção e Atração');
       },
       (error) => {
-        console.error('Erro durante o login', error);
+        this.toastr.error('Erro durante o login', error.error.message);
       }
     );
   }

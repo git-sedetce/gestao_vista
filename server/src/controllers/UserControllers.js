@@ -29,8 +29,12 @@ class UserController {
             const verificaUser = await database.User.findOne({
                 where: { user_email: user.user_email }
             })
+            console.log('user', verificaUser)
             if(!verificaUser){
                 return res.status(404).send({ message: 'Usuário não encontrado!' });
+            }
+            if(!verificaUser.user_active){
+                return res.status(400).send({ message: 'Consulte o Administrador do sistema'}); 
             }
             if(!await bcrypt.compare(user.user_password, verificaUser.user_password )){
                 return res.status(400).send({ message: 'Crendenciais inválidos!'})
