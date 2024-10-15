@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { UserService } from '../../../shared/services/user.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { UserService } from '../../../shared/services/user.service';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements DoCheck {
   authenticated = false;
   user_name: any;
 
@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
     private serviceUser: UserService
   ) { }
 
-  ngOnInit(): void {
+  ngDoCheck(): void {
     this.isLogged();
   }
 

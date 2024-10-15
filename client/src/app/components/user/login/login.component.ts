@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
       },
       (error) => {
         this.toastr.error('Erro durante o login', error.error.message);
+        this.formLogin.reset();
       }
     );
   }
