@@ -12,7 +12,7 @@ import { guardGuard } from './components/user/guard/guard.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, canActivate: [guardGuard], data: { roles: ['admin', 'coordenador', 'user'] } },
+  { path: 'home', component: HomeComponent, canActivate: [guardGuard], data: { roles: ['admin', 'coordenador', 'user', 'secretario'] } },
   { path: 'cadastroevento', component: CadastroEventoComponent, canActivate: [guardGuard], data: { roles: ['admin', 'coordenador'] } },
   { path: 'cadastroacompanhamento', component: CadastroAcompanhamentoComponent, canActivate: [guardGuard], data: { roles: ['admin', 'coordenador'] } },
   { path: 'consultaeventos', component: ConsultaEventoComponent, canActivate: [guardGuard], data: { roles: ['admin', 'coordenador'] } },

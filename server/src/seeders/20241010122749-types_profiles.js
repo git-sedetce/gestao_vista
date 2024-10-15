@@ -22,6 +22,12 @@ module.exports = {
       is_master: true,
       createdAt: new Date(),
       updatedAt: new Date()
+    },
+    {
+      perfil: 'secretario',
+      is_master: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
   ], {});
 

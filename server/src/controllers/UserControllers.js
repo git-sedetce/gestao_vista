@@ -29,7 +29,6 @@ class UserController {
             const verificaUser = await database.User.findOne({
                 where: { user_email: user.user_email }
             })
-            console.log('user', verificaUser)
             if(!verificaUser){
                 return res.status(404).send({ message: 'Usuário não encontrado!' });
             }
