@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AcompanhamentoService } from '../../../shared/services/acompanhamento.service';
 import { Acompanhamento } from '../../../shared/models/acompanhamento.model';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'app-consulta-acompanhamento',
@@ -19,10 +20,13 @@ export class ConsultaAcompanhamentoComponent implements OnInit{
 
   formFollow!: FormGroup;
   followObj: Acompanhamento = new Acompanhamento();
+  profile_id!: any;
+  token!: any;
 
   constructor(
     public eventoService: EventoService,
     public typeService: TypesService,
+    public auth: UserService,
     public followService: AcompanhamentoService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService
@@ -40,6 +44,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit{
 
     this.getEvento();
     this.getFollows();
+    this.getPerfil()
 
   }
   getEvento(): void{
@@ -70,6 +75,13 @@ export class ConsultaAcompanhamentoComponent implements OnInit{
       this.lista_follow = flwst;
     }, (erro: any) => console.error(erro)
     );
+  }
+
+  getPerfil(){
+    this.token = this.auth.getToken();
+    const payload = JSON.parse(atob(this.token.split('.')[1]));
+    this.profile_id = payload._profile_id;
+    // console.log('profile', this.profile_id)
   }
 
   onEdit(follow: any){

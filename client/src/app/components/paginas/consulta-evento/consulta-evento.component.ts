@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Evento } from '../../../shared/models/evento.model';
 import { ToastrService } from 'ngx-toastr';
 import { TypesService } from '../../../shared/services/types.service';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'app-consulta-evento',
@@ -28,10 +29,13 @@ export class ConsultaEventoComponent implements OnInit{
   date = new Date();
   ano_atual!: any;
   mes_atual!: any;
+  profile_id!: any;
+  token!: any;
 
   constructor(
     public eventoService: EventoService,
     public typeService: TypesService,
+    public auth: UserService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService
   ) { }
@@ -75,6 +79,7 @@ export class ConsultaEventoComponent implements OnInit{
       this.getLocal();
       this.getPart();
       this.getRecursos();
+      this.getPerfil()
 
     }
 
@@ -162,6 +167,13 @@ export class ConsultaEventoComponent implements OnInit{
         this.lista_evento = ft;
       }, (erro: any) => console.error(erro)
       );
+    }
+
+    getPerfil(){
+      this.token = this.auth.getToken();
+      const payload = JSON.parse(atob(this.token.split('.')[1]));
+      this.profile_id = payload._profile_id;
+      // console.log('profile', this.profile_id)
     }
 
     onEdit(evento: any){

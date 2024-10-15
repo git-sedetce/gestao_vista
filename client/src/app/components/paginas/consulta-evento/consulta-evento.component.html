@@ -85,8 +85,8 @@
           <td class="align-middle">{{ evento.custo_previo }}</td>
           <td class="align-middle">{{ evento.ass_evento_recursos.recursos }}</td>
           <td class="align-middle">{{ evento.lead_previsto }}</td>
-          <td class="align-middle"><button (click)="onEdit(evento)" type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#modalEdit"><i class="bi bi-pencil-square"></i></button></td>
-          <td class="align-middle"><button (click)="deletaEvento(evento)" type="button" class="btn btn-danger mx-3"><i class="bi bi-trash-fill"></i></button></td>
+          <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button (click)="onEdit(evento)" type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#modalEdit"><i class="bi bi-pencil-square"></i></button></td>
+          <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button (click)="deletaEvento(evento)" type="button" class="btn btn-danger mx-3"><i class="bi bi-trash-fill"></i></button></td>
         </tr>
       </tbody>
     </table>

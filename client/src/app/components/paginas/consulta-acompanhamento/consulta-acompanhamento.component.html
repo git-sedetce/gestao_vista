@@ -52,8 +52,8 @@
           <td class="align-middle">{{ follow.resultado }}</td>
           <td class="align-middle">{{ follow.custo_realizado }}</td>
           <td class="align-middle">{{ follow.leads_realizados }}</td>
-          <td class="align-middle"><button (click)="onEdit(follow)" type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#modalEdit"><i class="bi bi-pencil-square"></i></button></td>
-          <td class="align-middle"><button (click)="deletaFollow(follow)" type="button" class="btn btn-danger mx-3"><i class="bi bi-trash-fill"></i></button></td>
+          <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button (click)="onEdit(follow)" type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#modalEdit"><i class="bi bi-pencil-square"></i></button></td>
+          <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button (click)="deletaFollow(follow)" type="button" class="btn btn-danger mx-3"><i class="bi bi-trash-fill"></i></button></td>
         </tr>
       </tbody>
     </table>

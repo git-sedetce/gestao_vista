@@ -52,7 +52,7 @@ export class UserService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken(); // Verifica se o token existe
+    return !! this.getToken(); // Verifica se o token existe
   }
 
   public logout(){
