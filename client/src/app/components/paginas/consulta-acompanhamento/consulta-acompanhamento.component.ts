@@ -45,7 +45,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit{
   getEvento(): void{
     this.eventoService.getSimpleEvento('listEvent').subscribe((evt: any[]) => {
       this.lista_evento = evt;
-      console.log('lista_evento', this.lista_evento);
+      // console.log('lista_evento', this.lista_evento);
     }, (erro: any) => console.error('erro', erro)
     );
   }
@@ -53,7 +53,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit{
   getFollows(){
     this.followService.listarAcompanhamento('listaFollow').subscribe((flw: any[]) =>{
       this.lista_follow = flw;
-      console.log('lista_follow', this.lista_follow);
+      // console.log('lista_follow', this.lista_follow);
     }, (erro: any) => console.error(erro)
     );
   }
@@ -61,14 +61,14 @@ export class ConsultaAcompanhamentoComponent implements OnInit{
   getFollowEvent(id: any){
     this.followService.listarAcompanhamentoByEvento(id).subscribe((flwEVT:any[]) =>{
       this.lista_follow = flwEVT;
-    }, (erro: any) => console.log(erro)
+    }, (erro: any) => console.error(erro)
     );
   }
 
   getFollowStats(stats: any){
     this.followService.listarAcompanhamentoByStatus('listaFollowByStatus/', stats ).subscribe((flwst:any[]) =>{
       this.lista_follow = flwst;
-    }, (erro: any) => console.log(erro)
+    }, (erro: any) => console.error(erro)
     );
   }
 

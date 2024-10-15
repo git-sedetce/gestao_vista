@@ -33,13 +33,13 @@ export class CadastroAcompanhamentoComponent implements OnInit {
   getEvento(): void{
     this.serviceEvento.getSimpleEvento('listEvent').subscribe((evt: any[]) => {
       this.lista_evento = evt;
-      console.log('lista_evento', this.lista_evento);
+      // console.log('lista_evento', this.lista_evento);
     }, (erro: any) => console.error('erro', erro)
     );
   }
 
   save(){
-    console.log('acompanhamento', this.follow);
+    // console.log('acompanhamento', this.follow);
     this.serviceFollow.cadastrar(this.follow).subscribe({
       next: (res: any) => {
         this.toastr.success('Acompanhamento cadastrado com sucesso!');

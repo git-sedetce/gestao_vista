@@ -60,14 +60,14 @@ export class ConsultaEventoComponent implements OnInit{
     for (let y = 2023; y <= this.ano_atual+1; y++) {
       this.lista_ano.push(y);
     }
-    console.log('lista_ano', this.lista_ano)
+    // console.log('lista_ano', this.lista_ano)
 
     for (let m = 0; m < 12; m++) {
       const data = new Date(this.ano_atual, m); // Criando uma data para cada mês do ano
       const nomeMes = data.toLocaleString('default', { month: 'long' }); // Nome do mês (ex: Janeiro)
       this.lista_mes.push(nomeMes);
     }
-    console.log('lista_meses', this.lista_mes);
+    // console.log('lista_meses', this.lista_mes);
 
       this.getEventos();
       this.getSexec();
@@ -81,7 +81,7 @@ export class ConsultaEventoComponent implements OnInit{
     getEventos(){
       this.eventoService.getEvento('listaEvento').subscribe((evt: any[]) =>{
         this.lista_evento = evt;
-        console.log('lista_evento', this.lista_evento);
+        // console.log('lista_evento', this.lista_evento);
       }, (erro: any) => console.error(erro)
       );
     }
@@ -89,42 +89,42 @@ export class ConsultaEventoComponent implements OnInit{
     getSexec(){
       this.typeService.getSexec('listaSexec').subscribe((sxc:any[]) =>{
         this.lista_sexec = sxc;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
     }
 
     getEvento(){
       this.typeService.getTipoEventos('listaTipoEvento').subscribe((evt:any[]) =>{
         this.lista_tipo_evento = evt;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
     }
 
     getLocal(){
       this.typeService.getLocal('listaLocal').subscribe((lc:any[]) =>{
         this.lista_local = lc;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
     }
 
     getPart(){
       this.typeService.getParticipacao('listaParticipacao').subscribe((ptpc:any[]) =>{
         this.lista_participacao = ptpc;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
     }
 
     getRecursos(){
       this.typeService.getRecursos('listaRecursos').subscribe((rc:any[]) =>{
         this.lista_recursos = rc;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
     }
 
     getEventoByRes(id: any){
       this.eventoService.getEventoByResp('listaEventoSec/' + id).subscribe((rp:any[]) =>{
         this.lista_evento = rp;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
 
     }
@@ -132,35 +132,35 @@ export class ConsultaEventoComponent implements OnInit{
     getEventoByMes(mes: any){
       this.eventoService.getEventoByMes('listaEventoByMes/' + mes).subscribe((ms:any[]) =>{
         this.lista_evento = ms;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
     }
 
     getEventoByAno(ano: any){
       this.eventoService.getEventoByAno('listaEventoByAno/' + ano).subscribe((yr:any[]) =>{
         this.lista_evento = yr;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
     }
 
     getEventoByTipo(id: any){
       this.eventoService.getEventoByTipo('listaEvento/' + id).subscribe((tp:any[]) =>{
         this.lista_evento = tp;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
     }
 
     getEventoByLocal(id: any){
       this.eventoService.getEventoBylocal('listaEventoLocal/' + id).subscribe((lc:any[]) =>{
         this.lista_evento = lc;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
     }
 
     getEventoByFonte(id: any){
       this.eventoService.getEventoByFonte('listaEventoRec/' + id).subscribe((ft:any[]) =>{
         this.lista_evento = ft;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
     }
 

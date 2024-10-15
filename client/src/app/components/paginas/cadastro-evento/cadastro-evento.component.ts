@@ -43,7 +43,7 @@ export class CadastroEventoComponent implements OnInit{
     for (let y = 2023; y <= this.ano_atual+1; y++) {
       this.lista_ano.push(y);
     }
-    console.log('lista_ano', this.lista_ano)
+    // console.log('lista_ano', this.lista_ano)
 
     for (let m = 0; m < 12; m++) {
       const data = new Date(this.ano_atual, m); // Criando uma data para cada mês do ano
@@ -62,40 +62,40 @@ export class CadastroEventoComponent implements OnInit{
   getSexec(){
     this.typeService.getSexec('listaSexec').subscribe((sxc:any[]) =>{
       this.lista_sexec = sxc;
-    }, (erro: any) => console.log(erro)
+    }, (erro: any) => console.error(erro)
     );
   }
 
   getEvento(){
     this.typeService.getTipoEventos('listaTipoEvento').subscribe((evt:any[]) =>{
       this.lista_tipo_evento = evt;
-    }, (erro: any) => console.log(erro)
+    }, (erro: any) => console.error(erro)
     );
   }
 
   getLocal(){
     this.typeService.getLocal('listaLocal').subscribe((lc:any[]) =>{
       this.lista_local = lc;
-    }, (erro: any) => console.log(erro)
+    }, (erro: any) => console.error(erro)
     );
   }
 
   getPart(){
     this.typeService.getParticipacao('listaParticipacao').subscribe((ptpc:any[]) =>{
       this.lista_participacao = ptpc;
-    }, (erro: any) => console.log(erro)
+    }, (erro: any) => console.error(erro)
     );
   }
 
   getRecursos(){
     this.typeService.getRecursos('listaRecursos').subscribe((rc:any[]) =>{
       this.lista_recursos = rc;
-    }, (erro: any) => console.log(erro)
+    }, (erro: any) => console.error(erro)
     );
   }
 
   save(){
-    console.log('evento', this.evento);
+    // console.log('evento', this.evento);
     this.eventoservice.cadastrar(this.evento).subscribe({
       next: (res: any) => {
         this.toastr.success('Evento cadastrado com sucesso!');
