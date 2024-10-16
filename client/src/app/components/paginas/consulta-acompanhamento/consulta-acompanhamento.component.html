@@ -43,6 +43,9 @@
           <th scope="col" class="align-middle text-center">Resultado Alcançado</th>
           <th scope="col" class="align-middle text-center">Custos Realizados</th>
           <th scope="col" class="align-middle text-center">Leads Realizados</th>
+          <th scope="col" colspan="2" class="align-middle text-center">Imagens</th>
+          <th scope="col" class="align-middle text-center">Editar</th>
+          <th scope="col" class="align-middle text-center">Remover</th>
         </tr>
       </thead>
       <tbody>
@@ -52,6 +55,8 @@
           <td class="align-middle">{{ follow.resultado }}</td>
           <td class="align-middle">{{ follow.custo_realizado }}</td>
           <td class="align-middle">{{ follow.leads_realizados }}</td>
+          <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button title="Inserir Imagens" (click)="onEdit(follow)" type="button" class="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#modalInsertImg"><i class="bi bi-image"></i></button></td>
+          <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button title="Visualizar evento" (click)="onEdit(follow)" type="button" class="btn btn-success mx-3" data-bs-toggle="modal" data-bs-target="#modalViewImg"><i class="bi bi-eye-fill"></i></button></td>
           <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button (click)="onEdit(follow)" type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#modalEdit"><i class="bi bi-pencil-square"></i></button></td>
           <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button (click)="deletaFollow(follow)" type="button" class="btn btn-danger mx-3"><i class="bi bi-trash-fill"></i></button></td>
         </tr>
@@ -82,7 +87,6 @@
               </select>
               <label class="form-label pergunta ms-3" for="cargo">Situação Atual</label>
             </div>
-
           </div>
 
           <div class="row mt-4 mb-4">
@@ -120,4 +124,97 @@
     </div>
   </div>
 </div>
+
+<!--Modal de Inserção de imagens-->
+<div class="modal fade" id="modalInsertImg" tabindex="-1" aria-labelledby="modalInsertImgLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable mt-5">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalInsertImgLabel">Imagens do Evento</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formIsertImgs">
+          <div class="row">
+            <div class="col-sm-12 col-12 mb-3">
+              <label for="formFileMultiple" class="form-label">Adicione imagens do evento.</label>
+                  <input #imgsInput class="form-control" type="file" id="formFileMultiple" multiple
+                  (change)="selectMultipleFiles($event)" (change)="onImageSelected($event)">
+                  <div *ngIf="habilita_anexo_imgs == true" class="alert alert-success" role="alert">
+                    {{ imgs_anexo }}
+                  </div>
+                  <div *ngIf="habilita_anexo_imgs == false" class="alert alert-danger" role="alert">
+                    {{ imgs_anexo }}
+                  </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" (click)="imgsUpload()" class="btn btn-primary" [disabled]="habilita_anexo_imgs" [disabled]="!imageSelected">Inserir Imagens</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal de Exibição de imagens-->
+<div class="modal fade" id="modalViewImg" tabindex="-1" aria-labelledby="modalViewImgLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable mt-5">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalViewImgLabel">Editar Evento</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup] = "formFollow">
+          <div class="row">
+
+            <div class="form-floating col-sm-6 col-12 mb-2">
+              <select name="situacao_atual" id="situacao_atual" class="form-select" formControlName="situacao_atual" required>
+                <option value="A Iniciar">A Iniciar</option>
+                <option value="Andamento">Andamento</option>
+                <option value="Cancelado">Cancelado</option>
+                <option value="Concluído">Concluído</option>
+              </select>
+              <label class="form-label pergunta ms-3" for="cargo">Situação Atual</label>
+            </div>
+          </div>
+
+          <div class="row mt-4 mb-4">
+
+            <div class="form-group col-sm-4 col-12 ">
+              <div class="form-floating">
+                <input type="text" id="resultado" name="resultado"
+                  placeholder="Digite o nome do Evento" required formControlName="resultado" class="form-control" />
+                <label class="form-label pergunta" for="resultado">Resultado Alcançados</label>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-4 col-12 ">
+              <div class="form-floating">
+                <input type="text" id="custo_realizado" name="custo_realizado"
+                  placeholder="Digite o nome do Evento" required formControlName="custo_realizado" class="form-control" />
+                <label class="form-label pergunta" for="custo_realizado">Custos Realizados</label>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-4 col-12 ">
+              <div class="form-floating">
+                <input type="text" id="leads_realizados" name="leads_realizados"
+                  placeholder="Digite o nome do Evento" required formControlName="leads_realizados" class="form-control" />
+                <label class="form-label pergunta" for="leads_realizados">Leads Realizados</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" (click)="updateFollow()" class="btn btn-warning">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 

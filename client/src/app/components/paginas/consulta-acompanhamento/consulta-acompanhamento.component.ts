@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AcompanhamentoService } from '../../../shared/services/acompanhamento.service';
 import { Acompanhamento } from '../../../shared/models/acompanhamento.model';
 import { UserService } from '../../../shared/services/user.service';
+import { environment } from '../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-consulta-acompanhamento',
@@ -18,10 +20,17 @@ export class ConsultaAcompanhamentoComponent implements OnInit{
   lista_follow!: any[];
   lista_status!: any[];
 
+  formIsertImgs!: FormGroup;
   formFollow!: FormGroup;
   followObj: Acompanhamento = new Acompanhamento();
   profile_id!: any;
   token!: any;
+
+  multipleFiles!: any[];
+  imgs_anexo: any;
+  habilita_anexo_imgs!: boolean;
+  imageSelected: boolean = false;
+  finaliza = 0;
 
   constructor(
     public eventoService: EventoService,
@@ -29,7 +38,8 @@ export class ConsultaAcompanhamentoComponent implements OnInit{
     public auth: UserService,
     public followService: AcompanhamentoService,
     private formBuilder: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private http: HttpClient
   ) { }
 
   ngOnInit(): void {
@@ -114,6 +124,61 @@ export class ConsultaAcompanhamentoComponent implements OnInit{
       this.getFollows();
     })
 
+  }
+
+  onImageSelected(event: any): void {
+    this.imageSelected = event.target.files.length > 0;
+    // console.log('imageSelected', this.imageSelected);
+  }
+
+  selectMultipleFiles(event: any) {
+    if (event.target.files.length > 0) {
+      this.multipleFiles = event.target.files;
+    }
+  }
+
+  imgsUpload() {
+    const files = new FormData();
+    const evento_id = this.followObj.id;
+    let allFilesAreJPEG = true;
+
+    for (let file of this.multipleFiles) {
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+      if (
+        fileExtension !== 'jpeg' &&
+        fileExtension !== 'jpg' &&
+        fileExtension !== 'png'
+      ) {
+        allFilesAreJPEG = false;
+        break;
+      }
+      files.append('files', file);
+    }
+
+    if (!allFilesAreJPEG) {
+      this.toastr.error('Somente arquivo .jpeg, .jpg ou .png');
+      this.imgs_anexo = 'Somente arquivo .jpeg, .jpg ou .png';
+      // Aqui você pode adicionar um aviso para o usuário, se desejar
+      return;
+    }
+
+    this.http
+      .post(environment.apiUrl + 'anexo_imgs' + '/' + evento_id, files)
+      .subscribe({
+        next: (response: any) => {
+          // console.log(response);
+
+          this.habilita_anexo_imgs = true;
+          this.imgs_anexo = response.message;
+          this.finaliza = this.finaliza + 1;
+          // console.log('imgs_anexo', this.imgs_anexo);
+        },
+        error: (e) => {
+          this.habilita_anexo_imgs = false;
+          this.imgs_anexo = e.error.message;
+          // console.log('imgs_anexo', this.imgs_anexo);
+        },
+      });
   }
 
 }
