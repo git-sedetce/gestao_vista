@@ -59,4 +59,11 @@ export class EventoService {
   getEventoByFonte(id: any): Observable<any> {
     return this.http.get(environment.apiUrl + id)
   }
+  imagensByEvento(id: number): Observable<any> {
+    return this.http.get(environment.apiUrl + 'pegaImagesEvento/' + id)
+  }
+
+  contarImgs(rota: any): Observable<any> {
+    return this.http.get(environment.apiUrl + rota)
+  }
 }
