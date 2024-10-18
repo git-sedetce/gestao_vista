@@ -9,6 +9,7 @@ import { LoginComponent } from './components/user/login/login.component';
 import { CadastroComponent } from './components/user/cadastro/cadastro.component';
 import { ResetComponent } from './components/user/reset/reset.component';
 import { guardGuard } from './components/user/guard/guard.guard';
+import { UsersComponent } from './components/paginas/users/users.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'consultaacompanhamento', component: ConsultaAcompanhamentoComponent, canActivate: [guardGuard], data: { roles: ['admin', 'coordenador', 'user', 'secretario'] } },
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent },
-  { path: 'resetSenha', component: ResetComponent }
+  { path: 'resetSenha', component: ResetComponent },
+  { path: 'users', component: UsersComponent, canActivate: [guardGuard], data: { roles: ['admin'] } },
 ];
 
 @NgModule({

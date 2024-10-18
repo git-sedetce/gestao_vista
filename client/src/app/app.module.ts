@@ -17,6 +17,7 @@ import { ConsultaAcompanhamentoComponent } from './components/paginas/consulta-a
 import { CadastroComponent } from './components/user/cadastro/cadastro.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { ResetComponent } from './components/user/reset/reset.component';
+import { UsersComponent } from './components/paginas/users/users.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ResetComponent } from './components/user/reset/reset.component';
     ConsultaAcompanhamentoComponent,
     CadastroComponent,
     LoginComponent,
-    ResetComponent
+    ResetComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

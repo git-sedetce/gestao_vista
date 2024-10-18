@@ -70,28 +70,28 @@ class UserController {
 
         }
         
-    }
+    }    
 
-    static async pegaUser(req, res){        
+    static async pegaUsers(req, res){        
         try{
-           const cookie = req.cookies['jwt']
-            const claims = jwt.verify(cookie, process.env.ACCESS_TOKEN)
-            if(!claims){
-                return res.status(401).send({message: 'Usuário não autenticado!'})
-            }
+        //    const cookie = req.cookies['jwt']
+        //     const claims = jwt.verify(cookie, process.env.ACCESS_TOKEN)
+        //     if(!claims){
+        //         return res.status(401).send({message: 'Usuário não autenticado!'})
+        //     }
             const getUser = await database.User.findAll({
                 order: ["nome_completo"],
                 attributes: ["id","nome_completo", "user_name", "user_email", "user_active", "profile_id", "sexec_id"],
                 include: [
                     {
                         association: "ass_user_profile",
-                        where: database.USER.profile_id = database.Profile.id,
-                        attributes: ["perfil"]
+                        where: database.User.profile_id = database.Profile.id,
+                        attributes: ["id", "perfil"]
                     },
                     {
                         association: "ass_user_sexec",
-                        where: database.USER.sexec_id = database.Secretaria_Executivas.id,
-                        attributes: ["secretaria", "sigla"]
+                        where: database.User.sexec_id = database.Secretaria_Executivas.id,
+                        attributes: ["id","secretaria", "sigla"]
                     }
                 ]
             })
