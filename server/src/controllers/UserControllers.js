@@ -104,13 +104,14 @@ class UserController {
 
     static async atualizaUser(req, res){ 
         const { id } = req.params;   
-        const user = req.body;    
+        const user = req.body;   
+        console.log('user', user) 
             try{
-                const cookie = req.cookies['jwt']
-                const claims = jwt.verify(cookie, process.env.ACCESS_TOKEN)
-                if(!claims){
-                    return res.status(401).send({message: 'Usuário não autenticado!'})
-                }
+                // const cookie = req.cookies['token']
+                // const claims = jwt.verify(cookie, process.env.ACCESS_TOKEN)
+                // if(!claims){
+                //     return res.status(401).send({message: 'Usuário não autenticado!'})
+                // }
                 await database.User.update(user, { where: { id: Number(id) }})
                 const updateUser = await database.User.findOne( { where: {id: Number(id) }})
                 return res.status(200).json(updateUser)

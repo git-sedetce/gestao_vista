@@ -3,6 +3,7 @@ import { User } from '../../../shared/models/user.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../shared/services/user.service';
+import { TypesService } from '../../../shared/services/types.service';
 
 @Component({
   selector: 'app-users',
@@ -12,11 +13,13 @@ import { UserService } from '../../../shared/services/user.service';
 export class UsersComponent implements OnInit {
 
   lista_users!: any []
+  lista_sexec!: any []
   formUser!: FormGroup;
   userObj: User = new User()
 
   constructor(
     private user: UserService,
+    private typeService: TypesService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService
   ) { }
@@ -27,13 +30,14 @@ export class UsersComponent implements OnInit {
         nome_completo: [''],
         user_name: [''],
         user_email: [''],
-        user_active: [''],
+        user_active: [false],
         user_password: [''],
         profile_id: [''],
         sexec_id: ['']
       })
 
       this.getUsers();
+      this.getSexec();
 
     }
 
@@ -44,6 +48,13 @@ export class UsersComponent implements OnInit {
       }, (erro: any) => console.error(erro))
     }
 
+    getSexec(){
+      this.typeService.getSexec('listaSexec').subscribe((sxc:any[]) =>{
+        this.lista_sexec = sxc;
+      }, (erro: any) => console.log(erro)
+      );
+    }
+
     onEdit(user: any){
       this.userObj.id = user.id;
       this.formUser.controls['nome_completo'].setValue(user.nome_completo)
@@ -52,9 +63,8 @@ export class UsersComponent implements OnInit {
       this.formUser.controls['user_active'].setValue(user.user_active)
       this.formUser.controls['user_password'].setValue(user.user_password)
       this.formUser.controls['profile_id'].setValue(user.ass_user_profile.id)
-      this.formUser.controls['sexec_id'].setValue(user.ass_user_sexec.secretaria)
+      this.formUser.controls['sexec_id'].setValue(user.sexec_id)
     }
-
     updateUser(){
       this.userObj.nome_completo = this.formUser.value.nome_completo;
       this.userObj.user_name = this.formUser.value.user_name;
@@ -72,7 +82,6 @@ export class UsersComponent implements OnInit {
       })
 
     }
-
     deletaEvento(user: any){
       this.user.deleteUser(user.id).subscribe(res=>{
         this.toastr.success('Exclusão realizada com sucesso!!!')
