@@ -44,14 +44,14 @@ export class UsersComponent implements OnInit {
     getUsers() {
       this.user.pegar_users('allUser').subscribe((usr: any[]) => {
         this.lista_users = usr;
-        console.log('lista_users', this.lista_users)
+        // console.log('lista_users', this.lista_users)
       }, (erro: any) => console.error(erro))
     }
 
     getSexec(){
       this.typeService.getSexec('listaSexec').subscribe((sxc:any[]) =>{
         this.lista_sexec = sxc;
-      }, (erro: any) => console.log(erro)
+      }, (erro: any) => console.error(erro)
       );
     }
 
