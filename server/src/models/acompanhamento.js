@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   Acompanhamento.init({
     situacao_atual: DataTypes.STRING,
     resultado: DataTypes.STRING,
-    custo_realizado: DataTypes.STRING,
+    custo_realizado: DataTypes.DECIMAL,
     leads_realizados: DataTypes.STRING
   }, {
     sequelize,

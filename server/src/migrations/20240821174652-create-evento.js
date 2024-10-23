@@ -52,7 +52,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       custo_previo: {
-        type: Sequelize.STRING
+        type: Sequelize.DECIMAL
       },
       recursos_id: {
         type: Sequelize.INTEGER,

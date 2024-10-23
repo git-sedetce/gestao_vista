@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     publico_alvo: DataTypes.STRING,
     local: DataTypes.STRING,
     periodo: DataTypes.STRING,
-    custo_previo: DataTypes.STRING,
+    custo_previo: DataTypes.DECIMAL,
     lead_previsto: DataTypes.STRING
   }, {
     sequelize,

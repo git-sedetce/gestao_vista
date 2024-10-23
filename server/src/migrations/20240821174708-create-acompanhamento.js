@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       custo_realizado: {
-        type: Sequelize.STRING
+        type: Sequelize.DECIMAL
       },
       leads_realizados: {
         type: Sequelize.STRING

@@ -8,7 +8,7 @@ export class Evento {
     public publico_alvo?: string,
     public local?: string,
     public periodo?: string,
-    public custo_previo?: string,
+    public custo_previo?: number,
     public lead_previsto?: string,
     public sexec_id?: number,
     public tipo_evento_id?: number,
