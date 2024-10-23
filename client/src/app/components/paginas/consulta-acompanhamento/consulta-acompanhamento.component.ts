@@ -79,7 +79,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     this.followService.listarAcompanhamento('listaFollow').subscribe(
       (flw: any[]) => {
         this.lista_follow = flw;
-        console.log('lista_follow', this.lista_follow);
+        // console.log('lista_follow', this.lista_follow);
       },
       (erro: any) => console.error(erro)
     );
@@ -116,7 +116,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     this.eventoService.contarImgs('countImgs').subscribe(
       (qtde: any[]) => {
         this.lista_qtde = qtde;
-        console.log('lista_qtde', this.lista_qtde);
+        // console.log('lista_qtde', this.lista_qtde);
       },
       (erro: any) => console.error('erro', erro)
     );
@@ -191,7 +191,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
         break;
       }
       files.append('files', file);
-      console.log('file', files);
+      // console.log('file', files);
     }
 
     if (!allFilesAreJPEG) {
@@ -244,7 +244,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
           // Exibir mensagem ao usuário, por exemplo:
           this.showMessage('Nenhuma imagem encontrada.');
         }
-        console.log('imagens', this.lista_imagens);
+        // console.log('imagens', this.lista_imagens);
       },
 
       (erro: any) => {

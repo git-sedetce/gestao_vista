@@ -87,7 +87,7 @@ export class ConsultaEventoComponent implements OnInit{
     getEventos(){
       this.eventoService.getEvento('listaEvento').subscribe((evt: any[]) =>{
         this.lista_evento = evt;
-        console.log('lista_evento', this.lista_evento);
+        // console.log('lista_evento', this.lista_evento);
       }, (erro: any) => console.error(erro)
       );
     }

@@ -107,7 +107,7 @@
 
                 <div class="form-group col-sm-4 col-12 ">
                   <div class="form-floating">
-                    <input type="text" id="custo_previo" name="custo_previo"
+                    <input type="number" id="custo_previo" name="custo_previo"
                       placeholder="Digite o nome do Evento" required #custo_previo="ngModel" [(ngModel)]="evento.custo_previo" class="form-control" />
                     <label class="form-label pergunta" for="custo_previo">Custo Planejado</label>
                     <div *ngIf="!custo_previo.valid && custo_previo.touched" class="alert alert-danger" role="alert">Informe o custo planejado</div>

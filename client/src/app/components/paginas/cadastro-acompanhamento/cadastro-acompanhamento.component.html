@@ -45,7 +45,7 @@
 
                 <div class="form-group col-sm-4 col-12 ">
                   <div class="form-floating">
-                    <input type="text" id="custo_realizado" name="custo_realizado"
+                    <input type="number" id="custo_realizado" name="custo_realizado"
                       placeholder="Digite o nome do Evento" required #custo_realizado="ngModel" [(ngModel)]="follow.custo_realizado" class="form-control" />
                     <label class="form-label pergunta" for="custo_realizado">Custos Realizados</label>
                     <div *ngIf="!custo_realizado.valid && custo_realizado.touched" class="alert alert-danger" role="alert">Informe os custos</div>
