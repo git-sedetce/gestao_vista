@@ -44,11 +44,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEvento();
-    this.getTipoEvento(2025);
-    this.getResp(2025);
-    this.getPart(2025);
-    this.getRecursos(2025);
-    this.getLocal(2025);
+    this.getTipoEvento(this.ano_atual);
+    this.getResp(this.ano_atual);
+    this.getPart(this.ano_atual);
+    this.getRecursos(this.ano_atual);
+    this.getLocal(this.ano_atual);
 
     this.ano_atual = this.date.getFullYear();
 
@@ -56,6 +56,14 @@ export class HomeComponent implements OnInit {
       this.lista_ano.push(y);
     }
     // console.log('lista_ano', this.lista_ano)
+  }
+
+  filterByYear(year: any){
+    this.getTipoEvento(year);
+    this.getResp(year);
+    this.getPart(year);
+    this.getRecursos(year);
+    this.getLocal(year);
   }
 
   getEvento(): void {
