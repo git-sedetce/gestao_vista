@@ -9,6 +9,7 @@ import { UserService } from '../../../shared/services/user.service';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-consulta-acompanhamento',
@@ -30,6 +31,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   showMessage!: any;
   showTitle!: any;
   exibirImg!: any;
+  date = new Date();
 
   multipleFiles!: any[];
   imgs_anexo: any;
@@ -251,5 +253,23 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
         this.showMessage('Erro ao buscar imagens. Tente novamente mais tarde.');
       }
     );
+  }
+
+  hour = this.date.getHours().toString().padStart(2, '0');
+  minute = this.date.getMinutes().toString().padStart(2, '0');
+  file_name = 'ConsultaAcompanhamentoSDE';
+  fileName = `${this.hour}${this.minute}_${this.file_name}.xlsx`
+
+  getReport(){
+    /**passing table id**/
+    let data = document.getElementById('table-follow');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+    /**Generate workbook and add the worksheet**/
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /*save to file*/
+    XLSX.writeFile(wb, this.fileName);
   }
 }

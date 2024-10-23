@@ -30,12 +30,13 @@
       <div class="col-sm-4 col-12 mb-2">
         <div class="filter-nav d-flex flex-center">
           <button class="mx-3 mt-1 pt-3 pb-3 btn btn-primary text-uppercase fw-bold" (click)="getFollows()">Lista de Eventos</button>
+          <button class="mx-3 btn text-center btn-success text-uppercase fw-bold" (click)="getReport()">Exportar<br>Planilha</button>
         </div>
       </div>
     </div>
 
 
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover" id="table-follow">
       <thead>
         <tr>
           <th scope="col" class="align-middle text-center">Nome Evento</th>
@@ -53,7 +54,7 @@
           <td class="align-middle">{{ follow.ass_acompanhamento_evento.nome_evento }}</td>
           <td class="align-middle">{{ follow.situacao_atual }}</td>
           <td class="align-middle">{{ follow.resultado }}</td>
-          <td class="align-middle">{{ follow.custo_realizado }}</td>
+          <td class="align-middle">R$ {{ follow.custo_realizado }}</td>
           <td class="align-middle">{{ follow.leads_realizados }}</td>
           <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button title="Inserir Imagens" (click)="onEdit(follow)" type="button" class="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#modalInsertImg"><i class="bi bi-image"></i></button></td>
           <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button title="Visualizar evento" (click)="viewImg(follow)" type="button" class="btn btn-success mx-3" data-bs-toggle="modal" data-bs-target="#modalViewImg"><i class="bi bi-eye-fill"></i></button></td>

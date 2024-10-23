@@ -5,6 +5,7 @@ import { Evento } from '../../../shared/models/evento.model';
 import { ToastrService } from 'ngx-toastr';
 import { TypesService } from '../../../shared/services/types.service';
 import { UserService } from '../../../shared/services/user.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-consulta-evento',
@@ -86,7 +87,7 @@ export class ConsultaEventoComponent implements OnInit{
     getEventos(){
       this.eventoService.getEvento('listaEvento').subscribe((evt: any[]) =>{
         this.lista_evento = evt;
-        // console.log('lista_evento', this.lista_evento);
+        console.log('lista_evento', this.lista_evento);
       }, (erro: any) => console.error(erro)
       );
     }
@@ -225,5 +226,23 @@ export class ConsultaEventoComponent implements OnInit{
       })
 
     }
+
+    hour = this.date.getHours().toString().padStart(2, '0');
+    minute = this.date.getMinutes().toString().padStart(2, '0');
+    file_name = 'ConsultaEventoSDE';
+    fileName = `${this.hour}${this.minute}_${this.file_name}.xlsx`
+
+  getReport(){
+    /**passing table id**/
+    let data = document.getElementById('table-evento');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+    /**Generate workbook and add the worksheet**/
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /*save to file*/
+    XLSX.writeFile(wb, this.fileName);
+  }
 
 }
