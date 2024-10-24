@@ -5,6 +5,10 @@ const jwt = require('jsonwebtoken')
 class UserController {
 
     static async cadastraUser(req, res){
+        var enviarEmail = [
+            "patricia.campos@sde.ce.gov.br",
+            "daniel.araujo@sde.ce.gov.br",
+          ]; 
         const novoUser = req.body;
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(novoUser.user_password, salt);
@@ -12,6 +16,37 @@ class UserController {
 
         try{
             const criarUser = await database.User.create(novoUser)
+
+            var transporter = nodemailer.createTransport({
+                host: "172.26.2.26", //relay.etice.ce.gov.br
+                port: 25,
+                secure: false,
+                tls: {
+                  rejectUnauthorized: false,
+                },
+              });
+
+              var mailOptions = {
+                from: "gestao.pessoas@sde.ce.gov.br",
+                to: enviarEmail,
+                subject: "Cadastro de usuário do Sistema Eventos da SDE",
+                html: `<h3>Cadastro Realizado com sucesso!!</h3><p>${novoUser.nome_completo} fez o cadastrado. Verifique o perfil dele e ative para o uso do sistema.`,
+              };
+              //console.log("mailOptions", mailOptions);
+              var emailRetorno = null;
+              transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                  //console.log(error);
+                  emailRetorno = error;
+                } else {
+                  //console.log("Email enviado: " + info.response);
+                  emailRetorno = {
+                    messagem: "Email enviado com sucesso!",
+                    info: info.response,
+                  };
+                }
+              });
+
             const  result = await criarUser.save()
             const { password, ...data } = await result.toJSON()
             res.send(data)
