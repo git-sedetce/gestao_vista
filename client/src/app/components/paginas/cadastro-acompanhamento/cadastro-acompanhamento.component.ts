@@ -43,7 +43,7 @@ export class CadastroAcompanhamentoComponent implements OnInit {
     this.serviceFollow.cadastrar(this.follow).subscribe({
       next: (res: any) => {
         this.toastr.success('Acompanhamento cadastrado com sucesso!');
-        this.router.navigate(['/cadastroacompanhamento']);
+        this.router.navigate(['/home']);
         this.formFollow.reset();
       },
       error: (e) => (this.toastr.error(e), this.formFollow.reset())
