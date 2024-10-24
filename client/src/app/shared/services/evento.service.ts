@@ -18,6 +18,10 @@ export class EventoService {
     return this.http.get(environment.apiUrl + rota)
   }
 
+  getEventFollow(rota:any): Observable<any> {
+    return this.http.get(environment.apiUrl + rota)
+  }
+
   getSimpleEvento(rota:any): Observable<any> {
     return this.http.get(environment.apiUrl + rota)
   }

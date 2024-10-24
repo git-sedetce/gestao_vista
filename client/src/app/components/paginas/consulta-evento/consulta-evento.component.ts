@@ -15,6 +15,7 @@ import * as XLSX from 'xlsx';
 export class ConsultaEventoComponent implements OnInit{
 
   lista_evento!: any[];
+  lista_evento_acompanhamento!: any[];
   formEvent!: FormGroup;
   eventoObj: Evento = new Evento()
 
@@ -75,6 +76,7 @@ export class ConsultaEventoComponent implements OnInit{
     // console.log('lista_meses', this.lista_mes);
 
       this.getEventos();
+      this.getEventosAcompanhamentos();
       this.getSexec();
       this.getEvento();
       this.getLocal();
@@ -87,7 +89,15 @@ export class ConsultaEventoComponent implements OnInit{
     getEventos(){
       this.eventoService.getEvento('listaEvento').subscribe((evt: any[]) =>{
         this.lista_evento = evt;
-        // console.log('lista_evento', this.lista_evento);
+        //  console.log('lista_evento', this.lista_evento);
+      }, (erro: any) => console.error(erro)
+      );
+    }
+
+    getEventosAcompanhamentos(){
+      this.eventoService.getEventFollow('listaEventoAcompanhamento').subscribe((evt_flw: any[]) =>{
+        this.lista_evento_acompanhamento = evt_flw;
+        //  console.log('lista_evento_acompanhamento', this.lista_evento_acompanhamento);
       }, (erro: any) => console.error(erro)
       );
     }
@@ -229,7 +239,7 @@ export class ConsultaEventoComponent implements OnInit{
 
     hour = this.date.getHours().toString().padStart(2, '0');
     minute = this.date.getMinutes().toString().padStart(2, '0');
-    file_name = 'ConsultaEventoSDE';
+    file_name = 'ConsultaPromocaoAtracaoSDE';
     fileName = `${this.hour}${this.minute}_${this.file_name}.xlsx`
 
   getReport(){

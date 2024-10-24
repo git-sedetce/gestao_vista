@@ -249,42 +249,59 @@
       </div>
       <div class="modal-body container">
 
-        <table class="table table-striped table-hover" id="table-evento">
+        <div>
+          <table class="table table-striped table-hover" id="table-evento">
           <thead>
             <tr>
-              <th scope="col" class="align-middle text-center">Nome Evento</th>
-              <th scope="col" class="align-middle text-center">Descrição</th>
-              <th scope="col" class="align-middle text-center">Responsável</th>
+              <th scope="col" colspan="14" class="align-middle text-center table-primary text-uppercase">Evento</th>
+              <th scope="col" colspan="4" class="align-middle text-center table-info text-uppercase">Acompanhamento</th>
+            </tr>
+            <tr>
               <th scope="col" class="align-middle text-center">Mês</th>
               <th scope="col" class="align-middle text-center">Ano</th>
-              <th scope="col" class="align-middle text-center">Periodo</th>
-              <th scope="col" class="align-middle text-center">Publico Alvo</th>
               <th scope="col" class="align-middle text-center">Tipo Evento</th>
+              <th scope="col" class="align-middle text-center">Responsável</th>
+              <th scope="col" class="align-middle text-center">Nome Evento</th>
+              <th scope="col" class="align-middle text-center">Descrição</th>
+              <th scope="col" class="align-middle text-center">Publico Alvo</th>
+              <th scope="col" class="align-middle text-center">Tipo Local</th>
               <th scope="col" class="align-middle text-center">Local</th>
-              <th scope="col" class="align-middle text-center">Participação</th>
+              <th scope="col" class="align-middle text-center">Periodo</th>
               <th scope="col" class="align-middle text-center">Custo Prévio</th>
               <th scope="col" class="align-middle text-center">Fonte recursos</th>
+              <th scope="col" class="align-middle text-center">Participação</th>
               <th scope="col" class="align-middle text-center">Leads Previous</th>
+              <th scope="col" class="align-middle text-center">Situação Atual</th>
+              <th scope="col" class="align-middle text-center">Resultados Alcançados</th>
+              <th scope="col" class="align-middle text-center">Custos Realizados</th>
+              <th scope="col" class="align-middle text-center">Leads Realizados</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let evento of lista_evento">
-              <td class="align-middle">{{ evento.nome_evento }}</td>
-              <td class="align-middle">{{ evento.descricao }}</td>
-              <td class="align-middle">{{ evento.ass_evento_sexec.secretaria }} - {{ evento.ass_evento_sexec.sigla }}</td>
-              <td class="align-middle">{{ evento.mes }}</td>
-              <td class="align-middle">{{ evento.ano }}</td>
-              <td class="align-middle">{{ evento.periodo }}</td>
-              <td class="align-middle">{{ evento.publico_alvo }}</td>
-              <td class="align-middle">{{ evento.ass_evento_tipo.nome_evento }}</td>
-              <td class="align-middle">{{ evento.local }}</td>
-              <td class="align-middle">{{ evento.ass_evento_participacao.participacao }}</td>
-              <td class="align-middle">R$ {{ evento.custo_previo }}</td>
-              <td class="align-middle">{{ evento.ass_evento_recursos.recursos }}</td>
-              <td class="align-middle">{{ evento.lead_previsto }}</td>
+            <tr *ngFor="let evento_follow of lista_evento_acompanhamento">
+              <td class="align-middle text-center">{{ evento_follow.ass_acompanhamento_evento.mes }}</td>
+              <td class="align-middle text-center">{{ evento_follow.ass_acompanhamento_evento.ano }}</td>
+              <td class="align-middle text-center">{{ evento_follow.ass_acompanhamento_evento.ass_evento_tipo.nome_evento }}</td>
+              <td class="align-middle">{{ evento_follow.ass_acompanhamento_evento.ass_evento_sexec.secretaria }} - {{ evento_follow.ass_acompanhamento_evento.ass_evento_sexec.sigla }}</td>
+              <td class="align-middle">{{ evento_follow.ass_acompanhamento_evento.nome_evento }}</td>
+              <td class="align-middle">{{ evento_follow.ass_acompanhamento_evento.descricao }}</td>
+              <td class="align-middle text-center">{{ evento_follow.ass_acompanhamento_evento.publico_alvo }}</td>
+              <td class="align-middle text-center">{{ evento_follow.ass_acompanhamento_evento.ass_evento_local.local_evento }}</td>
+              <td class="align-middle text-center">{{ evento_follow.ass_acompanhamento_evento.local }}</td>
+              <td class="align-middle text-center">{{ evento_follow.ass_acompanhamento_evento.periodo }}</td>
+              <td class="align-middle text-center">R$ {{ evento_follow.ass_acompanhamento_evento.custo_previo }}</td>
+              <td class="align-middle text-center">{{ evento_follow.ass_acompanhamento_evento.ass_evento_recursos.recursos }}</td>
+              <td class="align-middle text-center">{{ evento_follow.ass_acompanhamento_evento.ass_evento_participacao.participacao }}</td>
+              <td class="align-middle text-center">{{ evento_follow.ass_acompanhamento_evento.lead_previsto }}</td>
+
+              <td class="align-middle text-center">{{ evento_follow.situacao_atual }}</td>
+              <td class="align-middle">{{ evento_follow.resultado }}</td>
+              <td class="align-middle text-center">R$ {{ evento_follow.custo_realizado }}</td>
+              <td class="align-middle text-center">{{ evento_follow.leads_realizado }}</td>
             </tr>
           </tbody>
         </table>
+      </div>
 
       </div>
       <div class="modal-footer">
