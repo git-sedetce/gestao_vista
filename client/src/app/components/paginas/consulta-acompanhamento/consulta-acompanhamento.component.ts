@@ -31,7 +31,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   showMessage!: any;
   showTitle!: any;
   exibirImg!: any;
-  date = new Date();
+  // date = new Date();
 
   multipleFiles!: any[];
   imgs_anexo: any;
@@ -255,21 +255,21 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     );
   }
 
-  hour = this.date.getHours().toString().padStart(2, '0');
-  minute = this.date.getMinutes().toString().padStart(2, '0');
-  file_name = 'ConsultaAcompanhamentoSDE';
-  fileName = `${this.hour}${this.minute}_${this.file_name}.xlsx`
+  // hour = this.date.getHours().toString().padStart(2, '0');
+  // minute = this.date.getMinutes().toString().padStart(2, '0');
+  // file_name = 'ConsultaAcompanhamentoSDE';
+  // fileName = `${this.hour}${this.minute}_${this.file_name}.xlsx`
 
-  getReport(){
-    /**passing table id**/
-    let data = document.getElementById('table-follow');
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+  // getReport(){
+  //   /**passing table id**/
+  //   let data = document.getElementById('table-follow');
+  //   const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
 
-    /**Generate workbook and add the worksheet**/
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  //   /**Generate workbook and add the worksheet**/
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    /*save to file*/
-    XLSX.writeFile(wb, this.fileName);
-  }
+  //   /*save to file*/
+  //   XLSX.writeFile(wb, this.fileName);
+  // }
 }
