@@ -43,6 +43,13 @@ export class HomeComponent implements OnInit {
   constructor(private statisticsService: StatisticsService) {}
 
   ngOnInit(): void {
+
+    this.ano_atual = this.date.getFullYear();
+
+    for (let y = 2023; y <= this.ano_atual+1; y++) {
+      this.lista_ano.push(y);
+    }
+
     this.getEvento();
     this.getTipoEvento(this.ano_atual);
     this.getResp(this.ano_atual);
@@ -50,11 +57,7 @@ export class HomeComponent implements OnInit {
     this.getRecursos(this.ano_atual);
     this.getLocal(this.ano_atual);
 
-    this.ano_atual = this.date.getFullYear();
 
-    for (let y = 2023; y <= this.ano_atual+1; y++) {
-      this.lista_ano.push(y);
-    }
     // console.log('lista_ano', this.lista_ano)
   }
 
