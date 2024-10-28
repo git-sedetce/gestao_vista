@@ -11,7 +11,7 @@ app.use(express.json())
 
 var corsOptions = {
     credentials: true,
-    origin: ['http://localhost:2624', 'http://gestaorh.sde.ce.gov.br/', 'http://localhost:2823'],
+    origin: ['http://localhost:2624', 'http://sistemaeventos.sde.ce.gov.br', 'https://sistemaeventos.sde.ce.gov.br'],
     optionsSuccessStatus: 200,
     methods: "GET, PUT, POST, DELETE",
     allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Access-Control-Allow-Origin"],
