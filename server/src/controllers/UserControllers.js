@@ -1,6 +1,7 @@
 const database = require('../models')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const nodemailer = require("nodemailer")
 
 class UserController {
 
@@ -32,14 +33,14 @@ class UserController {
                 subject: "Cadastro de usuário do Sistema Eventos da SDE",
                 html: `<h3>Cadastro Realizado com sucesso!!</h3><p>${novoUser.nome_completo} fez o cadastrado. Verifique o perfil dele e ative para o uso do sistema.`,
               };
-              //console.log("mailOptions", mailOptions);
+            //   console.log("mailOptions", mailOptions);
               var emailRetorno = null;
               transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
                   //console.log(error);
                   emailRetorno = error;
                 } else {
-                  //console.log("Email enviado: " + info.response);
+                //   console.log("Email enviado: " + info.response);
                   emailRetorno = {
                     messagem: "Email enviado com sucesso!",
                     info: info.response,
@@ -140,7 +141,7 @@ class UserController {
     static async atualizaUser(req, res){ 
         const { id } = req.params;   
         const user = req.body;   
-        console.log('user', user) 
+        // console.log('user', user) 
             try{
                 // const cookie = req.cookies['token']
                 // const claims = jwt.verify(cookie, process.env.ACCESS_TOKEN)
