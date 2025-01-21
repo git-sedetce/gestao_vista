@@ -11,6 +11,8 @@ router.get('/allUser', UserController.pegaUsers)
 router.put('/atualizaUser/:id', UserController.atualizaUser)
 router.post('/logout', UserController.logout)
 router.post('/reset', UserController.resetPassword)
+router.get('/getUser/:id', UserController.pegarUser)
+router.get('/getUserSexec/:id', UserController.pegarUserSexec)
 router.delete('/user/:id', UserController.deletaUsers)
 
 module.exports = router
