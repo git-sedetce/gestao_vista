@@ -50,7 +50,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let follow of lista_follow">
+        <tr *ngFor="let follow of lista_follow | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
           <td class="align-middle">{{ follow.ass_acompanhamento_evento.nome_evento }}</td>
           <td class="align-middle">{{ follow.situacao_atual }}</td>
           <td class="align-middle">{{ follow.resultado }}</td>
@@ -63,6 +63,7 @@
         </tr>
       </tbody>
     </table>
+    <pagination-controls class="text-center" (pageChange)="page = $event"></pagination-controls>
   </div>
 
 </section>

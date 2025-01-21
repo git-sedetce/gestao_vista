@@ -39,6 +39,9 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   imageSelected: boolean = false;
   finaliza = 0;
 
+  page: number = 1; // Página atual
+  itemsPerPage: number = 10; // Itens por página
+
   constructor(
     public eventoService: EventoService,
     public typeService: TypesService,
