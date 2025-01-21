@@ -5,6 +5,7 @@ const type = require('./typeRoutes')
 const statistics = require('./statisticsRoutes')
 const user = require('./userRoutes')
 const anexo = require('./anexoRoutes')
+const audit = require('./auditRoutes')
 
 
 module.exports = app => {
@@ -15,6 +16,7 @@ module.exports = app => {
             type,
             statistics,
             user,
-            anexo
+            anexo,
+            audit
             )
 }

@@ -10,6 +10,8 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
+import { AuditService } from '../../../shared/services/audit.service';
+import { Audit } from '../../../shared/models/audit.model';
 
 @Component({
   selector: 'app-consulta-acompanhamento',
@@ -22,6 +24,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   lista_status!: any[];
   lista_imagens!: any[];
   lista_qtde!: any[];
+  registro!: Audit
 
   formIsertImgs!: FormGroup;
   formFollow!: FormGroup;
@@ -31,6 +34,8 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   showMessage!: any;
   showTitle!: any;
   exibirImg!: any;
+  user_name!: any;
+  user_id!: any;
   // date = new Date();
 
   multipleFiles!: any[];
@@ -46,6 +51,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     public eventoService: EventoService,
     public typeService: TypesService,
     public auth: UserService,
+    private auditService: AuditService,
     public followService: AcompanhamentoService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
@@ -62,6 +68,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
       leads_realizados: [''],
       evento_id: [''],
     });
+    this.registro = new Audit();
 
     this.getEvento();
     this.getFollows();
@@ -112,6 +119,8 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     this.token = this.auth.getToken();
     const payload = JSON.parse(atob(this.token.split('.')[1]));
     this.profile_id = payload._profile_id;
+    this.registro.user_id = payload._id;
+    this.user_name = payload._user_name;
     // console.log('profile', this.profile_id)
   }
 
@@ -126,6 +135,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   }
 
   onEdit(follow: any) {
+    console.log('follow', follow);
     this.followObj.id = follow.id;
     this.formFollow.controls['situacao_atual'].setValue(follow.situacao_atual);
     this.formFollow.controls['resultado'].setValue(follow.resultado);
@@ -139,9 +149,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
       follow.ass_acompanhamento_evento.nome_evento
     );
 
-    this.showTitle = this.formFollow.controls['evento_id'].setValue(
-      follow.ass_acompanhamento_evento.nome_evento
-    );
+    this.showTitle = follow.ass_acompanhamento_evento.nome_evento;
   }
 
   updateFollow() {
@@ -149,20 +157,23 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     this.followObj.resultado = this.formFollow.value.resultado;
     this.followObj.custo_realizado = this.formFollow.value.custo_realizado;
     this.followObj.leads_realizados = this.formFollow.value.leads_realizados;
-    this.followObj.evento_id = this.formFollow.value.evento_id;
 
     this.followService
       .updateFollow(this.followObj, Number(this.followObj.id))
       .subscribe((res) => {
         this.toastr.success('Atualiação realizada com sucesso!!!');
+        this.saveRegister();
         this.formFollow.reset();
         this.getFollows();
       });
   }
 
   deletaFollow(follow: any) {
+    console.log('Deletando -> ',follow)
+    this.showTitle = follow.ass_acompanhamento_evento.nome_evento;
     this.followService.deleteFollow(follow.id).subscribe((res) => {
       this.toastr.success('Exclusão realizada com sucesso!!!');
+      this.saveDeleteFollow(this.showTitle)
       this.getFollows();
     });
   }
@@ -214,6 +225,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
           this.imgs_anexo = response.message;
           this.finaliza = this.finaliza + 1;
           // console.log('imgs_anexo', this.imgs_anexo);
+          this.saveRegisterImagem();
         },
         error: (e) => {
           this.habilita_anexo_imgs = false;
@@ -221,6 +233,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
           // console.log('imgs_anexo', this.imgs_anexo);
         },
       });
+
   }
 
   viewImg(follow: any) {
@@ -256,6 +269,42 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
         this.showMessage('Erro ao buscar imagens. Tente novamente mais tarde.');
       }
     );
+  }
+
+  saveRegister(): void {
+    this.registro.tipo_acao = 'Edição de acompanhamento';
+    this.registro.acao = `O acompanhamento do evento ${ this.showTitle} foi alterado pelo usuário ${this.user_name}`;
+    console.log('registro', this.registro)
+    this.auditService.cadastrarRegistros(this.registro).subscribe({
+    next: (res: any) => {
+      console.log('registro', res)
+    },
+    error: (e) => (this.toastr.error(e))
+  })
+  }
+
+  saveRegisterImagem(): void {
+    this.registro.tipo_acao = 'Inserção de imagens';
+    this.registro.acao = `O evento ${ this.showTitle } foi inserido imagens pelo usuário ${this.user_name}`;
+    console.log('registro', this.registro)
+    this.auditService.cadastrarRegistros(this.registro).subscribe({
+    next: (res: any) => {
+      console.log('registro', res)
+    },
+    error: (e) => (this.toastr.error(e))
+  })
+  }
+
+  saveDeleteFollow(name: any): void {
+    this.registro.tipo_acao = 'Exclusão de acompanhamento';
+    this.registro.acao = `O evento ${name} foi excluido da base de dados de acompanhamento pelo usuário ${this.user_name}`;
+    this.auditService.cadastrarRegistros(this.registro).subscribe({
+    next: (res: any) => {
+      // console.log('registro', res)
+    },
+    error: (e) => (this.toastr.error(e))
+  })
+
   }
 
   // hour = this.date.getHours().toString().padStart(2, '0');

@@ -116,8 +116,8 @@
               </div>
 
               <div class="row mt-4 mb-4">
-                <div class="form-floating col-sm-4 col-12 mb-2">
-                  <select name="recursos_id" id="recursos_id" class="form-select" #recursos_id="ngModel" [(ngModel)]="evento.recursos_id" required>
+                <div class="form-floating col-sm-4 col-12 mb-2" *ngIf="evento.custo_previo != 0 && evento.custo_previo != null">
+                  <select name="recursos_id" id="recursos_id" class="form-select" #recursos_id="ngModel" [(ngModel)]="evento.recursos_id">
                     <option *ngFor=" let recursos of lista_recursos" [value]=recursos.id> {{ recursos.recursos }} </option>
                   </select>
                   <label class="form-label pergunta ms-3" for="cargo">Fonte Recursos</label>

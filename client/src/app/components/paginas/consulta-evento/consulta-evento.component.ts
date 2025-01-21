@@ -6,6 +6,8 @@ import { Evento } from '../../../shared/models/evento.model';
 import { ToastrService } from 'ngx-toastr';
 import { TypesService } from '../../../shared/services/types.service';
 import * as XLSX from 'xlsx';
+import { Audit } from '../../../shared/models/audit.model';
+import { AuditService } from '../../../shared/services/audit.service';
 
 @Component({
   selector: 'app-consulta-evento',
@@ -18,6 +20,7 @@ export class ConsultaEventoComponent implements OnInit{
   lista_evento_acompanhamento!: any[];
   formEvent!: FormGroup;
   eventoObj: Evento = new Evento()
+  registro!: Audit
 
   lista_sexec!: any[];
   lista_tipo_evento!: any[];
@@ -44,6 +47,7 @@ export class ConsultaEventoComponent implements OnInit{
     public eventoService: EventoService,
     private userService: UserService,
     public typeService: TypesService,
+    private auditService: AuditService,
     public auth: UserService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService
@@ -68,6 +72,7 @@ export class ConsultaEventoComponent implements OnInit{
         recursos_id: ['']
       })
 
+      this.registro = new Audit();
       this.ano_atual = this.date.getFullYear();
 
     for (let y = 2023; y <= this.ano_atual+1; y++) {
@@ -193,6 +198,7 @@ export class ConsultaEventoComponent implements OnInit{
       this.profile_id = payload._profile_id;
       this.user_name = payload._user_name;
       this.user_id = payload._id;
+      this.registro.user_id = this.user_id;
       console.log('payload', payload)
       this.getUserSexec(this.user_id);
     }
@@ -242,6 +248,7 @@ export class ConsultaEventoComponent implements OnInit{
 
       this.eventoService.updateEvento(this.eventoObj, Number(this.eventoObj.id)).subscribe(res=>{
         this.toastr.success('Atualiação realizada com sucesso!!!')
+        this.saveRegister();
         this.formEvent.reset();
         this.getEventos();
       })
@@ -251,6 +258,7 @@ export class ConsultaEventoComponent implements OnInit{
     deletaEvento(evento: any){
       this.eventoService.deleteEvento(evento.id).subscribe(res=>{
         this.toastr.success('Exclusão realizada com sucesso!!!')
+        this.saveDeleteEvento(evento.nome_evento)
         this.getEventos();
       })
 
@@ -272,6 +280,30 @@ export class ConsultaEventoComponent implements OnInit{
 
     /*save to file*/
     XLSX.writeFile(wb, this.fileName);
+  }
+
+  saveRegister(): void {
+    this.registro.tipo_acao = 'Edição de eventos'
+    this.registro.acao = `O evento ${this.eventoObj.nome_evento} foi alterado pelo usuário ${this.user_name}`;
+    console.log('registro', this.registro)
+    this.auditService.cadastrarRegistros(this.registro).subscribe({
+    next: (res: any) => {
+      console.log('registro', res)
+    },
+    error: (e) => (this.toastr.error(e))
+  })
+  }
+
+  saveDeleteEvento(name: any): void {
+    this.registro.tipo_acao = 'Exclusão de eventos'
+    this.registro.acao = `O evento ${name} foi excluido da base de dados pelo usuário ${this.user_name}`;
+    this.auditService.cadastrarRegistros(this.registro).subscribe({
+    next: (res: any) => {
+      // console.log('registro', res)
+    },
+    error: (e) => (this.toastr.error(e))
+  })
+
   }
 
 }

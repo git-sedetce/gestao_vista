@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.belongsTo(models.Profile, { foreignKey: 'profile_id', as: 'ass_user_profile' })
       User.belongsTo(models.Secretaria_Executivas, { foreignKey: 'sexec_id', as: 'ass_user_sexec' })
+      User.hasMany(models.Audit, { foreignKey: 'user_id', as: 'ass_users_audit' });
     }
   }
   User.init({

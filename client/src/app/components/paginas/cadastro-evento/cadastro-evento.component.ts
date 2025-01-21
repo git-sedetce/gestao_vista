@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { EventoService } from '../../../shared/services/evento.service';
 import { ToastrService } from 'ngx-toastr';
 import { TypesService } from '../../../shared/services/types.service';
+import { Audit } from '../../../shared/models/audit.model';
+import { AuditService } from '../../../shared/services/audit.service';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'app-cadastro-evento',
@@ -14,6 +17,7 @@ import { TypesService } from '../../../shared/services/types.service';
 export class CadastroEventoComponent implements OnInit{
   @ViewChild('formEvento') formEvento!: NgForm;
   evento!: Evento;
+  registro!: Audit
 
   lista_sexec!: any[];
   lista_tipo_evento!: any[];
@@ -27,16 +31,23 @@ export class CadastroEventoComponent implements OnInit{
   date = new Date();
   ano_atual!: any;
   mes_atual!: any;
+  user_name!: any;
+  user_id!: any;
+  profile_id!: any;
+  token!: any;
 
   constructor(
     private router: Router,
     private eventoservice: EventoService,
     private typeService: TypesService,
+    private auditService: AuditService,
+    public auth: UserService,
     private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
     this.evento = new Evento();
+    this.registro = new Audit();
 
     this.ano_atual = this.date.getFullYear();
 
@@ -56,6 +67,7 @@ export class CadastroEventoComponent implements OnInit{
     this.getLocal();
     this.getPart();
     this.getRecursos();
+    this.getPerfil();
 
   }
 
@@ -94,15 +106,37 @@ export class CadastroEventoComponent implements OnInit{
     );
   }
 
+  getPerfil() {
+    this.token = this.auth.getToken();
+    const payload = JSON.parse(atob(this.token.split('.')[1]));
+    this.profile_id = payload._profile_id;
+    this.registro.user_id = payload._id;
+    this.user_name = payload._user_name;
+    console.log('profile', this.profile_id)
+  }
+
   save(){
     // console.log('evento', this.evento);
     this.eventoservice.cadastrar(this.evento).subscribe({
       next: (res: any) => {
         this.toastr.success('Evento cadastrado com sucesso!');
+        this.saveRegister(this.evento.nome_evento),
         this.router.navigate(['/cadastroacompanhamento']);
         this.formEvento.reset();
       },
       error: (e) => (this.toastr.error(e), this.formEvento.reset())
     })
+  }
+
+  saveRegister(showTitle: any): void {
+    this.registro.tipo_acao = 'Cadastrar evento';
+    this.registro.acao = `O evento ${showTitle} foi cadastrado pelo usuário ${this.user_name}`;
+    console.log('registro', this.registro)
+    this.auditService.cadastrarRegistros(this.registro).subscribe({
+    next: (res: any) => {
+      console.log('registro', res)
+    },
+    error: (e) => (this.toastr.error(e))
+  })
   }
 }
