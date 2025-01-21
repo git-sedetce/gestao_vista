@@ -50,8 +50,6 @@ export class ResetComponent implements OnInit {
         this.formResetPassword.reset()
       }
     })
-
-
   }
 
 }

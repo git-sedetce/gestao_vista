@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api-sistemaeventos.sde.ce.gov.br',
+  apiUrl: 'http://localhost:1924/',
 };
+//https://api-sistemaeventos.sde.ce.gov.br
