@@ -81,7 +81,7 @@ export class HomeComponent implements OnInit {
           });
           this.Renderbarchart(this.year, this.eventsByYear);
         }
-        // console.log('lista_evento_por_anos', this.lista_evento_por_anos);
+        console.log('lista_evento_por_anos', this.lista_evento_por_anos);
       },
       (erro: any) => console.error('erro', erro)
     );

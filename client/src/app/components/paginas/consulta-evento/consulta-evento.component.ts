@@ -1,10 +1,10 @@
+import { UserService } from './../../../shared/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { EventoService } from '../../../shared/services/evento.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Evento } from '../../../shared/models/evento.model';
 import { ToastrService } from 'ngx-toastr';
 import { TypesService } from '../../../shared/services/types.service';
-import { UserService } from '../../../shared/services/user.service';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -33,9 +33,16 @@ export class ConsultaEventoComponent implements OnInit{
   mes_atual!: any;
   profile_id!: any;
   token!: any;
+  user_name!: any;
+  user_id!: any;
+  id_sexec!: any;
+
+   page: number = 1; // Página atual
+   itemsPerPage: number = 10; // Itens por página
 
   constructor(
     public eventoService: EventoService,
+    private userService: UserService,
     public typeService: TypesService,
     public auth: UserService,
     private formBuilder: FormBuilder,
@@ -89,7 +96,7 @@ export class ConsultaEventoComponent implements OnInit{
     getEventos(){
       this.eventoService.getEvento('listaEvento').subscribe((evt: any[]) =>{
         this.lista_evento = evt;
-        //  console.log('lista_evento', this.lista_evento);
+        console.log('lista_evento', this.lista_evento);
       }, (erro: any) => console.error(erro)
       );
     }
@@ -184,7 +191,19 @@ export class ConsultaEventoComponent implements OnInit{
       this.token = this.auth.getToken();
       const payload = JSON.parse(atob(this.token.split('.')[1]));
       this.profile_id = payload._profile_id;
-      // console.log('profile', this.profile_id)
+      this.user_name = payload._user_name;
+      this.user_id = payload._id;
+      console.log('payload', payload)
+      this.getUserSexec(this.user_id);
+    }
+
+    getUserSexec(id: number){
+      this.userService.pegar_sexec(id).subscribe((rp:any) =>{
+        console.log('rp', rp)
+        this.id_sexec = rp.sexec_id;
+        this.getEventoByRes(rp.sexec_id)
+      }, (erro: any) => console.error(erro)
+      );
     }
 
     onEdit(evento: any){

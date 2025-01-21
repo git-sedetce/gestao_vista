@@ -32,6 +32,14 @@ export class UserService {
     return this.http.get(environment.apiUrl + metodo)
   }
 
+  pegar_user(id: number): Observable<any> {
+    return this.http.get(environment.apiUrl + 'getUser/' + id)
+  }
+
+  pegar_sexec(id: number): Observable<any> {
+    return this.http.get(environment.apiUrl + 'getUserSexec/'  + id)
+  }
+
   login(data:any): Observable<any> {
     return this.http.post<any>(environment.apiUrl + 'login', data).pipe(
       tap((response: { token: string; }) => {

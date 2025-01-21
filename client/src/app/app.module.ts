@@ -18,6 +18,7 @@ import { CadastroComponent } from './components/user/cadastro/cadastro.component
 import { LoginComponent } from './components/user/login/login.component';
 import { ResetComponent } from './components/user/reset/reset.component';
 import { UsersComponent } from './components/paginas/users/users.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { UsersComponent } from './components/paginas/users/users.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]
