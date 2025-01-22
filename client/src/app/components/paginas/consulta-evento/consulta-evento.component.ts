@@ -101,7 +101,7 @@ export class ConsultaEventoComponent implements OnInit{
     getEventos(){
       this.eventoService.getEvento('listaEvento').subscribe((evt: any[]) =>{
         this.lista_evento = evt;
-        console.log('lista_evento', this.lista_evento);
+        // console.log('lista_evento', this.lista_evento);
       }, (erro: any) => console.error(erro)
       );
     }
@@ -199,13 +199,13 @@ export class ConsultaEventoComponent implements OnInit{
       this.user_name = payload._user_name;
       this.user_id = payload._id;
       this.registro.user_id = this.user_id;
-      console.log('payload', payload)
+      // console.log('payload', payload)
       this.getUserSexec(this.user_id);
     }
 
     getUserSexec(id: number){
       this.userService.pegar_sexec(id).subscribe((rp:any) =>{
-        console.log('rp', rp)
+        // console.log('rp', rp)
         this.id_sexec = rp.sexec_id;
         this.getEventoByRes(rp.sexec_id)
       }, (erro: any) => console.error(erro)
@@ -285,10 +285,10 @@ export class ConsultaEventoComponent implements OnInit{
   saveRegister(): void {
     this.registro.tipo_acao = 'Edição de eventos'
     this.registro.acao = `O evento ${this.eventoObj.nome_evento} foi alterado pelo usuário ${this.user_name}`;
-    console.log('registro', this.registro)
+    // console.log('registro', this.registro)
     this.auditService.cadastrarRegistros(this.registro).subscribe({
     next: (res: any) => {
-      console.log('registro', res)
+      // console.log('registro', res)
     },
     error: (e) => (this.toastr.error(e))
   })

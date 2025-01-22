@@ -56,6 +56,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient,
+    private userService: UserService,
     private sanitizer: DomSanitizer
   ) {}
 
@@ -70,18 +71,15 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     });
     this.registro = new Audit();
 
-    this.getEvento();
     this.getFollows();
     this.getPerfil();
     this.getQtdImgs();
   }
-  getEvento(): void {
-    this.eventoService.getSimpleEvento('listEvent').subscribe(
-      (evt: any[]) => {
-        this.lista_evento = evt;
-        // console.log('lista_evento', this.lista_evento);
-      },
-      (erro: any) => console.error('erro', erro)
+  getEvento(sexec_id: number): void{
+    this.eventoService.getSimpleEvento(sexec_id).subscribe((evt: any[]) => {
+      this.lista_evento = evt;
+      // console.log('lista_evento', this.lista_evento);
+    }, (erro: any) => console.error('erro', erro)
     );
   }
 
@@ -121,7 +119,17 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     this.profile_id = payload._profile_id;
     this.registro.user_id = payload._id;
     this.user_name = payload._user_name;
+    this.user_id = payload._id;
+    this.getUserSexec(this.user_id);
     // console.log('profile', this.profile_id)
+  }
+
+  getUserSexec(id: number){
+    this.userService.pegar_sexec(id).subscribe((rp:any) =>{
+      // console.log('rp', rp)
+      this.getEvento(rp.sexec_id)
+    }, (erro: any) => console.error(erro)
+    );
   }
 
   getQtdImgs() {
@@ -135,7 +143,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   }
 
   onEdit(follow: any) {
-    console.log('follow', follow);
+    // console.log('follow', follow);
     this.followObj.id = follow.id;
     this.formFollow.controls['situacao_atual'].setValue(follow.situacao_atual);
     this.formFollow.controls['resultado'].setValue(follow.resultado);
@@ -169,7 +177,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   }
 
   deletaFollow(follow: any) {
-    console.log('Deletando -> ',follow)
+    // console.log('Deletando -> ',follow)
     this.showTitle = follow.ass_acompanhamento_evento.nome_evento;
     this.followService.deleteFollow(follow.id).subscribe((res) => {
       this.toastr.success('Exclusão realizada com sucesso!!!');
@@ -274,10 +282,10 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   saveRegister(): void {
     this.registro.tipo_acao = 'Edição de acompanhamento';
     this.registro.acao = `O acompanhamento do evento ${ this.showTitle} foi alterado pelo usuário ${this.user_name}`;
-    console.log('registro', this.registro)
+    // console.log('registro', this.registro)
     this.auditService.cadastrarRegistros(this.registro).subscribe({
     next: (res: any) => {
-      console.log('registro', res)
+      // console.log('registro', res)
     },
     error: (e) => (this.toastr.error(e))
   })
@@ -286,10 +294,10 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   saveRegisterImagem(): void {
     this.registro.tipo_acao = 'Inserção de imagens';
     this.registro.acao = `O evento ${ this.showTitle } foi inserido imagens pelo usuário ${this.user_name}`;
-    console.log('registro', this.registro)
+    // console.log('registro', this.registro)
     this.auditService.cadastrarRegistros(this.registro).subscribe({
     next: (res: any) => {
-      console.log('registro', res)
+      // console.log('registro', res)
     },
     error: (e) => (this.toastr.error(e))
   })

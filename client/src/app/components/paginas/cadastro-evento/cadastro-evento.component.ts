@@ -112,7 +112,7 @@ export class CadastroEventoComponent implements OnInit{
     this.profile_id = payload._profile_id;
     this.registro.user_id = payload._id;
     this.user_name = payload._user_name;
-    console.log('profile', this.profile_id)
+    // console.log('profile', this.profile_id)
   }
 
   save(){
@@ -131,10 +131,10 @@ export class CadastroEventoComponent implements OnInit{
   saveRegister(showTitle: any): void {
     this.registro.tipo_acao = 'Cadastrar evento';
     this.registro.acao = `O evento ${showTitle} foi cadastrado pelo usuário ${this.user_name}`;
-    console.log('registro', this.registro)
+    // console.log('registro', this.registro)
     this.auditService.cadastrarRegistros(this.registro).subscribe({
     next: (res: any) => {
-      console.log('registro', res)
+      // console.log('registro', res)
     },
     error: (e) => (this.toastr.error(e))
   })

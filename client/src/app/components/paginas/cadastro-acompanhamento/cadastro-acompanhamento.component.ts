@@ -37,7 +37,6 @@ export class CadastroAcompanhamentoComponent implements OnInit {
   ngOnInit(): void {
     this.follow = new Acompanhamento();
     this.registro = new Audit();
-    this.getEvento();
     this.getPerfil();
   }
 
@@ -47,19 +46,29 @@ export class CadastroAcompanhamentoComponent implements OnInit {
     this.profile_id = payload._profile_id;
     this.registro.user_id = payload._id;
     this.user_name = payload._user_name;
-    console.log('profile', this.profile_id)
+    this.user_id = payload._id;
+    this.getUserSexec(this.user_id);
+    // console.log('profile', this.profile_id)
   }
 
-  getEvento(): void{
-    this.serviceEvento.getSimpleEvento('listEvent').subscribe((evt: any[]) => {
+  getUserSexec(id: number){
+    this.auth.pegar_sexec(id).subscribe((rp:any) =>{
+      // console.log('rp', rp)
+      this.getEvento(rp.sexec_id)
+    }, (erro: any) => console.error(erro)
+    );
+  }
+
+  getEvento(sexec_id: number): void{
+    this.serviceEvento.getSimpleEvento(sexec_id).subscribe((evt: any[]) => {
       this.lista_evento = evt;
-      console.log('lista_evento', this.lista_evento);
+      // console.log('lista_evento', this.lista_evento);
     }, (erro: any) => console.error('erro', erro)
     );
   }
 
   save(){
-    console.log('acompanhamento', this.follow);
+    // console.log('acompanhamento', this.follow);
     this.serviceFollow.cadastrar(this.follow).subscribe({
       next: (res: any) => {
         this.toastr.success('Acompanhamento cadastrado com sucesso!');
@@ -74,10 +83,10 @@ export class CadastroAcompanhamentoComponent implements OnInit {
   saveRegister(id: any): void {
     this.registro.tipo_acao = 'Cadastrar acompanhamento';
     this.registro.acao = `O acompanhamento do evento de ${id} foi cadastrado pelo usuário ${this.user_name}`;
-    console.log('registro', this.registro)
+    // console.log('registro', this.registro)
     this.auditService.cadastrarRegistros(this.registro).subscribe({
     next: (res: any) => {
-      console.log('registro', res)
+      // console.log('registro', res)
     },
     error: (e) => (this.toastr.error(e))
   })

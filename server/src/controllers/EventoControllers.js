@@ -106,16 +106,22 @@ class EventoControllers {
   }
 
   static async listarEvents(req, res) {
+    const { id } = req.params;
     try {
       const mostrarEventos = await database.Evento.findAll({
         where: {
-          id: {
-            [database.Sequelize.Op.notIn]: database.Sequelize.literal(
-              `(SELECT evento_id FROM "Acompanhamentos")`
-            ),
-          },
+          [database.Sequelize.Op.and]: [
+            {
+              id: {
+                [database.Sequelize.Op.notIn]: database.Sequelize.literal(
+                  `(SELECT evento_id FROM "Acompanhamentos")`
+                ),
+              },
+            },
+            { sexec_id: id },
+          ],
         },
-        order: ["id"],
+        order: [["id", "ASC"]],
         attributes: ["id", "nome_evento"],
       });
   
@@ -124,6 +130,7 @@ class EventoControllers {
       return res.status(500).json({ error: error.message });
     }
   }
+  
   
 
   static async listarEventosbyEvento(req, res) {
