@@ -43,6 +43,9 @@
           <li *ngIf="!authenticated">
             <button type="button" routerLink="/cadastro"class="btn btn-primary">Sign-up</button>
           </li>
+        <li *ngIf="authenticated">
+          <div class="p-2 mb-1 bg-primary fw-bold text-white">Olá {{ user_name }}</div>
+        </li>
           <li *ngIf="authenticated">
             <button type="button" routerLink="/login" class="btn btn-danger text-dark text-white ms-2 me-2" (click)="logout()">Logout</button>
             <!--<a routerLink="/login" class="nav-link" (click)="logout()">Logout</a>-->
