@@ -113,7 +113,7 @@ export class ConsultaEventoComponent implements OnInit{
       this.eventoService.getEvento('listaEvento').subscribe((evt: any[]) =>{
         this.lista_evento = evt;
         this.filter = false;
-        console.log('lista_evento', this.lista_evento);
+        // console.log('lista_evento', this.lista_evento);
       }, (erro: any) => console.error(erro)
       );
     }
@@ -333,24 +333,8 @@ export class ConsultaEventoComponent implements OnInit{
     });
     this.filter = true
 
-    console.log('Eventos filtrados:', this.eventosFiltrados);
+    // console.log('Eventos filtrados:', this.eventosFiltrados);
   }
-
-  testeFiltrarEventos(mes: string, ano: string, tipoConferencia: string) {
-    this.eventoService.getEvento('listaEvento').subscribe(
-      (evt: any[]) => {
-        this.lista_evento = evt.filter(evento =>
-          evento.mes.toLowerCase() === mes.toLowerCase() &&
-          evento.ano === ano &&
-          evento.ass_evento_tipo.nome_evento.toLowerCase() === tipoConferencia.toLowerCase()
-        );
-
-        console.log('Eventos filtrados:', this.lista_evento);
-      },
-      (erro: any) => console.error('Erro ao buscar eventos:', erro)
-    );
-  }
-
 
 
 }
