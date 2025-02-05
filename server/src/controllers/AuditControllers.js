@@ -1,6 +1,6 @@
 const database = require("../models");
 
-class ReunioesControllers {
+class AuditControllers {
    
    static async register(req,res){
     
@@ -17,4 +17,4 @@ class ReunioesControllers {
 
 }
 
-module.exports = ReunioesControllers;
+module.exports = AuditControllers;
