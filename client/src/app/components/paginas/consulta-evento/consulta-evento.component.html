@@ -8,45 +8,54 @@
 
     <div class="row">
 
-      <div class="form-floating col-12 mt-3 mb-2">
-        <select name="sexec_id" id="sexec_id" class="form-select" #sexec_id (change)="(getEventoByRes(sexec_id.value))">
+      <div class="form-floating col-sm-10 col-12 mt-3 mb-2">
+        <select name="sexec_id" id="sexec_id" class="form-select" [(ngModel)]="filtro_resp" #sexec_id (change)="(getEventoByRes(sexec_id.value))">
           <option *ngFor=" let sexec of lista_sexec" [value]=sexec.id> {{ sexec.secretaria }} / {{ sexec.sigla }} </option>
         </select>
         <label class="form-label pergunta ms-3" for="cargo">Responável</label>
       </div>
+
+      <div class="form-floating col-sm-2 col-12 mt-3 mb-2">
+        <div class="filter-nav d-flex flex-center">
+          <button class="mx-3 mt-1 pt-1 pb-1 btn btn-primary text-uppercase fw-bold" (click)="getEventos()">Lista de Eventos</button>
+          <button class="mx-3 btn text-center btn-success text-uppercase fw-bold" data-bs-toggle="modal" data-bs-target="#modalTabela">Ver Tabela</button>
+        </div>
+      </div>
     </div>
+
+
 
     <div class="row mt-3 mb-3">
       <div class="form-floating col-sm-2 col-12 mb-2">
-        <select name="mes" id="mes" class="form-select text-capitalize" #mes (change)="(getEventoByMes(mes.value))">
+        <select name="mes" id="mes" class="form-select text-capitalize" [(ngModel)]="filtro_mes" #mes (change)="(getEventoByMes(mes.value))">
           <option *ngFor=" let month of lista_mes" [value]=month> {{month}} </option>
         </select>
         <label class="form-label pergunta ms-3" for="cargo">Mês</label>
       </div>
 
       <div class="form-floating col-sm-1 col-12 mb-2">
-        <select name="ano" id="ano" class="form-select"  #ano (change)="(getEventoByAno(ano.value))">
+        <select name="ano" id="ano" class="form-select" [(ngModel)]="filtro_ano" #ano (change)="(getEventoByAno(ano.value))">
           <option *ngFor=" let year of lista_ano" [value]=year> {{year}} </option>
         </select>
         <label class="form-label pergunta ms-3" for="cargo">Ano</label>
       </div>
 
       <div class="form-floating col-sm-2 col-12 mb-2">
-        <select name="tipo_local_id" id="tipo_local_id" class="form-select"  #tipo_evento_id (change)="(getEventoByLocal(tipo_evento_id.value))">
+        <select name="tipo_local_id" id="tipo_local_id" class="form-select" [(ngModel)]="filtro_tp_evt" #tipo_evento_id (change)="(getEventoByLocal(tipo_evento_id.value))">
           <option *ngFor=" let evento of lista_tipo_evento" [value]=evento.id> {{ evento.nome_evento }} </option>
         </select>
         <label class="form-label pergunta ms-3" for="cargo">Tipo Evento</label>
       </div>
 
       <div class="form-floating col-sm-2 col-12 mb-2">
-        <select name="tipo_local_id" id="tipo_local_id" class="form-select"  #tipo_local_id (change)="(getEventoByLocal(tipo_local_id.value))">
+        <select name="tipo_local_id" id="tipo_local_id" class="form-select" [(ngModel)]="filtro_tp_lc" #tipo_local_id (change)="(getEventoByLocal(tipo_local_id.value))">
           <option *ngFor=" let local of lista_local" [value]=local.id> {{ local.local_evento }} </option>
         </select>
         <label class="form-label pergunta ms-3" for="cargo">Tipo Local</label>
       </div>
 
       <div class="form-floating col-sm-2 col-12 mb-2">
-        <select name="recursos_id" id="recursos_id" class="form-select"  #recursos_id (change)="(getEventoByFonte(recursos_id.value))">
+        <select name="recursos_id" id="recursos_id" class="form-select" [(ngModel)]="filtro_fonte" #recursos_id (change)="(getEventoByFonte(recursos_id.value))">
           <option *ngFor=" let recursos of lista_recursos" [value]=recursos.id> {{ recursos.recursos }} </option>
         </select>
         <label class="form-label pergunta ms-3" for="cargo">Fonte Recursos</label>
@@ -54,8 +63,7 @@
 
       <div class="col-sm-2 col-12 mb-2">
       <div class="filter-nav d-flex flex-center">
-        <button class="mx-3 mt-1 pt-1 pb-1 btn btn-primary text-uppercase fw-bold" (click)="getEventos()">Lista de Eventos</button>
-        <button class="mx-3 btn text-center btn-success text-uppercase fw-bold" data-bs-toggle="modal" data-bs-target="#modalTabela">Ver Tabela</button>
+        <button class="mx-3 mt-1 pt-1 pb-1 btn btn-primary text-uppercase fw-bold" (click)="filtrarEventos()">Filtrar Eventos</button>
       </div>
     </div>
     </div>
@@ -75,7 +83,7 @@
           <th scope="col" class="align-middle text-center">Leads Previous</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngIf="!filter">
         <tr *ngFor="let evento of lista_evento | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
           <td class="align-middle">{{ evento.nome_evento }}</td>
           <td class="align-middle">{{ evento.ass_evento_sexec.secretaria }}</td>
@@ -90,6 +98,23 @@
           <td *ngIf="profile_id === 3 || (profile_id === 2 && id_sexec === evento.sexec_id)" class="align-middle"><button (click)="deletaEvento(evento)" type="button" class="btn btn-danger mx-3"><i class="bi bi-trash-fill"></i></button></td>
         </tr>
       </tbody>
+
+      <tbody *ngIf="filter">
+        <tr *ngFor="let evento of eventosFiltrados | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+          <td class="align-middle">{{ evento.nome_evento }}</td>
+          <td class="align-middle">{{ evento.ass_evento_sexec.secretaria }}</td>
+          <td class="align-middle text-center text-capitalize">{{ evento.mes }}</td>
+          <td class="align-middle text-center text-capitalize">{{ evento.ano }}</td>
+          <td class="align-middle text-center text-capitalize">{{ evento.ass_evento_tipo.nome_evento }}</td>
+          <td class="align-middle text-center text-capitalize">{{ evento.local }}</td>
+          <td class="align-middle text-center text-capitalize">R$ {{ evento.custo_previo }}</td>
+          <td class="align-middle text-center text-capitalize">{{ evento.ass_evento_recursos.recursos }}</td>
+          <td class="align-middle text-center text-capitalize">{{ evento.lead_previsto }}</td>
+          <td *ngIf="profile_id === 3 || (profile_id === 2 && id_sexec === evento.sexec_id)" class="align-middle"><button (click)="onEdit(evento)" type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#modalEdit"><i class="bi bi-pencil-square"></i></button></td>
+          <td *ngIf="profile_id === 3 || (profile_id === 2 && id_sexec === evento.sexec_id)" class="align-middle"><button (click)="deletaEvento(evento)" type="button" class="btn btn-danger mx-3"><i class="bi bi-trash-fill"></i></button></td>
+        </tr>
+      </tbody>
+
     </table>
     <pagination-controls class="text-center" (pageChange)="page = $event"></pagination-controls>
   </div>

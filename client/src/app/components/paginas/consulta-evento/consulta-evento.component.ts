@@ -43,6 +43,17 @@ export class ConsultaEventoComponent implements OnInit{
    page: number = 1; // Página atual
    itemsPerPage: number = 10; // Itens por página
 
+
+   //Variaáveis Filtro
+   filter: boolean = false;
+   filtro_resp!: any;
+   filtro_mes!: any;
+   filtro_ano!: any;
+   filtro_tp_evt!: any;
+   filtro_tp_lc!: any;
+   filtro_fonte!: any;
+   eventosFiltrados: any[] = [];
+
   constructor(
     public eventoService: EventoService,
     private userService: UserService,
@@ -101,7 +112,8 @@ export class ConsultaEventoComponent implements OnInit{
     getEventos(){
       this.eventoService.getEvento('listaEvento').subscribe((evt: any[]) =>{
         this.lista_evento = evt;
-        // console.log('lista_evento', this.lista_evento);
+        this.filter = false;
+        console.log('lista_evento', this.lista_evento);
       }, (erro: any) => console.error(erro)
       );
     }
@@ -305,5 +317,40 @@ export class ConsultaEventoComponent implements OnInit{
   })
 
   }
+
+  //FILTROS MULTIPLOS
+
+  filtrarEventos() {
+    this.eventosFiltrados = this.lista_evento.filter(evento => {
+      return (
+        (!this.filtro_mes || evento.mes.toLowerCase() === this.filtro_mes.toLowerCase()) &&
+        (!this.filtro_ano || evento.ano === this.filtro_ano) &&
+        (!this.filtro_tp_evt || evento.ass_evento_tipo.nome_evento.toLowerCase() === this.filtro_tp_evt.toLowerCase()) &&
+        (!this.filtro_tp_lc || evento.ass_evento_local.id === +this.filtro_tp_lc) &&
+        (!this.filtro_fonte || evento.ass_evento_recursos.id === +this.filtro_fonte) &&
+        (!this.filtro_resp || evento.ass_evento_sexec.id === +this.filtro_resp)
+      );
+    });
+    this.filter = true
+
+    console.log('Eventos filtrados:', this.eventosFiltrados);
+  }
+
+  testeFiltrarEventos(mes: string, ano: string, tipoConferencia: string) {
+    this.eventoService.getEvento('listaEvento').subscribe(
+      (evt: any[]) => {
+        this.lista_evento = evt.filter(evento =>
+          evento.mes.toLowerCase() === mes.toLowerCase() &&
+          evento.ano === ano &&
+          evento.ass_evento_tipo.nome_evento.toLowerCase() === tipoConferencia.toLowerCase()
+        );
+
+        console.log('Eventos filtrados:', this.lista_evento);
+      },
+      (erro: any) => console.error('Erro ao buscar eventos:', erro)
+    );
+  }
+
+
 
 }
