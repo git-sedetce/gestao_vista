@@ -17,6 +17,9 @@ export class UsersComponent implements OnInit {
   formUser!: FormGroup;
   userObj: User = new User()
 
+  page: number = 1; // Página atual
+  itemsPerPage: number = 10; // Itens por página
+
   constructor(
     private user: UserService,
     private typeService: TypesService,

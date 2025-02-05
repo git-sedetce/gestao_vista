@@ -48,7 +48,7 @@ export class CadastroAcompanhamentoComponent implements OnInit {
     this.user_name = payload._user_name;
     this.user_id = payload._id;
     this.getUserSexec(this.user_id, this.profile_id);
-    console.log('payload', payload)
+    // console.log('payload', payload)
   }
 
   getUserSexec(id: number, perfil_id:number){
@@ -56,7 +56,7 @@ export class CadastroAcompanhamentoComponent implements OnInit {
       this.getEventos();
     } else {
       this.auth.pegar_sexec(id).subscribe((rp:any) =>{
-        console.log('rp', rp)
+        // console.log('rp', rp)
         this.getEvento(rp.sexec_id)
       }, (erro: any) => console.error(erro)
       );
@@ -74,7 +74,7 @@ export class CadastroAcompanhamentoComponent implements OnInit {
   getEventos(): void{
     this.serviceEvento.getEventos('listaEvent').subscribe((evt: any[]) => {
       this.lista_evento = evt;
-      console.log('lista_evento', this.lista_evento);
+      // console.log('lista_evento', this.lista_evento);
     }, (erro: any) => console.error('erro', erro)
     );
   }
