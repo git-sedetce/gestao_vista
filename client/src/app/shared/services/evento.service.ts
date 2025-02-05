@@ -26,6 +26,10 @@ export class EventoService {
     return this.http.get(environment.apiUrl + 'listEvent/' +id)
   }
 
+  getEventos(rota:any): Observable<any> {
+    return this.http.get(environment.apiUrl + rota )
+  }
+
   updateEvento(data: any, id: any){
     return this.http.put<any>(environment.apiUrl + 'atuaizaEvento/' +id, data)
     .pipe(map((res:any)=>{

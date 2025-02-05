@@ -47,22 +47,34 @@ export class CadastroAcompanhamentoComponent implements OnInit {
     this.registro.user_id = payload._id;
     this.user_name = payload._user_name;
     this.user_id = payload._id;
-    this.getUserSexec(this.user_id);
-    // console.log('profile', this.profile_id)
+    this.getUserSexec(this.user_id, this.profile_id);
+    console.log('payload', payload)
   }
 
-  getUserSexec(id: number){
-    this.auth.pegar_sexec(id).subscribe((rp:any) =>{
-      // console.log('rp', rp)
-      this.getEvento(rp.sexec_id)
-    }, (erro: any) => console.error(erro)
-    );
+  getUserSexec(id: number, perfil_id:number){
+    if (perfil_id === 3){
+      this.getEventos();
+    } else {
+      this.auth.pegar_sexec(id).subscribe((rp:any) =>{
+        console.log('rp', rp)
+        this.getEvento(rp.sexec_id)
+      }, (erro: any) => console.error(erro)
+      );
+    }
   }
 
   getEvento(sexec_id: number): void{
     this.serviceEvento.getSimpleEvento(sexec_id).subscribe((evt: any[]) => {
       this.lista_evento = evt;
       // console.log('lista_evento', this.lista_evento);
+    }, (erro: any) => console.error('erro', erro)
+    );
+  }
+
+  getEventos(): void{
+    this.serviceEvento.getEventos('listaEvent').subscribe((evt: any[]) => {
+      this.lista_evento = evt;
+      console.log('lista_evento', this.lista_evento);
     }, (erro: any) => console.error('erro', erro)
     );
   }
