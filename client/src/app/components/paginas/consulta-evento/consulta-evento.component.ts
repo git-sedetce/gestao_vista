@@ -283,7 +283,33 @@ export class ConsultaEventoComponent implements OnInit{
 
   getReport(){
     /**passing table id**/
+    let data = document.getElementById('table-evento-acompanhamento');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+    /**Generate workbook and add the worksheet**/
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /*save to file*/
+    XLSX.writeFile(wb, this.fileName);
+  }
+
+  getReportEvent(){
+    /**passing table id**/
     let data = document.getElementById('table-evento');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+    /**Generate workbook and add the worksheet**/
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /*save to file*/
+    XLSX.writeFile(wb, this.fileName);
+  }
+
+  getReportFilter(){
+    /**passing table id**/
+    let data = document.getElementById('table-evento-filtro');
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
 
     /**Generate workbook and add the worksheet**/
