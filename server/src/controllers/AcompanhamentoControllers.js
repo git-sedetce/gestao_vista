@@ -14,7 +14,9 @@ class AcompanhamentoController {
       const newFollow = await database.Acompanhamento.create(novoFollow);
       return res.status(200).json(newFollow);
     } catch (error) {
-      return res.status(500).json({ message: "Acompanhamento não cadastrado!" });
+      return res
+        .status(500)
+        .json({ message: "Acompanhamento não cadastrado!" });
     }
   }
 
@@ -25,9 +27,18 @@ class AcompanhamentoController {
         include: [
           {
             association: "ass_acompanhamento_evento",
-            where: (database.Acompanhamento.evento_id = database.Acompanhamento.id),
+            where: (database.Acompanhamento.evento_id =
+              database.Acompanhamento.id),
             attributes: ["id", "nome_evento"],
-          },          
+            include: [
+              {
+                association: "ass_evento_sexec",
+                where: (database.Evento.sexec_id =
+                  database.Secretaria_Executivas.id),
+                attributes: ["id", "secretaria", "sigla"],
+              },
+            ],
+          },
         ],
       });
       return res.status(200).json(mostrarFollows);
@@ -35,6 +46,35 @@ class AcompanhamentoController {
       return res.status(500).json(error.message);
     }
   }
+
+  static async listarFollowsBySexec(req, res) {
+    const { id } = req.params;
+    try {
+        const mostrarFollows = await database.Acompanhamento.findAll({
+            order: [["id", "ASC"]],
+            include: [
+                {
+                    association: "ass_acompanhamento_evento",
+                    attributes: ["id", "nome_evento"],
+                    required: true,
+                    include: [
+                        {
+                            association: "ass_evento_sexec",
+                            attributes: ["id", "secretaria", "sigla"],
+                            required: true,
+                            where: {
+                                id: Number(id) // Certifique-se de que `id` é um número válido
+                            }
+                        }
+                    ]
+                }
+            ]
+        });
+        return res.status(200).json(mostrarFollows);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
 
   static async listarFollowsbyId(req, res) {
     const { id } = req.params;
@@ -44,9 +84,10 @@ class AcompanhamentoController {
         include: [
           {
             association: "ass_acompanhamento_evento",
-            where: (database.Acompanhamento.evento_id = database.Acompanhamento.id),
+            where: (database.Acompanhamento.evento_id =
+              database.Acompanhamento.id),
             attributes: ["id", "nome_evento"],
-          }
+          },
         ],
       });
       return res.status(200).json(showFollows);
@@ -63,9 +104,10 @@ class AcompanhamentoController {
         include: [
           {
             association: "ass_acompanhamento_evento",
-            where: (database.Acompanhamento.evento_id = database.Acompanhamento.id),
+            where: (database.Acompanhamento.evento_id =
+              database.Acompanhamento.id),
             attributes: ["id", "nome_evento"],
-          }
+          },
         ],
       });
       return res.status(200).json(showFollows);
@@ -82,9 +124,10 @@ class AcompanhamentoController {
         include: [
           {
             association: "ass_acompanhamento_evento",
-            where: (database.Acompanhamento.evento_id = database.Acompanhamento.id),
+            where: (database.Acompanhamento.evento_id =
+              database.Acompanhamento.id),
             attributes: ["id", "nome_evento"],
-          }
+          },
         ],
       });
       return res.status(200).json(showFollows);
@@ -121,7 +164,6 @@ class AcompanhamentoController {
       return res.status(500).json(error.message);
     }
   }
-  
 }
 
 module.exports = AcompanhamentoController;

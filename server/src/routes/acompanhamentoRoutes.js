@@ -6,6 +6,7 @@ const router = Router()
 router.post('/cadastroFollow', AcompanhamentoController.cadastroFollow)
 router.get('/listaFollow', AcompanhamentoController.listarFollows)
 router.get('/listaFollow/:id', AcompanhamentoController.listarFollowsbyId)
+router.get('/listaFollowSexec/:id', AcompanhamentoController.listarFollowsBySexec)
 router.get('/listaFollowByEvento/:id', AcompanhamentoController.listarFollowsbyEvento)
 router.get('/listaFollowByStatus/:stats', AcompanhamentoController.listarFollowsbyStats)
 
