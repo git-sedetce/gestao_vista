@@ -71,15 +71,39 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     });
     this.registro = new Audit();
 
-    this.getFollows();
     this.getPerfil();
     this.getQtdImgs();
   }
-  getEvento(sexec_id: number): void{
-    this.eventoService.getSimpleEvento(sexec_id).subscribe((evt: any[]) => {
-      this.lista_evento = evt;
-      // console.log('lista_evento', this.lista_evento);
-    }, (erro: any) => console.error('erro', erro)
+
+  getPerfil() {
+    this.token = this.auth.getToken();
+    const payload = JSON.parse(atob(this.token.split('.')[1]));
+    this.profile_id = payload._profile_id;
+    this.registro.user_id = payload._id;
+    this.user_name = payload._user_name;
+    this.user_id = payload._id;
+    if(this.profile_id === 2){
+      this.getUserSexec(Number(this.user_id));
+    }else{
+      this.getFollows()
+    }
+    // console.log('payload', payload)
+  }
+
+  getUserSexec(id: number){
+    this.userService.pegar_sexec(id).subscribe((rp:any) =>{
+      // console.log('rp', rp)
+      this.getFollowSexec(rp.sexec_id)
+    }, (erro: any) => console.error(erro)
+    );
+  }
+  getFollowSexec(sexec_id: number): void{
+    this.followService.listarAcompanhamentoBySexec(sexec_id).subscribe(
+      (flw: any[]) => {
+        this.lista_follow = flw;
+        // console.log('lista_follow', this.lista_follow);
+      },
+      (erro: any) => console.error(erro)
     );
   }
 
@@ -111,25 +135,6 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
         },
         (erro: any) => console.error(erro)
       );
-  }
-
-  getPerfil() {
-    this.token = this.auth.getToken();
-    const payload = JSON.parse(atob(this.token.split('.')[1]));
-    this.profile_id = payload._profile_id;
-    this.registro.user_id = payload._id;
-    this.user_name = payload._user_name;
-    this.user_id = payload._id;
-    this.getUserSexec(this.user_id);
-    // console.log('profile', this.profile_id)
-  }
-
-  getUserSexec(id: number){
-    this.userService.pegar_sexec(id).subscribe((rp:any) =>{
-      // console.log('rp', rp)
-      this.getEvento(rp.sexec_id)
-    }, (erro: any) => console.error(erro)
-    );
   }
 
   getQtdImgs() {

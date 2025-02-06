@@ -40,6 +40,7 @@
       <thead>
         <tr>
           <th scope="col" class="align-middle text-center">Nome Evento</th>
+          <th scope="col" class="align-middle text-center">Executiva Responsável</th>
           <th scope="col" class="align-middle text-center">Situação Atual</th>
           <th scope="col" class="align-middle text-center">Resultado Alcançado</th>
           <th scope="col" class="align-middle text-center">Custos Realizados</th>
@@ -52,6 +53,7 @@
       <tbody>
         <tr *ngFor="let follow of lista_follow | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
           <td class="align-middle">{{ follow.ass_acompanhamento_evento.nome_evento }}</td>
+          <td class="align-middle">{{ follow.ass_acompanhamento_evento.ass_evento_sexec.secretaria }}</td>
           <td class="align-middle">{{ follow.situacao_atual }}</td>
           <td class="align-middle">{{ follow.resultado }}</td>
           <td class="align-middle">R$ {{ follow.custo_realizado }}</td>
