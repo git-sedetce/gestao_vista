@@ -21,9 +21,11 @@ import { Audit } from '../../../shared/models/audit.model';
 export class ConsultaAcompanhamentoComponent implements OnInit {
   lista_evento!: any[];
   lista_follow!: any[];
-  lista_status!: any[];
   lista_imagens!: any[];
   lista_qtde!: any[];
+  lista_sexec!: any[];
+  lista_ano: number[] = [];
+  lista_status: string[] = ['', 'A Iniciar', 'Andamento', 'Cancelado', 'Concluído'];
   registro!: Audit
 
   formIsertImgs!: FormGroup;
@@ -36,13 +38,21 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   exibirImg!: any;
   user_name!: any;
   user_id!: any;
-  // date = new Date();
+  date = new Date();
+  ano_atual!: any;
 
   multipleFiles!: any[];
   imgs_anexo: any;
   habilita_anexo_imgs!: boolean;
   imageSelected: boolean = false;
   finaliza = 0;
+
+  //filtros
+  filtrar: boolean = false
+  filtro_sexec!: any;
+  filtro_ano!: any;
+  filtro_status!: any;
+  eventosFiltrados: any[] = [];
 
   page: number = 1; // Página atual
   itemsPerPage: number = 10; // Itens por página
@@ -69,10 +79,16 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
       leads_realizados: [''],
       evento_id: [''],
     });
+
+    this.ano_atual = this.date.getFullYear();
+    for (let y = 2023; y <= this.ano_atual+1; y++) {
+      this.lista_ano.push(y);
+    }
     this.registro = new Audit();
 
     this.getPerfil();
     this.getQtdImgs();
+    this.getSexec();
   }
 
   getPerfil() {
@@ -97,11 +113,11 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     }, (erro: any) => console.error(erro)
     );
   }
-  getFollowSexec(sexec_id: number): void{
+  getFollowSexec(sexec_id: any): void{
     this.followService.listarAcompanhamentoBySexec(sexec_id).subscribe(
       (flw: any[]) => {
         this.lista_follow = flw;
-        // console.log('lista_follow', this.lista_follow);
+        console.log('lista_follow', this.lista_follow);
       },
       (erro: any) => console.error(erro)
     );
@@ -110,6 +126,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   getFollows() {
     this.followService.listarAcompanhamento('listaFollow').subscribe(
       (flw: any[]) => {
+        this.filtrar = false;
         this.lista_follow = flw;
         // console.log('lista_follow', this.lista_follow);
       },
@@ -137,11 +154,25 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
       );
   }
 
+  filtroAno(ano: any){
+    this.followService.listarAcompanhamentoByAno(ano).subscribe((yr:any[]) =>{
+      this.lista_follow = yr;
+    }, (erro: any) => console.error(erro)
+    );
+  }
+
+  getSexec(){
+    this.typeService.getSexec('listaSexec').subscribe((sxc:any[]) =>{
+      this.lista_sexec = sxc;
+    }, (erro: any) => console.error(erro)
+    );
+  }
+
   getQtdImgs() {
     this.eventoService.contarImgs('countImgs').subscribe(
       (qtde: any[]) => {
         this.lista_qtde = qtde;
-        // console.log('lista_qtde', this.lista_qtde);
+         console.log('lista_qtde', this.lista_qtde);
       },
       (erro: any) => console.error('erro', erro)
     );
@@ -318,6 +349,29 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     error: (e) => (this.toastr.error(e))
   })
 
+  }
+
+  filtrarEventos() {
+    this.filtrar = true
+    console.log('sexec', this.filtro_sexec)
+    console.log('lista_acompanhamento', this.lista_follow)
+    this.eventosFiltrados = this.lista_follow.filter(evento => {
+      return (
+        (!this.filtro_ano || evento.ass_acompanhamento_evento.ano === this.filtro_ano) &&
+        (!this.filtro_status || evento.situacao_atual.toLowerCase() === this.filtro_status.toLowerCase()) &&
+        (!this.filtro_sexec || evento.ass_acompanhamento_evento.ass_evento_sexec.id === +this.filtro_sexec)
+      );
+    });
+
+
+    // console.log('Eventos filtrados:', this.eventosFiltrados);
+  }
+
+  limparFiltros(){
+    this.filtro_sexec = '';
+    this.filtro_status = this.lista_status[0];
+    this.filtro_ano = '';
+    this.getFollows();
   }
 
   // hour = this.date.getHours().toString().padStart(2, '0');

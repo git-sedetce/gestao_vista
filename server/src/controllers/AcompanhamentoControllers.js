@@ -23,39 +23,36 @@ class AcompanhamentoController {
   static async listarFollows(req, res) {
     try {
       const mostrarFollows = await database.Acompanhamento.findAll({
-        order: ["id"],
         include: [
           {
             association: "ass_acompanhamento_evento",
-            where: (database.Acompanhamento.evento_id =
-              database.Acompanhamento.id),
-            attributes: ["id", "nome_evento"],
+            attributes: ["id", "nome_evento", "ano"],
             include: [
               {
                 association: "ass_evento_sexec",
-                where: (database.Evento.sexec_id =
-                  database.Secretaria_Executivas.id),
                 attributes: ["id", "secretaria", "sigla"],
               },
             ],
           },
         ],
+        order: [[{ model: database.Evento, as: "ass_acompanhamento_evento" }, "ano", "DESC"]],
       });
+  
       return res.status(200).json(mostrarFollows);
     } catch (error) {
-      return res.status(500).json(error.message);
+      return res.status(500).json({ error: error.message });
     }
   }
+  
 
   static async listarFollowsBySexec(req, res) {
     const { id } = req.params;
     try {
-        const mostrarFollows = await database.Acompanhamento.findAll({
-            order: [["id", "ASC"]],
+        const mostrarFollows = await database.Acompanhamento.findAll({            
             include: [
                 {
                     association: "ass_acompanhamento_evento",
-                    attributes: ["id", "nome_evento"],
+                    attributes: ["id", "nome_evento", "ano"],
                     required: true,
                     include: [
                         {
@@ -65,15 +62,45 @@ class AcompanhamentoController {
                             where: {
                                 id: Number(id) // Certifique-se de que `id` é um número válido
                             }
-                        }
-                    ]
-                }
-            ]
+                        },
+                    ],
+                },
+            ],
+            order: [[{ model: database.Evento, as: "ass_acompanhamento_evento" }, "ano", "DESC"]],
         });
         return res.status(200).json(mostrarFollows);
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
+}
+
+static async listarFollowsByYear(req, res) {
+  const { ano } = req.params;
+  try {
+      const mostrarFollows = await database.Acompanhamento.findAll({            
+          include: [
+              {
+                  association: "ass_acompanhamento_evento",
+                  attributes: ["id", "nome_evento", "ano"],
+                  required: true,
+                  where: {
+                    ano: ano // Ano que aconteceu o evento
+                },
+                  include: [
+                      {
+                          association: "ass_evento_sexec",
+                          attributes: ["id", "secretaria", "sigla"],
+                          required: true,                         
+                      },
+                  ],
+              },
+          ],
+          order: [[{ model: database.Evento, as: "ass_acompanhamento_evento" }, "ano", "DESC"]],
+      });
+      return res.status(200).json(mostrarFollows);
+  } catch (error) {
+      return res.status(500).json({ error: error.message });
+  }
 }
 
   static async listarFollowsbyId(req, res) {
@@ -86,7 +113,15 @@ class AcompanhamentoController {
             association: "ass_acompanhamento_evento",
             where: (database.Acompanhamento.evento_id =
               database.Acompanhamento.id),
-            attributes: ["id", "nome_evento"],
+            attributes: ["id", "nome_evento", "ano"],
+            include: [
+              {
+                association: "ass_evento_sexec",
+                where: (database.Evento.sexec_id =
+                  database.Secretaria_Executivas.id),
+                attributes: ["id", "secretaria", "sigla"],
+              },
+            ],
           },
         ],
       });
@@ -106,7 +141,15 @@ class AcompanhamentoController {
             association: "ass_acompanhamento_evento",
             where: (database.Acompanhamento.evento_id =
               database.Acompanhamento.id),
-            attributes: ["id", "nome_evento"],
+            attributes: ["id", "nome_evento", "ano"],
+            include: [
+              {
+                association: "ass_evento_sexec",
+                where: (database.Evento.sexec_id =
+                  database.Secretaria_Executivas.id),
+                attributes: ["id", "secretaria", "sigla"],
+              },
+            ],
           },
         ],
       });
@@ -126,9 +169,18 @@ class AcompanhamentoController {
             association: "ass_acompanhamento_evento",
             where: (database.Acompanhamento.evento_id =
               database.Acompanhamento.id),
-            attributes: ["id", "nome_evento"],
+            attributes: ["id", "nome_evento", "ano"],
+            include: [
+              {
+                association: "ass_evento_sexec",
+                where: (database.Evento.sexec_id =
+                  database.Secretaria_Executivas.id),
+                attributes: ["id", "secretaria", "sigla"],
+              },
+            ],
           },
         ],
+        order: [[{ model: database.Evento, as: "ass_acompanhamento_evento" }, "ano", "DESC"]],
       });
       return res.status(200).json(showFollows);
     } catch (error) {

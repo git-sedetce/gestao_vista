@@ -26,6 +26,10 @@ export class AcompanhamentoService {
     return this.http.get(environment.apiUrl +'listaFollowSexec/' + id)
   }
 
+  listarAcompanhamentoByAno(ano: number): Observable<any> {
+    return this.http.get(environment.apiUrl +'listaFollowAno/' + ano)
+  }
+
   listarAcompanhamentoByStatus(metodo: string, stats: string): Observable<any>{
     return this.http.get(environment.apiUrl + metodo + stats)
   }
