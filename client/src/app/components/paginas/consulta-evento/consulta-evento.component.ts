@@ -362,5 +362,14 @@ export class ConsultaEventoComponent implements OnInit{
     // console.log('Eventos filtrados:', this.eventosFiltrados);
   }
 
+  limparFiltros(){
+    this.filtro_resp = '';
+    this.filtro_mes = '';
+    this.filtro_ano = '';
+    this.filtro_tp_evt = '';
+    this.filtro_tp_lc = '';
+    this.filtro_fonte = '';
+  }
+
 
 }

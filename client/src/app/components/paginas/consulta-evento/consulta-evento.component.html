@@ -17,10 +17,10 @@
 
       <div class="form-floating col-sm-2 col-12 mt-3 mb-2">
         <div class="filter-nav d-flex flex-center">
-          <button class="mx-3 mt-1 pt-1 pb-1 btn btn-primary text-uppercase fw-bold" (click)="getEventos()">Lista de Eventos</button>
+          <button class="mx-3 mt-1 pt-1 pb-1 btn btn-info text-uppercase fw-bold" (click)="getEventos()">Lista de Eventos</button>
           <button class="mx-3 btn text-center btn-warning text-uppercase fw-bold" data-bs-toggle="modal" data-bs-target="#modalTabelaEventoAcompanhamento">Evento Completo</button>
           <button class="mx-3 btn text-center btn-success text-uppercase fw-bold" data-bs-toggle="modal" data-bs-target="#modalTabelaEvento">Tabela Evento</button>
-          <button class="mx-3 btn text-center btn-info text-uppercase fw-bold" data-bs-toggle="modal" data-bs-target="#modalEventoFiltro">Tabela com Filtro</button>
+          <button *ngIf="eventosFiltrados.length > 0" class="mx-3 btn text-center btn-danger text-uppercase fw-bold" data-bs-toggle="modal" data-bs-target="#modalEventoFiltro">Exportar Filtro</button>
         </div>
       </div>
     </div>
@@ -66,6 +66,7 @@
       <div class="col-sm-2 col-12 mb-2">
       <div class="filter-nav d-flex flex-center">
         <button class="mx-3 mt-1 pt-1 pb-1 btn btn-primary text-uppercase fw-bold" (click)="filtrarEventos()">Filtrar Eventos</button>
+        <button class="mx-3 mt-1 pt-1 pb-1 btn btn-secondary text-uppercase fw-bold" (click)="limparFiltros()">Limpar Filtro</button>
       </div>
     </div>
     </div>
