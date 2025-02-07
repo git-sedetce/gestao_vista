@@ -12,7 +12,7 @@
         <select name="sexec_id" id="sexec_id" class="form-select" [(ngModel)]="filtro_resp" #sexec_id (change)="(getEventoByRes(sexec_id.value))">
           <option *ngFor=" let sexec of lista_sexec" [value]=sexec.id> {{ sexec.secretaria }} / {{ sexec.sigla }} </option>
         </select>
-        <label class="form-label pergunta ms-3" for="cargo">Responável</label>
+        <label class="form-label pergunta ms-3" for="cargo">Secretária Executiva</label>
       </div>
 
       <div class="form-floating col-sm-2 col-12 mt-3 mb-2">

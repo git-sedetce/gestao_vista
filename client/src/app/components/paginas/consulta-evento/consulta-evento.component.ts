@@ -369,6 +369,7 @@ export class ConsultaEventoComponent implements OnInit{
     this.filtro_tp_evt = '';
     this.filtro_tp_lc = '';
     this.filtro_fonte = '';
+    this.getEvento();
   }
 
 
