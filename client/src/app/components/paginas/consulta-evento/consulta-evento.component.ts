@@ -347,6 +347,8 @@ export class ConsultaEventoComponent implements OnInit{
   //FILTROS MULTIPLOS
 
   filtrarEventos() {
+    const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
     this.eventosFiltrados = this.lista_evento.filter(evento => {
       return (
         (!this.filtro_mes || evento.mes.toLowerCase() === this.filtro_mes.toLowerCase()) &&
@@ -356,11 +358,11 @@ export class ConsultaEventoComponent implements OnInit{
         (!this.filtro_fonte || evento.ass_evento_recursos.id === +this.filtro_fonte) &&
         (!this.filtro_resp || evento.ass_evento_sexec.id === +this.filtro_resp)
       );
-    });
-    this.filter = true
+    }).sort((a, b) => meses.indexOf(a.mes.toLowerCase()) - meses.indexOf(b.mes.toLowerCase()));
 
-    // console.log('Eventos filtrados:', this.eventosFiltrados);
-  }
+    this.filter = true;
+}
+
 
   limparFiltros(){
     this.filtro_resp = '';
