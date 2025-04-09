@@ -123,19 +123,8 @@
               </select>
               <label class="form-label pergunta ms-3" for="cargo">Situação Atual</label>
             </div>
-          </div>
 
-          <div class="row mt-4 mb-4">
-
-            <div class="form-group col-sm-4 col-12 ">
-              <div class="form-floating">
-                <input type="text" id="resultado" name="resultado"
-                  placeholder="Digite o nome do Evento" required formControlName="resultado" class="form-control" />
-                <label class="form-label pergunta" for="resultado">Resultado Alcançados</label>
-              </div>
-            </div>
-
-            <div class="form-group col-sm-4 col-12 ">
+            <div class="form-group col-sm-3 col-12 ">
               <div class="form-floating">
                 <input type="text" id="custo_realizado" name="custo_realizado"
                   placeholder="Digite o nome do Evento" required formControlName="custo_realizado" class="form-control" />
@@ -143,13 +132,35 @@
               </div>
             </div>
 
-            <div class="form-group col-sm-4 col-12 ">
+            <div class="form-group col-sm-3 col-12 ">
               <div class="form-floating">
                 <input type="text" id="leads_realizados" name="leads_realizados"
                   placeholder="Digite o nome do Evento" required formControlName="leads_realizados" class="form-control" />
                 <label class="form-label pergunta" for="leads_realizados">Leads Realizados</label>
               </div>
             </div>
+          </div>
+
+          <div class="row mt-4 mb-4">
+
+            <div class="form-group col-sm-12 col-12 ">
+              <div class="form-floating">
+                <textarea class="form-control" id="resultado" rows="5" name="resultado" placeholder="Informe a descrição do evento" style="height: 100px" required minlength="3" formControlName="resultado" class="form-control"></textarea>
+                <label class="form-label pergunta" for="resultado">Descrição</label>
+                <!-- <div class="limite_caractere alert alert-warning mt-1">Caracteres digitados: <strong>{{ evento.descricao?.length }} / {{ maxChars }}</strong></div>
+                <div *ngIf="!descricao.valid &&  descricao.touched" class="alert alert-danger" role="alert">
+                  Descrição é obrigatório
+                </div> -->
+              </div>
+
+              <!-- <div class="form-floating">
+                <input type="text" id="resultado" name="resultado"
+                  placeholder="Digite o nome do Evento" required formControlName="resultado" class="form-control" />
+                <label class="form-label pergunta" for="resultado">Resultado Alcançados</label>
+              </div> -->
+            </div>
+
+
           </div>
         </form>
       </div>

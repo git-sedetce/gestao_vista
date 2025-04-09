@@ -24,6 +24,7 @@ export class CadastroAcompanhamentoComponent implements OnInit {
   user_name!: any;
   profile_id!: any;
   token!: any;
+  maxChars = 500
 
   constructor(
     private router: Router,

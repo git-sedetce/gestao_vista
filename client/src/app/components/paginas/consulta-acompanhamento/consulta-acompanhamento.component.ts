@@ -172,7 +172,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     this.eventoService.contarImgs('countImgs').subscribe(
       (qtde: any[]) => {
         this.lista_qtde = qtde;
-         console.log('lista_qtde', this.lista_qtde);
+        //  console.log('lista_qtde', this.lista_qtde);
       },
       (erro: any) => console.error('erro', erro)
     );

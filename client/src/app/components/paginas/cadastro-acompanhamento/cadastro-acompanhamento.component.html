@@ -21,7 +21,7 @@
                   <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
                 </div>
 
-                <div class="form-floating col-sm-6 col-12 mb-2">
+                <div class="form-floating col-sm-2 col-12 mb-2">
                   <select name="situacao_atual" id="situacao_atual" class="form-select" #situacao_atual="ngModel" [(ngModel)]="follow.situacao_atual" required>
                     <option value="A Iniciar">A Iniciar</option>
                     <option value="Andamento">Andamento</option>
@@ -31,19 +31,8 @@
                   <label class="form-label pergunta ms-3" for="cargo">Situação Atual</label>
                   <!--<div *ngIf="!cargo.valid && cargo.touched" class="alert alert-danger" role="alert">Informe o Cargo</div>-->
                 </div>
-              </div>
 
-              <div class="row mt-4 mb-4">
-                <div class="form-group col-sm-4 col-12 ">
-                  <div class="form-floating">
-                    <input type="text" id="resultado" name="resultado"
-                      placeholder="Digite o nome do Evento" required #resultado="ngModel" [(ngModel)]="follow.resultado" class="form-control" />
-                    <label class="form-label pergunta" for="resultado">Resultado Alcançados</label>
-                    <div *ngIf="!resultado.valid && resultado.touched" class="alert alert-danger" role="alert">Informe o resultado</div>
-                  </div>
-                </div>
-
-                <div class="form-group col-sm-4 col-12 ">
+                <div class="form-group col-sm-2 col-12 ">
                   <div class="form-floating">
                     <input type="number" id="custo_realizado" name="custo_realizado"
                       placeholder="Digite o nome do Evento" required #custo_realizado="ngModel" [(ngModel)]="follow.custo_realizado" class="form-control" />
@@ -52,12 +41,26 @@
                   </div>
                 </div>
 
-                <div class="form-group col-sm-4 col-12 ">
+                <div class="form-group col-sm-2 col-12 ">
                   <div class="form-floating">
                     <input type="text" id="leads_realizados" name="leads_realizados"
                       placeholder="Digite o nome do Evento" required #leads_realizados="ngModel" [(ngModel)]="follow.leads_realizados" class="form-control" />
                     <label class="form-label pergunta" for="leads_realizados">Leads Realizados</label>
                     <div *ngIf="!leads_realizados.valid && leads_realizados.touched" class="alert alert-danger" role="alert">Informe o leads realizados</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-4 mb-4">
+                <div class="form-group col-sm-12 col-12 ">
+                  <div class="form-floating">
+                    <textarea class="form-control" id="resultado" [maxLength]="maxChars" rows="5"  name="resultado" placeholder="Informe a descrição do evento" style="height: 100px" required minlength="3" #resultado="ngModel" [(ngModel)]="follow.resultado"
+                      class="form-control"></textarea>
+                    <label class="form-label pergunta" for="resultado">Resultado Alcançados</label>
+                    <div class="limite_caractere alert alert-warning mt-1">Caracteres digitados: <strong>{{ follow.resultado?.length }} / {{ maxChars }}</strong></div>
+                    <div *ngIf="!resultado.valid &&  resultado.touched" class="alert alert-danger" role="alert">
+                      Descrição é obrigatório
+                    </div>
                   </div>
                 </div>
                 </div>
