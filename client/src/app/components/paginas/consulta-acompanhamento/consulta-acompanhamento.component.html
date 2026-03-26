@@ -6,48 +6,78 @@
       </h3>
     </div>
 
-    <!-- <div class="row">
+    <form [formGroup]="formFiltro" class="mb-3">
+      <div class="row g-3 justify-content-center align-items-end filtro-wrapper">
 
-      <div class="form-floating col-12 mb-2">
-        <select name="evento" id="evento" class="form-select" #evento (change)="(getFollowEvent(evento.value))">
-          <option *ngFor=" let evento of lista_evento" [value]=evento.id> {{ evento.nome_evento }} </option>
-        </select>
-        <label class="form-label pergunta ms-3" for="cargo">Responável</label>
-      </div>
-    </div> -->
-
-    <div class="row mt-3 mb-3 pt-3">
-      <div class="form-floating col-sm-2 col-12 mb-2 mx-auto">
-        <select name="stats" id="stats" class="form-select text-capitalize" [(ngModel)]="filtro_status" #stats (change)="(getFollowStats(stats.value))">
-          <option *ngFor=" let status of lista_status" [value]=status> {{ status }} </option>
-
-        </select>
-        <label class="form-label pergunta ms-3" for="cargo">Status dos eventos</label>
-      </div>
-
-      <div class="form-floating col-sm-2 col-12 mb-2 mx-auto">
-        <select name="ano" id="ano" class="form-select" [(ngModel)]="filtro_ano" #ano (change)="(filtroAno(ano.value))">
-          <option *ngFor=" let year of lista_ano" [value]=year> {{year}} </option>
-        </select>
-        <label class="form-label pergunta ms-3" for="cargo">Ano</label>
-      </div>
-
-      <div class="form-floating col-sm-4 col-12 mb-2">
-        <select name="sexec_id" id="sexec_id" class="form-select" [(ngModel)]="filtro_sexec" #sexec_id (change)="(getFollowSexec(sexec_id.value))">
-          <option *ngFor=" let sexec of lista_sexec" [value]=sexec.id> {{ sexec.secretaria }} / {{ sexec.sigla }} </option>
-        </select>
-        <label class="form-label pergunta ms-3" for="cargo">Secretária Executiva</label>
-      </div>
-
-      <div class="col-sm-4 col-12 mb-2">
-        <div class="filter-nav d-flex flex-center">
-          <button class="mx-3 mt-1 pt-3 pb-3 btn btn-primary text-uppercase fw-bold" (click)="getFollows()">Lista de Eventos</button>
-          <button class="mx-3 mt-1 pt-1 pb-1 btn btn-info text-white text-uppercase fw-bold" (click)="filtrarEventos()">Filtrar Eventos</button>
-          <button class="mx-3 mt-1 pt-1 pb-1 btn btn-secondary text-uppercase fw-bold" (click)="limparFiltros()">Limpar Filtro</button>
-          <!-- <button class="mx-3 btn text-center btn-success text-uppercase fw-bold" (click)="getReport()">Exportar<br>Planilha</button> -->
+        <!-- Nome do evento -->
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+          <input type="text" class="form-control form-control-lg shadow-sm"
+            placeholder="🔍 Pesquisar por nome do evento" formControlName="evento" (keyup)="filtrarEventos()" />
         </div>
+
+        <!-- SEXEC -->
+        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
+          <select class="form-select form-select-lg shadow-sm" formControlName="sexec" (change)="filtrarEventos()">
+            <option value="">Secretaria Executiva</option>
+            <!-- <option *ngFor="let sexec of lista_sexec" [value]="sexec.id">
+              {{ sexec.secretaria }} / {{ sexec.sigla }}
+            </option> -->
+            <option *ngFor=" let sexec of lista_sexec" [value]=sexec.id> {{ sexec.secretaria }} / {{ sexec.sigla }} </option>
+          </select>
+        </div>
+
+        <!-- Status -->
+        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
+          <select class="form-select form-select-lg shadow-sm" formControlName="status" (change)="filtrarEventos()">
+            <option value="">Status do Evento</option>
+            <option *ngFor=" let status of lista_status" [value]=status> {{ status }} </option>
+          </select>
+        </div>
+
+        <!-- Ano -->
+        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
+          <select class="form-select form-select-lg shadow-sm" formControlName="ano" (change)="filtrarEventos()">
+            <option value="">Ano</option>
+            <option *ngFor="let year of lista_ano" [value]="year">
+              {{ year }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Botões -->
+        <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12">
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-success btn-lg w-100" (click)="limparFiltros()">
+              Exibir todos
+            </button>
+
+            <!-- <button type="button" class="btn btn-warning btn-lg w-100" data-bs-toggle="modal" data-bs-target="#modalTabelaEventoAcompanhamento">Evento Completo</button> -->
+
+
+            <div class="btn-group w-100">
+              <button type="button" class="btn btn-outline-primary btn-lg dropdown-toggle w-100"
+                data-bs-toggle="dropdown" [disabled]="profile_id === 2 || profile_id === 4">
+                Exportar
+              </button>
+
+              <ul class="dropdown-menu w-100">
+                <li>
+                  <button class="dropdown-item" (click)="getReportEvent('todos')">
+                    Eventos e Acompanhamentos
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item" [disabled]="!filtroEventos" (click)="getReportEvent('filtrados')">
+                    Acompanhamentos filtrados
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </form>
 
 
     <table class="table table-striped table-hover" id="table-follow">
@@ -65,31 +95,15 @@
           <th scope="col" class="align-middle text-center">Remover</th>
         </tr>
       </thead>
-      <tbody *ngIf="!filtrar">
-        <tr *ngFor="let follow of lista_follow | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
-          <td class="align-middle">{{ follow.ass_acompanhamento_evento.ano }}</td>
+      <tbody>
+        <tr *ngFor="let follow of lista_follow_filtered | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+          <td class="align-middle text-center">{{ follow.ass_acompanhamento_evento.ano }}</td>
           <td class="align-middle">{{ follow.ass_acompanhamento_evento.nome_evento }}</td>
           <td class="align-middle">{{ follow.ass_acompanhamento_evento.ass_evento_sexec.secretaria }}</td>
           <td class="align-middle">{{ follow.situacao_atual }}</td>
           <td class="align-middle">{{ follow.resultado }}</td>
-          <td class="align-middle">R$ {{ follow.custo_realizado }}</td>
-          <td class="align-middle">{{ follow.leads_realizados }}</td>
-          <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button title="Inserir Imagens" (click)="onEdit(follow)" type="button" class="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#modalInsertImg"><i class="bi bi-image"></i></button></td>
-          <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button title="Visualizar evento" (click)="viewImg(follow)" type="button" class="btn btn-success mx-3" data-bs-toggle="modal" data-bs-target="#modalViewImg"><i class="bi bi-eye-fill"></i></button></td>
-          <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button (click)="onEdit(follow)" type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#modalEdit"><i class="bi bi-pencil-square"></i></button></td>
-          <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button (click)="deletaFollow(follow)" type="button" class="btn btn-danger mx-3"><i class="bi bi-trash-fill"></i></button></td>
-        </tr>
-      </tbody>
-
-      <tbody *ngIf="filtrar">
-        <tr *ngFor="let follow of eventosFiltrados | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
-          <td class="align-middle">{{ follow.ass_acompanhamento_evento.ano }}</td>
-          <td class="align-middle">{{ follow.ass_acompanhamento_evento.nome_evento }}</td>
-          <td class="align-middle">{{ follow.ass_acompanhamento_evento.ass_evento_sexec.secretaria }}</td>
-          <td class="align-middle">{{ follow.situacao_atual }}</td>
-          <td class="align-middle">{{ follow.resultado }}</td>
-          <td class="align-middle">R$ {{ follow.custo_realizado }}</td>
-          <td class="align-middle">{{ follow.leads_realizados }}</td>
+          <td class="align-middle text-center">R$ {{ follow.custo_realizado }}</td>
+          <td class="align-middle text-center">{{ follow.leads_realizados }}</td>
           <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button title="Inserir Imagens" (click)="onEdit(follow)" type="button" class="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#modalInsertImg"><i class="bi bi-image"></i></button></td>
           <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button title="Visualizar evento" (click)="viewImg(follow)" type="button" class="btn btn-success mx-3" data-bs-toggle="modal" data-bs-target="#modalViewImg"><i class="bi bi-eye-fill"></i></button></td>
           <td *ngIf="profile_id === 3 || profile_id === 2" class="align-middle"><button (click)="onEdit(follow)" type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#modalEdit"><i class="bi bi-pencil-square"></i></button></td>

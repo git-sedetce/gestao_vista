@@ -12,3 +12,24 @@ section {
   font-size: clamp(2.70em, 1.4em + 1vw, 2.95em);
   letter-spacing: 0.2em;
 }
+
+/* Centraliza e harmoniza o formulário */
+.filtro-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Garante mesma altura visual */
+.form-control-lg,
+.form-select-lg,
+.btn-lg {
+  height: 48px;
+  font-size: 0.95rem;
+}
+
+/* Corrige alinhamento interno dos botões */
+.btn-group .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

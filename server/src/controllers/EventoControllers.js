@@ -25,29 +25,27 @@ class EventoControllers {
         include: [
           {
             association: "ass_evento_tipo",
-            where: (database.Evento.tipo_evento_id = database.Tipo_Evento.id),
+            required: true,
             attributes: ["id", "nome_evento"],
           },
           {
             association: "ass_evento_sexec",
-            where: (database.Evento.sexec_id =
-              database.Secretaria_Executivas.id),
+            required: true,
             attributes: ["id", "secretaria", "sigla"],
           },
           {
             association: "ass_evento_local",
-            where: (database.Evento.tipo_local_id = database.Tipo_Local.id),
+            required: true,
             attributes: ["id", "local_evento"],
           },
           {
             association: "ass_evento_recursos",
-            where: (database.Evento.recursos_id = database.Tipo_Recursos.id),
+            required: true,
             attributes: ["id", "recursos"],
           },
           {
             association: "ass_evento_participacao",
-            where: (database.Evento.participacao_id =
-              database.Tipo_Participacao.id),
+            required: true,
             attributes: ["id", "participacao"],
           },
         ],
@@ -65,34 +63,26 @@ class EventoControllers {
         include: [
           {
             association: "ass_acompanhamento_evento",
-            where: (database.Acompanhamento.evento_id = database.Acompanhamento.id),
-            attributes: ["id", "nome_evento", "mes", "ano", "nome_evento", "descricao", "publico_alvo", "local", "periodo", "custo_previo","lead_previsto"],
+            attributes: ["id", "nome_evento", "mes", "ano", "nome_evento", "descricao", "publico_alvo", "local", "periodo", "custo_previo","lead_previsto", "updatedAt"],
             include: [
               {
                 association: "ass_evento_tipo",
-                where: (database.Evento.tipo_evento_id = database.Tipo_Evento.id),
                 attributes: ["id", "nome_evento"],
               },
               {
                 association: "ass_evento_sexec",
-                where: (database.Evento.sexec_id =
-                  database.Secretaria_Executivas.id),
                 attributes: ["id", "secretaria", "sigla"],
               },
               {
                 association: "ass_evento_local",
-                where: (database.Evento.tipo_local_id = database.Tipo_Local.id),
                 attributes: ["id", "local_evento"],
               },
               {
                 association: "ass_evento_recursos",
-                where: (database.Evento.recursos_id = database.Tipo_Recursos.id),
                 attributes: ["id", "recursos"],
               },
               {
                 association: "ass_evento_participacao",
-                where: (database.Evento.participacao_id =
-                  database.Tipo_Participacao.id),
                 attributes: ["id", "participacao"],
               }
             ],

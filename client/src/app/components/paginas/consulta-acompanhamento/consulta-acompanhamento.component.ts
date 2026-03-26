@@ -10,6 +10,7 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import { AuditService } from '../../../shared/services/audit.service';
 import { Audit } from '../../../shared/models/audit.model';
 
@@ -21,11 +22,12 @@ import { Audit } from '../../../shared/models/audit.model';
 export class ConsultaAcompanhamentoComponent implements OnInit {
   lista_evento!: any[];
   lista_follow!: any[];
+  lista_follow_filtered!: any[];
   lista_imagens!: any[];
   lista_qtde!: any[];
   lista_sexec!: any[];
   lista_ano: number[] = [];
-  lista_status: string[] = ['', 'A Iniciar', 'Andamento', 'Cancelado', 'Concluído'];
+  lista_status: string[] = ['A Iniciar', 'Andamento', 'Cancelado', 'Concluído'];
   registro!: Audit
 
   formIsertImgs!: FormGroup;
@@ -54,6 +56,13 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
   filtro_status!: any;
   eventosFiltrados: any[] = [];
 
+  formFiltro!: FormGroup;
+  filtroEventos: boolean = false;
+  searchEvento: string = '';
+  searchSexec: string = '';
+  searchStatus: string = '';
+  searchAno: string = '';
+
   page: number = 1; // Página atual
   itemsPerPage: number = 10; // Itens por página
 
@@ -78,6 +87,13 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
       custo_realizado: [''],
       leads_realizados: [''],
       evento_id: [''],
+    });
+
+    this.formFiltro = this.formBuilder.group({
+      evento: [''],
+      sexec: [''],
+      status: [''],
+      ano: ['']
     });
 
     this.ano_atual = this.date.getFullYear();
@@ -117,7 +133,7 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     this.followService.listarAcompanhamentoBySexec(sexec_id).subscribe(
       (flw: any[]) => {
         this.lista_follow = flw;
-        console.log('lista_follow', this.lista_follow);
+        this.lista_follow_filtered = [...flw];
       },
       (erro: any) => console.error(erro)
     );
@@ -128,36 +144,10 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
       (flw: any[]) => {
         this.filtrar = false;
         this.lista_follow = flw;
+        this.lista_follow_filtered = [...flw];
         // console.log('lista_follow', this.lista_follow);
       },
       (erro: any) => console.error(erro)
-    );
-  }
-
-  getFollowEvent(id: any) {
-    this.followService.listarAcompanhamentoByEvento(id).subscribe(
-      (flwEVT: any[]) => {
-        this.lista_follow = flwEVT;
-      },
-      (erro: any) => console.error(erro)
-    );
-  }
-
-  getFollowStats(stats: any) {
-    this.followService
-      .listarAcompanhamentoByStatus('listaFollowByStatus/', stats)
-      .subscribe(
-        (flwst: any[]) => {
-          this.lista_follow = flwst;
-        },
-        (erro: any) => console.error(erro)
-      );
-  }
-
-  filtroAno(ano: any){
-    this.followService.listarAcompanhamentoByAno(ano).subscribe((yr:any[]) =>{
-      this.lista_follow = yr;
-    }, (erro: any) => console.error(erro)
     );
   }
 
@@ -166,6 +156,66 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
       this.lista_sexec = sxc;
     }, (erro: any) => console.error(erro)
     );
+  }
+
+  private normalize(value: any): string {
+    return (value ?? '')
+      .toString()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  }
+
+  filtrarEventos(): void {
+    const { evento, sexec, status, ano } = this.formFiltro.value;
+
+    this.lista_follow_filtered = this.lista_follow.filter((evt) => {
+      const matchEvento =
+        !evento ||
+        this.normalize(evt.ass_acompanhamento_evento.nome_evento).includes(this.normalize(evento));
+
+      const matchSexec = !sexec || evt.ass_acompanhamento_evento.ass_evento_sexec.id === Number(sexec);
+
+      const matchStatus = !status || evt.situacao_atual === status;
+
+      const matchAno = !ano || Number(evt.ass_acompanhamento_evento.ano) === Number(ano);
+      // const matchAno = !ano || new Date(evt.data_evento).getFullYear() === Number(ano);
+
+
+      return (
+        matchEvento &&
+        matchSexec &&
+        matchStatus &&
+        matchAno
+      );
+    });
+
+    this.filtroEventos = this.lista_follow_filtered.length !== this.lista_follow.length;
+
+    this.page = 1;
+  }
+
+  limparFiltros(): void {
+    this.formFiltro.reset({
+      evento: '',
+      sexec: '',
+      status: '',
+      ano: '',
+    });
+
+    this.lista_follow_filtered = [...this.lista_follow];
+    this.filtroEventos = false;
+    this.page = 1;
+  }
+
+  exibirTodos(): void {
+    this.searchEvento = '';
+    this.searchStatus = '';
+    this.searchSexec = '';
+    this.searchAno = '';
+
+    this.lista_follow_filtered = [...this.lista_follow];
+    this.page = 1;
   }
 
   getQtdImgs() {
@@ -315,6 +365,79 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
     );
   }
 
+    //FUNÇÃO PARA CONVERSÃO DE DATA
+  formatarData(
+    data: string | Date | null,
+    formato: 'BR' | 'ISO' = 'BR',
+  ): string {
+    if (!data) return '';
+
+    const d = new Date(data);
+
+    if (isNaN(d.getTime())) return '';
+
+    const dia = String(d.getDate()).padStart(2, '0');
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const ano = d.getFullYear();
+
+    return formato === 'BR'
+      ? `${dia}/${mes}/${ano}` // dd/MM/yyyy
+      : `${ano}/${dia}/${mes}`; // yyyy/dd/MM
+  }
+
+  getReportEvent(tipo: 'todos' | 'filtrados'): void {
+
+      const dados = tipo === 'todos' ? this.lista_follow : this.lista_follow_filtered;
+
+      if(!dados || dados.length === 0) {
+        this.toastr.warning('Nenhum dado disponível para exportação.');
+        return;
+      }
+
+      const planilha = dados.map((evento) => ({
+        Nome_evento: evento.ass_acompanhamento_evento.nome_evento,
+        Responsavel: evento.ass_acompanhamento_evento.ass_evento_sexec?.secretaria ?? '',
+        Mes: evento.ass_acompanhamento_evento.mes,
+        Ano: evento.ass_acompanhamento_evento.ano,
+        Tipo_evento: evento.ass_acompanhamento_evento.ass_evento_tipo?.nome_evento ?? '',
+        Local: evento.ass_acompanhamento_evento.local,
+        custo_previo: evento.ass_acompanhamento_evento.custo_previo ?? '',
+        Recursos: evento.ass_acompanhamento_evento.ass_evento_recursos?.recursos ?? '',
+        Leads_previous: evento.ass_acompanhamento_evento.lead_previsto,
+        Descricao: evento.ass_acompanhamento_evento.descricao,
+        Publico_alvo: evento.ass_acompanhamento_evento.publico_alvo,
+        Tipo_participacao: evento.ass_acompanhamento_evento.ass_evento_participacao?.participacao,
+        Atualizacao_evento: this.formatarData(evento.ass_acompanhamento_evento.updatedAt),
+        Situacao_atual: evento.situacao_atual,
+        Resultados_alcancado: evento.resultado,
+        Custos_realizados: evento.custo_realizado,
+        Leads_realizados: evento.leads_realizados,
+        Ultima_atualizacao: this.formatarData(evento.updatedAt),
+      }));
+
+      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(planilha);
+      const workbook: XLSX.WorkBook = {
+        Sheets: { Eventos: worksheet },
+        SheetNames: ['Eventos'],
+      };
+
+      const excelBuffer: any = XLSX.write(workbook, {
+        bookType: 'xlsx',
+        type: 'array',
+      });
+
+      const blob = new Blob([excelBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+
+      const nomeArquivo =
+        tipo === 'todos'
+          ? 'eventos_acompanhamento.xlsx'
+          : 'eventos_acompanhamentos_filtrados.xlsx';
+
+      saveAs(blob, nomeArquivo);
+    }
+
   saveRegister(): void {
     this.registro.tipo_acao = 'Edição de acompanhamento';
     this.registro.acao = `O acompanhamento do evento ${ this.showTitle} foi alterado pelo usuário ${this.user_name}`;
@@ -351,28 +474,26 @@ export class ConsultaAcompanhamentoComponent implements OnInit {
 
   }
 
-  filtrarEventos() {
-    this.filtrar = true
-    console.log('sexec', this.filtro_sexec)
-    console.log('lista_acompanhamento', this.lista_follow)
-    this.eventosFiltrados = this.lista_follow.filter(evento => {
-      return (
-        (!this.filtro_ano || evento.ass_acompanhamento_evento.ano === this.filtro_ano) &&
-        (!this.filtro_status || evento.situacao_atual.toLowerCase() === this.filtro_status.toLowerCase()) &&
-        (!this.filtro_sexec || evento.ass_acompanhamento_evento.ass_evento_sexec.id === +this.filtro_sexec)
-      );
-    });
+  // filtrarEventos() {
+  //   this.filtrar = true
+  //   console.log('sexec', this.filtro_sexec)
+  //   console.log('lista_acompanhamento', this.lista_follow)
+  //   this.eventosFiltrados = this.lista_follow.filter(evento => {
+  //     return (
+  //       (!this.filtro_ano || evento.ass_acompanhamento_evento.ano === this.filtro_ano) &&
+  //       (!this.filtro_status || evento.situacao_atual.toLowerCase() === this.filtro_status.toLowerCase()) &&
+  //       (!this.filtro_sexec || evento.ass_acompanhamento_evento.ass_evento_sexec.id === +this.filtro_sexec)
+  //     );
+  //   });
 
+  // }
 
-    // console.log('Eventos filtrados:', this.eventosFiltrados);
-  }
-
-  limparFiltros(){
-    this.filtro_sexec = '';
-    this.filtro_status = this.lista_status[0];
-    this.filtro_ano = '';
-    this.getFollows();
-  }
+  // limparFiltros(){
+  //   this.filtro_sexec = '';
+  //   this.filtro_status = this.lista_status[0];
+  //   this.filtro_ano = '';
+  //   this.getFollows();
+  // }
 
   // hour = this.date.getHours().toString().padStart(2, '0');
   // minute = this.date.getMinutes().toString().padStart(2, '0');
